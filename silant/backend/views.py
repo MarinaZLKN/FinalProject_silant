@@ -2,6 +2,33 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import *
 from .models import *
+from allauth.account.views import SignupView
+from .forms import CustomSignupForm
+from rest_framework import generics
+from .serializers import UserSerializer
+from django.shortcuts import render, redirect
+from .forms import UserRegistrationForm
+
+
+def register_user(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success')
+    else:
+        form = UserRegistrationForm()
+
+    return render(request, 'accounts/register.html', {'form': form})
+
+
+class UserRegistrationView(generics.CreateAPIView):
+    serializer_class = UserSerializer
+
+
+class CustomSignupView(SignupView):
+    form_class = CustomSignupForm
+    template_name = 'accounts/signup.html'
 
 
 def main(request):

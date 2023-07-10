@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
@@ -24,4 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('backend.urls')),
     path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('accounts/register/', register_user, name='register_user'),
+    path('accounts/register/drf/', UserRegistrationView.as_view(), name='user_registration_drf'),
 ]

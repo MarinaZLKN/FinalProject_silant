@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'backend.apps.BackendConfig',
     'rest_framework',
     'corsheaders',
+    'allauth',
+    'allauth.account',
 ]
 
 MIDDLEWARE = [
@@ -93,8 +95,18 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+#AUTH_USER_MODEL = 'backend.CustomUser'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
+LOGIN_URL = '/accounts/login/'
+#LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_URL = '/accounts/logout/'
+LOGOUT_REDIRECT_URL = '/'
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 

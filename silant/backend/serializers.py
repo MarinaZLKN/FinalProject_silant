@@ -1,6 +1,30 @@
 from rest_framework import serializers
 from .models import *
+from django.contrib.auth import get_user_model
+from rest_framework import serializers
 
+User = get_user_model()
+ROLES_CHOICES = (
+    ('guest', 'Guest'),
+    ('client', 'Client'),
+    ('service_company', 'Service Company'),
+    ('manager', 'Manager'),
+)
+class UserSerializer(serializers.ModelSerializer):
+    role = serializers.ChoiceField(choices=ROLES_CHOICES)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'role']
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password'],
+            role=validated_data['role']
+        )
+        return user
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
