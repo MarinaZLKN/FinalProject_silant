@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import *
 from .models import *
+from django.contrib import messages
 from allauth.account.views import SignupView
 from .forms import CustomSignupForm
 from rest_framework import generics
@@ -14,8 +15,8 @@ def register_user(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('success')
+            user = form.save()
+            return redirect('/')
     else:
         form = UserRegistrationForm()
 

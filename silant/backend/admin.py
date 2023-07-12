@@ -16,4 +16,5 @@ admin.site.register(FailureNode)
 admin.site.register(Claim)
 admin.site.register(Client)
 admin.site.register(ServiceCompany)
+admin.site.register(CustomUser)
 

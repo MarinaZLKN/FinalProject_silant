@@ -26,5 +26,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('accounts/', include('allauth.urls')),
     path('accounts/register/', register_user, name='register_user'),
-    path('accounts/register/drf/', UserRegistrationView.as_view(), name='user_registration_drf'),
+    path('api/register/', UserRegistrationView.as_view(), name='user_registration_drf'),
 ]
