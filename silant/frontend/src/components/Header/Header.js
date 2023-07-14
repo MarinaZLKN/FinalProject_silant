@@ -11,7 +11,7 @@ const Header = () => {
                         <Logo />
                     </div>
                     <div className="header-info"> +7-8352-20-12-09, telegram</div>
-                    <button> Авторизация</button>
+                    <button className="auth-btn"> Авторизация</button>
                 </div>
                 <div className="header-down">
                     <p>Электронная сервисная книжка "Мой Силант"</p>

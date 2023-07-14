@@ -1,6 +1,7 @@
 import React from "react";
 import '../styles/App.css';
 import Header from "./Header/Header";
+import Footer from "./Footer/Footer";
 
 
 
@@ -13,9 +14,7 @@ function App () {
         <p>Content</p>
       </main>
 
-      <footer className="footer">
-        <p>Footer</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

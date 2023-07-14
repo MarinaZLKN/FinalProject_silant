@@ -1,0 +1,14 @@
+.footer {
+    background-color: #EBE6D6;
+    padding: 20px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-title{
+    font-size: 18px;
+}

@@ -13,30 +13,36 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 350px;
+  gap: 300px;
 }
 
 .header-info {
-  text-align: center;
-}
-
-/*.logo {*/
-/*  background-image: url("../../../static/photo.svg");*/
-/*  background-size: cover;*/
-/*  background-repeat: no-repeat;*/
-/*  width: 100px;*/
-/*  height: 100px;*/
-
-/*}*/
-.logo{
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
 
 }
-.app-logo{
-
-
+.auth-btn {
+    width: 150px;
+    height: 45px;
+    background: #D20A11;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    font-family: 'CustomFont', sans-serif;
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-
+.auth-btn:hover {
+    background-color: #ce595e;
+}
 .header-down {
-  text-align: center;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-left: 130px;
+
+
 }
