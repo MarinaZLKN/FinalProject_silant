@@ -1,0 +1,22 @@
+.main-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  padding: 20px;
+  text-align: center;
+}
+
+.content {
+  background-color: #EBE6D6;
+  flex-grow: 1;
+  padding: 20px;
+  text-align: center;
+}
+
+.footer {
+  padding: 20px;
+  text-align: center;
+}

@@ -1,0 +1,42 @@
+.header {
+  background-color: #EBE6D6;
+  padding: 20px;
+}
+
+.header-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-upper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 350px;
+}
+
+.header-info {
+  text-align: center;
+}
+
+/*.logo {*/
+/*  background-image: url("../../../static/photo.svg");*/
+/*  background-size: cover;*/
+/*  background-repeat: no-repeat;*/
+/*  width: 100px;*/
+/*  height: 100px;*/
+
+/*}*/
+.logo{
+
+}
+.app-logo{
+
+
+}
+
+
+.header-down {
+  text-align: center;
+}
