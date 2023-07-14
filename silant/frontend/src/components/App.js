@@ -2,6 +2,7 @@ import React from "react";
 import '../styles/App.css';
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
+import Search from "./Search/Search";
 
 
 
@@ -11,7 +12,7 @@ function App () {
       <Header />
 
       <main className="content">
-        <p>Content</p>
+        <Search />
       </main>
 
       <Footer />

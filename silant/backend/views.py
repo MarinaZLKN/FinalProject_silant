@@ -1,3 +1,4 @@
+import django_filters
 from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import *
@@ -9,6 +10,7 @@ from rest_framework import generics
 from .serializers import UserSerializer
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm
+from rest_framework import filters
 
 
 def register_user(request):
@@ -59,56 +61,75 @@ class ManagerList(viewsets.ModelViewSet):
 class ServiceCompanyViewset(viewsets.ModelViewSet):
     queryset = ServiceCompany.objects.all()
     serializer_class = ServiceCompanySerializer
-
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 class TechnicalModelViewset(viewsets.ModelViewSet):
     queryset = TechnicalModel.objects.all()
     serializer_class = TechnicalModelSerializer
-
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 class TransmissionModelViewset(viewsets.ModelViewSet):
     queryset = TransmissionModel.objects.all()
     serializer_class = TransmissionModelSerializer
-
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 class EngineModelViewset(viewsets.ModelViewSet):
     queryset = EngineModel.objects.all()
     serializer_class = EngineModelSerializer
-
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 class DrivingBridgeModelViewset(viewsets.ModelViewSet):
     queryset = DrivingBridgeModel.objects.all()
     serializer_class = DrivingBridgeModelSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 
 class ControlledBridgeModelViewset(viewsets.ModelViewSet):
     queryset = ControlledBridgeModel.objects.all()
     serializer_class = ControlledBridgeModelSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 
 class TypeOfMaintenanceViewset(viewsets.ModelViewSet):
     queryset = TypeOfMaintenance.objects.all()
     serializer_class = TypeOfMaintenanceSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 
 class RecoveryMethodViewset(viewsets.ModelViewSet):
     queryset = RecoveryMethod.objects.all()
     serializer_class = RecoveryMethodSerializer
+    serializer_class = ClientSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 
 class ClientViewset(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 
 class OrganizationViewset(viewsets.ModelViewSet):
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 
 class FailureNodeViewset(viewsets.ModelViewSet):
     queryset = FailureNode.objects.all()
     serializer_class = FailureNodeSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
 
 
 class MachineViewset(viewsets.ModelViewSet):
@@ -116,6 +137,17 @@ class MachineViewset(viewsets.ModelViewSet):
     serializer_class = MachineSerializer
     ordering_fields = ["-shipment_date"]
     ordering = ["-shipment_date"]
+    filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = [
+        "machine_factory_number",
+        "technical_model",
+        "engine_model",
+        "transmission_model",
+        "driving_bridge_model",
+        "controlled_bridge_model",
+        "client",
+        "service_company"
+    ]
 
 
 class MaintenanceViewset(viewsets.ModelViewSet):
@@ -123,6 +155,8 @@ class MaintenanceViewset(viewsets.ModelViewSet):
     serializer_class = MaintenanceSerializer
     ordering_fields = ['-date_of_maintenance']
     ordering = ['-date_of_maintenance']
+    filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["type_of_maintenance", "machine", "service_company"]
 
 
 class ClaimViewset(viewsets.ModelViewSet):
@@ -130,3 +164,5 @@ class ClaimViewset(viewsets.ModelViewSet):
     serializer_class = ClaimSerializer
     ordering_fields = ['-date_of_failure']
     ordering = ['-date_of_failure']
+    filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["failure_node", "recovery_method", "service_company"]
