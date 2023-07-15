@@ -44,15 +44,15 @@ const Search = () => {
       {data ? (
         <div>
           <h2 className="search-info_label">Информация о машине с номером {data.machine_factory_number}</h2>
-          <table>
+          <table className="table">
             <thead>
               <tr>
                 <th>Техническая модель</th>
                 <th>Модель двигателя</th>
-                <th>Номер двигателя</th>
-                <th>Номер трансмиссии</th>
-                <th>Номер ведущего моста</th>
-                <th>Номер управляемого моста</th>
+                <th>Зав. № двигателя</th>
+                <th>Зав. № трансмиссии</th>
+                <th>Зав. № ведущего моста</th>
+                <th>Зав. № управляемого моста</th>
                 <th>Модель трансмиссии</th>
                 <th>Модель ведущего моста</th>
                 <th>Модель управляемого моста</th>
@@ -71,13 +71,12 @@ const Search = () => {
                 <td>{data.driving_bridge_model}</td>
                 <td>{data.controlled_bridge_model}</td>
 
-
               </tr>
             </tbody>
           </table>
         </div>
       ) : (
-        <p>Информации не найдено</p>
+        <p>Данных о машине с таким заводским номером нет в системе</p>
       )}
     </div>
   );

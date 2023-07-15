@@ -1,9 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+
+from backend import views
 from backend.views import *
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 router = routers.DefaultRouter()
 router.register(r'service_companies', ServiceCompanyViewset)
@@ -26,6 +29,7 @@ urlpatterns = [
     path('', include('backend.urls')),
     path('front/', include('frontend.urls')),
     path('api/', include(router.urls)),
+    path('login/', views.login_view, name='login'),
     path('api-auth/', include('rest_framework.urls')),
     path('accounts/', include('allauth.urls')),
     path('accounts/register/', register_user, name='register_user'),

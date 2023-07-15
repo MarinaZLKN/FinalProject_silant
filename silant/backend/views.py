@@ -11,6 +11,8 @@ from .serializers import UserSerializer
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm
 from rest_framework import filters
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
 
 
 def register_user(request):
@@ -166,3 +168,19 @@ class ClaimViewset(viewsets.ModelViewSet):
     ordering = ['-date_of_failure']
     filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
     filterset_fields = ["failure_node", "recovery_method", "service_company"]
+
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Authenticate user
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)  # Log in the user
+            return JsonResponse({'message': 'Login successful'})
+        else:
+            return JsonResponse({'message': 'Invalid username or password'}, status=401)
+
+    return JsonResponse({'message': 'Invalid request'}, status=400)
