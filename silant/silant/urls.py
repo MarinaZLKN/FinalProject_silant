@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-
-from backend import views
 from backend.views import *
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,9 +27,10 @@ urlpatterns = [
     path('', include('backend.urls')),
     path('front/', include('frontend.urls')),
     path('api/', include(router.urls)),
-    path('login/', views.login_view, name='login'),
-    path('api-auth/', include('rest_framework.urls')),
+    # path('login/', CustomTokenObtainPairView.as_view(), name='login'),
+    # path('login/', login_view, name='login'),
+    # path('api-auth/', include('rest_framework.urls')),
     path('accounts/', include('allauth.urls')),
-    path('accounts/register/', register_user, name='register_user'),
-    path('api/register/', UserRegistrationView.as_view(), name='user_registration_drf'),
+    # path('accounts/register/', register_user, name='register_user'),
+    # path('api/register/', UserRegistrationView.as_view(), name='user_registration_drf'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -17,8 +17,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080',
     'http://127.0.0.1:8080',
+    'http://localhost:8080',
 ]
 
 
@@ -36,10 +36,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'backend.apps.BackendConfig',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
     'django_filters',
     'corsheaders',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -102,19 +105,42 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-#AUTH_USER_MODEL = 'backend.CustomUser'
+
+# AUTH_USER_MODEL = 'backend.CustomUser'
+#
+# REST_FRAMEWORK = {
+#    'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.TokenAuthentication'
+#    ],
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated'
+#     )
+# }
+
 
 AUTHENTICATION_BACKENDS = [
+    # 'backend.authentication.CustomUserBackend',
     'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
 
-LOGOUT_URL = '/accounts/logout/'
-LOGOUT_REDIRECT_URL = '/'
-# Internationalization
+# LOGIN_URL = '/accounts/login/'
+# LOGIN_REDIRECT_URL = 'http://localhost:8080/'
+#
+# LOGOUT_URL = '/accounts/logout/'
+# LOGOUT_REDIRECT_URL = 'http://localhost:8080/'
+#
+#
+# ACCOUNT_EMAIL_REQUIRED = False
+# ACCOUNT_UNIQUE_USERNAME = True
+# ACCOUNT_USERNAME_REQUIRED = True
+# ACCOUNT_AUTHENTICATION_METHOD = 'username'
+# ACCOUNT_EMAIL_VERIFICATION = 'none'
+# # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'

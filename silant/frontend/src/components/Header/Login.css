@@ -7,41 +7,43 @@
   border-radius: 4px;
 }
 
-h2 {
+.login-title {
   margin-top: 0;
+  margin-bottom: 10px;
 }
 
-form {
+.login_form {
   display: flex;
   flex-direction: column;
 }
 
-label {
+.login_label {
   margin-bottom: 10px;
+
 }
 
-input {
+.login_input {
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
 }
 
-/*button {*/
-/*  padding: 10px 16px;*/
-/*  background-color: #4caf50;*/
-/*  color: white;*/
-/*  border: none;*/
-/*  border-radius: 4px;*/
-/*  font-size: 16px;*/
-/*  cursor: pointer;*/
-/*}*/
+.login-btn{
+  padding: 10px 16px;
+  background-color: #163E6C;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-/*button:hover {*/
-/*  background-color: #45a049;*/
-/*}*/
+.login-btn:hover {
+  background-color: #1e5493;
+}
 
-/*button:disabled {*/
-/*  background-color: #ccc;*/
-/*  cursor: not-allowed;*/
-/*}*/
+.login-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

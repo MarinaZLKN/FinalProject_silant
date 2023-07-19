@@ -1,8 +1,19 @@
-from rest_framework import serializers
+
 from .models import *
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+
+# class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+#     @classmethod
+#     def get_token(cls, user):
+#         token = super().get_token(user)
+#
+#         # Add custom claims to the token payload
+#         token['role'] = user.role
+#
+#         return token
+#
 User = get_user_model()
 ROLES_CHOICES = (
     ('guest', 'Guest'),
@@ -10,13 +21,16 @@ ROLES_CHOICES = (
     ('service_company', 'Service Company'),
     ('manager', 'Manager'),
 )
+
+
 class UserSerializer(serializers.ModelSerializer):
     role = serializers.ChoiceField(choices=ROLES_CHOICES)
+    username = serializers.CharField(max_length=20)
+    password = serializers.CharField(min_length=8, write_only=True)
 
     class Meta:
         model = User
         fields = ['username', 'password', 'role']
-        extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -26,10 +40,11 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
+
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'role']
+        fields = ['id', 'username', 'role', 'password']
 
 
 class GuestSerializer(serializers.ModelSerializer):
@@ -191,3 +206,6 @@ class ClaimSerializer(serializers.HyperlinkedModelSerializer):
                   'machine',
                   'service_company',
                   ]
+
+
+

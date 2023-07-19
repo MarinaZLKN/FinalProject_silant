@@ -1,0 +1,24 @@
+.machine-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+.machine-table th,
+.machine-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.machine-table th {
+  background-color: #f2f2f2;
+}
+
+.machine-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.machine-table tbody tr:hover {
+  background-color: #e6e6e6;
+}

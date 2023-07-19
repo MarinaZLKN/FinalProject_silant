@@ -31,8 +31,12 @@
     cursor: pointer;
     font-family: 'CustomFont', sans-serif;
     font-size: 18px;
-    color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.auth-label {
+    color: white;
+    text-decoration: none;
 }
 
 .auth-btn:hover {

@@ -1,9 +1,7 @@
 import django_filters
-from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import *
 from .models import *
-from django.contrib import messages
 from allauth.account.views import SignupView
 from .forms import CustomSignupForm
 from rest_framework import generics
@@ -13,6 +11,7 @@ from .forms import UserRegistrationForm
 from rest_framework import filters
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 def register_user(request):
@@ -25,6 +24,37 @@ def register_user(request):
         form = UserRegistrationForm()
 
     return render(request, 'accounts/register.html', {'form': form})
+#
+#
+# class CustomTokenObtainPairView(TokenObtainPairView):
+#     serializer_class = CustomTokenObtainPairSerializer
+#
+#     def post(self, request, *args, **kwargs):
+#         response = super().post(request, *args, **kwargs)
+#         refresh_token = response.data.get('refresh')
+#         access_token = response.data.get('access')
+#         if refresh_token and access_token:
+#             response.data['refresh_token'] = refresh_token
+#             response.data['access_token'] = access_token
+#             response.data['user'] = {
+#                 'id': self.request.user.id,
+#                 'username': self.request.user.username,
+#                 'role': self.request.user.role,
+#             }
+#         return response
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'message': 'Успешный вход!'})
+        else:
+            return JsonResponse({'message': 'Неверное имя или пароль!'}, status=401)
+
+    return JsonResponse({'message': 'Invalid reguest'}, status=400)
 
 
 class UserRegistrationView(generics.CreateAPIView):
@@ -170,17 +200,5 @@ class ClaimViewset(viewsets.ModelViewSet):
     filterset_fields = ["failure_node", "recovery_method", "service_company"]
 
 
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
 
-        # Authenticate user
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)  # Log in the user
-            return JsonResponse({'message': 'Login successful'})
-        else:
-            return JsonResponse({'message': 'Invalid username or password'}, status=401)
 
-    return JsonResponse({'message': 'Invalid request'}, status=400)
