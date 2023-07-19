@@ -16,9 +16,7 @@ const Main = () => {
                 Техническое обслуживание
               </Link>
           </div>
-          <div className="new">
-              hello
-          </div>
+
       </div>
   );
 };

@@ -30,7 +30,7 @@ const ClaimTable = () => {
             <tr key={claim.id}>
               <td>{claim.machine}</td>
               <td>{claim.date_of_failure}</td>
-              <td>{claim.operating_time}</td>
+              <td>{claim.operating_time} м/час</td>
               <td>{claim.spare_parts_used}</td>
               <td>{claim.date_of_recovery}</td>
               <td>{claim.technical_downtime}</td>
