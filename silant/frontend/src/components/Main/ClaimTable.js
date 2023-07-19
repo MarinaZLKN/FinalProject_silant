@@ -12,7 +12,7 @@ const ClaimTable = () => {
 
   return (
     <div>
-      <h1>Рекламации</h1>
+      <h1 className="h1">Рекламации</h1>
       <table className="machine-table">
         <thead>
           <tr>

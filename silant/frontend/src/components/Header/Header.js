@@ -16,7 +16,7 @@ const Header = () => {
                     </div>
                     <div className="header-info"> +7-8352-20-12-09, telegram</div>
                     <button className="auth-btn">
-                        <Link to="/login">
+                        <Link to="/login" className="auth-link">
                             <span className="auth-label">Авторизация</span> </Link>
                     </button>
                 </div>

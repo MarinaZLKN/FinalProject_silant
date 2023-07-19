@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './MachineTable.css'
+import {Link, useNavigate} from "react-router-dom";
 
 const MachineTable = () => {
   const [machines, setMachines] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/machines/')
@@ -11,9 +13,13 @@ const MachineTable = () => {
       .catch(error => console.log(error));
   }, []);
 
+  const handleRowClick = machineFactoryNumber => {
+    navigate(`/machines/${machineFactoryNumber}`);
+  };
+
   return (
       <>
-        <h1>Информация о машинах</h1>
+        <h1 className="h1">Информация о машинах</h1>
         <table className="machine-table">
           <thead>
             <tr>
@@ -31,7 +37,11 @@ const MachineTable = () => {
           </thead>
           <tbody>
             {machines.map(machine => (
-              <tr key={machine.machine_factory_number}>
+             <tr
+              key={machine.machine_factory_number}
+              onClick={() => handleRowClick(machine.machine_factory_number)}
+              className="machine-row"
+            >
                 <td>{machine.machine_factory_number}</td>
                 <td>{machine.engine_factory_number}</td>
                 <td>{machine.transmission_factory_number}</td>

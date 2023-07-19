@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+
+from backend import views
 from backend.views import *
 from django.conf import settings
 from django.conf.urls.static import static
@@ -27,6 +29,7 @@ urlpatterns = [
     path('', include('backend.urls')),
     path('front/', include('frontend.urls')),
     path('api/', include(router.urls)),
+    path('api/machines/<str:machineFactoryNumber>/', views.machine_detail),
     # path('login/', CustomTokenObtainPairView.as_view(), name='login'),
     # path('login/', login_view, name='login'),
     # path('api-auth/', include('rest_framework.urls')),

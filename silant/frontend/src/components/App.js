@@ -9,16 +9,26 @@ import Main from "./Main/Main";
 import MachineTable from "./Main/MachineTable";
 import ClaimTable from "./Main/ClaimTable";
 import MaintenanceTable from "./Main/MaintenanceTable";
+import Dashboard from "./Main/Dashboard";
+import './Main/Dashboard.css';
+import MachineDetails from "./Main/MachineDetails";
 
 function App () {
     return (
     <div className="main-page">
       <Header />
 
+
       <main className="content">
+          <div className="dashboard">
+            < Dashboard />
+              <Search/>
+        </div>
           <Routes>
               <Route path="/" element={<Main />} />
-              {/*<Route path="/" element={<Search />} />*/}
+               <Route exact path="/machines/:machineFactoryNumber" component={MachineDetails} />
+
+              <Route path="/" element={<Search />} />
               <Route path="/login" element={<Login />} />
               <Route path="/machines" element={<MachineTable />} />
               <Route path="/claim" element={<ClaimTable />} />

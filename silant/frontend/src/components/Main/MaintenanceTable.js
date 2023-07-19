@@ -13,7 +13,7 @@ const MaintenanceTable = () => {
 
   return (
       <>
-      <h1>Техническое обслуживание</h1>
+      <h1 className="h1">Техническое обслуживание</h1>
       <table className="machine-table">
         <thead>
           <tr>

@@ -22,3 +22,11 @@
 .machine-table tbody tr:hover {
   background-color: #cde3f8;
 }
+
+.h1{
+  padding: 10px 0;
+}
+
+.machine-row {
+  cursor: pointer;
+}

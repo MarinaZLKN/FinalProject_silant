@@ -200,5 +200,16 @@ class ClaimViewset(viewsets.ModelViewSet):
     filterset_fields = ["failure_node", "recovery_method", "service_company"]
 
 
+def machine_detail(request, machineFactoryNumber):
 
+    machine = Machine.objects.get(machine_factory_number=machineFactoryNumber)
+
+    response_data = {
+        'machine_factory_number': machine.machine_factory_number,
+        'engine_factory_number': machine.engine_factory_number,
+        'transmission_factory_number': machine.transmission_factory_number,
+
+    }
+
+    return JsonResponse(response_data)
 
