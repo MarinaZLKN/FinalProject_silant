@@ -17,27 +17,26 @@ const MaintenanceTable = () => {
       <table className="machine-table">
         <thead>
           <tr>
+            <th>Machine</th>
             <th>Date of Maintenance</th>
             <th>Operating Time</th>
             <th>Order Number</th>
             <th>Date of Order</th>
             <th>Organization</th>
             <th>Type of Maintenance</th>
-            <th>Machine</th>
-            <th>Service Company</th>
+
           </tr>
         </thead>
         <tbody>
           {maintenanceData.map(maintenance => (
             <tr key={maintenance.id}>
+              <td>{maintenance.machine}</td>
               <td>{maintenance.date_of_maintenance}</td>
               <td>{maintenance.operating_time}  м/час</td>
               <td>{maintenance.order_number}</td>
               <td>{maintenance.data_of_order}</td>
               <td>{maintenance.organization}</td>
               <td>{maintenance.type_of_maintenance}</td>
-              <td>{maintenance.machine}</td>
-              <td>{maintenance.service_company}</td>
             </tr>
           ))}
         </tbody>

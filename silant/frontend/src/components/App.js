@@ -26,7 +26,7 @@ function App () {
         </div>
           <Routes>
               <Route path="/" element={<Main />} />
-               <Route exact path="/machines/:machineFactoryNumber" component={MachineDetails} />
+              <Route path="/machines/:id" element={<MachineDetails />} />
 
               <Route path="/" element={<Search />} />
               <Route path="/login" element={<Login />} />

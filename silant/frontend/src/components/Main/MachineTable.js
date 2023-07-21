@@ -13,8 +13,8 @@ const MachineTable = () => {
       .catch(error => console.log(error));
   }, []);
 
-  const handleRowClick = machineFactoryNumber => {
-    navigate(`/machines/${machineFactoryNumber}`);
+  const handleRowClick = id => {
+    navigate(`/machines/${id}`);
   };
 
   return (
@@ -38,8 +38,8 @@ const MachineTable = () => {
           <tbody>
             {machines.map(machine => (
              <tr
-              key={machine.machine_factory_number}
-              onClick={() => handleRowClick(machine.machine_factory_number)}
+              key={machine.id}
+              onClick={() => handleRowClick(machine.id)}
               className="machine-row"
             >
                 <td>{machine.machine_factory_number}</td>
