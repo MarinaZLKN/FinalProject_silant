@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './MachineTable.css';
+import '../Search/Search.css';
 
 const MachineFilter = () => {
   const [technicalModels, setTechnicalModels] = useState([]);
   const [engineModels, setEngineModels] = useState([]);
   const [transmissionModels, setTransmissionModels] = useState([]);
   const [contrBridgeModels, setContrBridgeModels] = useState([]);
+  const [driveBridgeModels, setDriveBridgeModels] = useState([]);
   const [machines, setMachines] = useState([]);
 
   useEffect(() => {
@@ -24,12 +26,19 @@ const MachineFilter = () => {
     axios.get("http://127.0.0.1:8000/api/controlled_bridge_models/").then((response) => {
       setContrBridgeModels(response.data);
     });
+    axios.get("http://127.0.0.1:8000/api/driving_bridge_models/").then((response) => {
+      setDriveBridgeModels(response.data);
+    });
+
   }, []);
 
   const [selectedTechnicalModel, setSelectedTechnicalModel] = useState("");
   const [selectedEngineModel, setSelectedEngineModel] = useState("");
   const [selectedTransmissionModel, setSelectedTransmissionModel] = useState("");
   const [selectedContrBridgeModel, setSelectedContrBridgeModel] = useState("");
+  const [selectedDriveBridgeModel, setSelectedDriveBridgeModel] = useState("");
+  const [selectedMachineFactoryNumber, setSelectedMachineFactoryNumber] = useState("");
+
 
   const handleFilter = () => {
     axios
@@ -39,6 +48,8 @@ const MachineFilter = () => {
           engine_model__name: selectedEngineModel,
           transmission_model__name: selectedTransmissionModel,
           controlled_bridge_model__name : selectedContrBridgeModel,
+          driving_bridge_model__name : selectedDriveBridgeModel,
+          machine_factory_number: selectedMachineFactoryNumber,
         },
       })
       .then((response) => {
@@ -52,7 +63,7 @@ const MachineFilter = () => {
 
   return (
     <div>
-      <div>
+      <div className="filter-group">
         <label>Technical Model:</label>
         <select onChange={(e) => setSelectedTechnicalModel(e.target.value)}>
           <option value="">Select Technical Model</option>
@@ -63,7 +74,7 @@ const MachineFilter = () => {
           ))}
         </select>
       </div>
-      <div>
+      <div className="filter-group">
         <label>Engine Model:</label>
         <select onChange={(e) => setSelectedEngineModel(e.target.value)}>
           <option value="">Select Engine Model</option>
@@ -74,7 +85,7 @@ const MachineFilter = () => {
           ))}
         </select>
       </div>
-      <div>
+      <div className="filter-group">
         <label>Transmission Model:</label>
         <select onChange={(e) => setSelectedTransmissionModel(e.target.value)}>
           <option value="">Select Transmission Model</option>
@@ -85,7 +96,7 @@ const MachineFilter = () => {
           ))}
         </select>
       </div>
-      <div>
+      <div className="filter-group">
         <label>Controlled Bridge Model:</label>
         <select onChange={(e) => setSelectedContrBridgeModel(e.target.value)}>
           <option value="">Select Controlled Bridge Model</option>
@@ -96,7 +107,25 @@ const MachineFilter = () => {
           ))}
         </select>
       </div>
-      <button type="button" onClick={handleFilter}>Filter</button>
+      <div className="filter-group">
+        <label>Driving Bridge Model:</label>
+        <select onChange={(e) => setSelectedDriveBridgeModel(e.target.value)}>
+          <option value="">Select Driving Bridge Model</option>
+          {driveBridgeModels.map((model) => (
+            <option key={model.id} value={model.name}>
+              {model.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="filter-group">
+        <label>Machine Factory Number:</label>
+        <input type="text" onChange={(e) => setSelectedMachineFactoryNumber(e.target.value)} />
+      </div>
+      <div className="filter-btn">
+        <button type="button"  className="search-btn" onClick={handleFilter}>Показать</button>
+      </div>
+
 
       <table className="machine-table">
         <thead>

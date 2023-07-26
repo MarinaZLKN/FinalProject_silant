@@ -179,6 +179,8 @@ class MachineFilter(filters.FilterSet):
             'engine_model__name': ['exact'],
             'transmission_model__name': ['exact'],
             'controlled_bridge_model__name': ['exact'],
+            'driving_bridge_model__name': ['exact'],
+            'machine_factory_number': ['exact', 'contains'],
 
         }
 

@@ -68,3 +68,13 @@
 .table tr td:last-child, .table tr th:last-child {
 	border-right: none;
 }
+
+.filter-btn{
+    padding: 20px 0px;
+}
+
+.filter-group {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 20px 0px;
+}
