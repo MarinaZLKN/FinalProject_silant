@@ -1,5 +1,5 @@
 import django_filters
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -11,7 +11,7 @@ from rest_framework import generics
 from .serializers import UserSerializer
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm
-from rest_framework import filters
+from django_filters import rest_framework as filters
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -99,23 +99,27 @@ class ServiceCompanyViewset(viewsets.ModelViewSet):
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_fields = ["name"]
 
+
 class TechnicalModelViewset(viewsets.ModelViewSet):
     queryset = TechnicalModel.objects.all()
     serializer_class = TechnicalModelSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_fields = ["name"]
 
+
 class TransmissionModelViewset(viewsets.ModelViewSet):
     queryset = TransmissionModel.objects.all()
     serializer_class = TransmissionModelSerializer
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ["name"]
+    # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    # filterset_fields = ["name"]
+
 
 class EngineModelViewset(viewsets.ModelViewSet):
     queryset = EngineModel.objects.all()
     serializer_class = EngineModelSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_fields = ["name"]
+
 
 class DrivingBridgeModelViewset(viewsets.ModelViewSet):
     queryset = DrivingBridgeModel.objects.all()
@@ -167,22 +171,35 @@ class FailureNodeViewset(viewsets.ModelViewSet):
     filterset_fields = ["name"]
 
 
+class MachineFilter(filters.FilterSet):
+    class Meta:
+        model = Machine
+        fields = {
+            'technical_model__name': ['exact'],
+            'engine_model__name': ['exact'],
+            'transmission_model__name': ['exact'],
+            'controlled_bridge_model__name': ['exact'],
+
+        }
+
+
 class MachineViewset(viewsets.ModelViewSet):
     queryset = Machine.objects.all()
     serializer_class = MachineSerializer
+    filterset_class = MachineFilter
     ordering_fields = ["-shipment_date"]
     ordering = ["-shipment_date"]
-    filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = [
-        "machine_factory_number",
-        "technical_model",
-        "engine_model",
-        "transmission_model",
-        "driving_bridge_model",
-        "controlled_bridge_model",
-        "client",
-        "service_company"
-    ]
+    # filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
+    # filterset_fields = [
+    #     "machine_factory_number",
+    #     "technical_model",
+    #     "engine_model",
+    #     "transmission_model",
+    #     "driving_bridge_model",
+    #     "controlled_bridge_model",
+    #     "client",
+    #     "service_company"
+    # ]
 
 
 class MaintenanceViewset(viewsets.ModelViewSet):
@@ -190,8 +207,8 @@ class MaintenanceViewset(viewsets.ModelViewSet):
     serializer_class = MaintenanceSerializer
     ordering_fields = ['-date_of_maintenance']
     ordering = ['-date_of_maintenance']
-    filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ["type_of_maintenance", "machine", "service_company"]
+    # filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
+    # filterset_fields = ["type_of_maintenance", "machine", "service_company"]
 
 
 class ClaimViewset(viewsets.ModelViewSet):
@@ -199,8 +216,8 @@ class ClaimViewset(viewsets.ModelViewSet):
     serializer_class = ClaimSerializer
     ordering_fields = ['-date_of_failure']
     ordering = ['-date_of_failure']
-    filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ["failure_node", "recovery_method", "service_company"]
+    # filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
+    # filterset_fields = ["failure_node", "recovery_method", "service_company"]
 
 
 @api_view(['GET'])
@@ -211,3 +228,38 @@ def machine_detail(request, machine_id):
         return Response(serializer.data)
     except Machine.DoesNotExist:
         return Response({'detail': 'Machine not found'}, status=404)
+
+
+@api_view(['GET', 'POST'])
+def machine_list(request):
+    if request.method == 'GET':
+        machines = Machine.objects.all()
+        serializer = MachineSerializer(machines, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = MachineSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+# def machine_detail(request, machine_id):
+#     try:
+#         machine = Machine.objects.get(id=machine_id)
+#     except Machine.DoesNotExist:
+#         return Response({'detail': 'Machine not found'}, status=status.HTTP_404_NOT_FOUND)
+#
+#     if request.method == 'GET':
+#         serializer = MachineSerializer(machine)
+#         return Response(serializer.data)
+#     elif request.method in ['PUT', 'PATCH']:
+#         serializer = MachineSerializer(machine, data=request.data, partial=request.method == 'PATCH')
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     elif request.method == 'DELETE':
+#         machine.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)

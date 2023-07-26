@@ -12,6 +12,7 @@ import MaintenanceTable from "./Main/MaintenanceTable";
 import Dashboard from "./Main/Dashboard";
 import './Main/Dashboard.css';
 import MachineDetails from "./Main/MachineDetails";
+import MachineFilter from "./Main/MachineFilter";
 
 function App () {
     return (
@@ -22,12 +23,12 @@ function App () {
       <main className="content">
           <div className="dashboard">
             < Dashboard />
-              <Search/>
+              <MachineFilter />
+              {/*<Search/>*/}
         </div>
           <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/machines/:id" element={<MachineDetails />} />
-
               <Route path="/" element={<Search />} />
               <Route path="/login" element={<Login />} />
               <Route path="/machines" element={<MachineTable />} />

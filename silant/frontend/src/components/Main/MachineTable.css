@@ -30,3 +30,7 @@
 .machine-row {
   cursor: pointer;
 }
+
+.detail-view_h2{
+  padding: 30px 0px;
+}
