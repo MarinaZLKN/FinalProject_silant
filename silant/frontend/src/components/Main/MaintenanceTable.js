@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './MachineTable.css';
+import MachineFilter from "./MachineFilter";
+import MaintenanceFilter from "./MaintenanceFilter";
 
 const MaintenanceTable = () => {
   const [maintenanceData, setMaintenanceData] = useState([]);
@@ -13,6 +15,9 @@ const MaintenanceTable = () => {
 
   return (
       <>
+         <div className="mach-filter">
+          <MaintenanceFilter />
+        </div>
       <h1 className="h1">Техническое обслуживание</h1>
       <table className="machine-table">
         <thead>

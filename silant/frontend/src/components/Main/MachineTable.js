@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './MachineTable.css'
 import {Link, useNavigate} from "react-router-dom";
+import MachineFilter from "./MachineFilter";
 
 const MachineTable = () => {
   const [machines, setMachines] = useState([]);
@@ -19,6 +20,9 @@ const MachineTable = () => {
 
   return (
       <>
+        <div className="mach-filter">
+          <MachineFilter />
+        </div>
         <h1 className="h1">Информация о машинах</h1>
         <table className="machine-table">
           <thead>

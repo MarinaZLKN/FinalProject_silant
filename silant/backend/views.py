@@ -2,7 +2,7 @@ import django_filters
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from rest_framework.filters import SearchFilter
 from .serializers import *
 from .models import *
 from allauth.account.views import SignupView
@@ -212,6 +212,28 @@ class MaintenanceViewset(viewsets.ModelViewSet):
     # filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
     # filterset_fields = ["type_of_maintenance", "machine", "service_company"]
 
+
+class MaintenanceFilterView(generics.ListAPIView):
+    serializer_class = MaintenanceSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['machine__machine_factory_number', 'type_of_maintenance__name', 'service_company__name']
+
+    def get_queryset(self):
+        queryset = Maintenance.objects.all()
+        machine_factory_number = self.request.query_params.get('machine_factory_number', None)
+        type_of_maintenance = self.request.query_params.get('type_of_maintenance', None)
+        service_company = self.request.query_params.get('service_company', None)
+
+        if machine_factory_number:
+            queryset = queryset.filter(machine__machine_factory_number=machine_factory_number)
+
+        if type_of_maintenance:
+            queryset = queryset.filter(type_of_maintenance__name=type_of_maintenance)
+
+        if service_company:
+            queryset = queryset.filter(service_company__name=service_company)
+
+        return queryset
 
 class ClaimViewset(viewsets.ModelViewSet):
     queryset = Claim.objects.all()

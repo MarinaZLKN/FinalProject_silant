@@ -17,6 +17,7 @@ const ClaimTable = () => {
         <thead>
           <tr>
             <th>Machine Factory Number</th>
+            <th>Failure Node</th>
             <th>Date of Failure</th>
             <th>Operating Time</th>
             <th>Spare Parts Used</th>
@@ -29,6 +30,7 @@ const ClaimTable = () => {
           {claims.map(claim => (
             <tr key={claim.id}>
               <td>{claim.machine}</td>
+              <td>{claim.failure_node}</td>
               <td>{claim.date_of_failure}</td>
               <td>{claim.operating_time} м/час</td>
               <td>{claim.spare_parts_used}</td>

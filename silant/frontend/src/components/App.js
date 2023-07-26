@@ -23,7 +23,7 @@ function App () {
       <main className="content">
           <div className="dashboard">
             < Dashboard />
-              <MachineFilter />
+
               {/*<Search/>*/}
         </div>
           <Routes>

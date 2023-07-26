@@ -11,6 +11,9 @@ const MachineFilter = () => {
   const [driveBridgeModels, setDriveBridgeModels] = useState([]);
   const [machines, setMachines] = useState([]);
 
+
+
+
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/technical_models/").then((response) => {
       setTechnicalModels(response.data);
@@ -30,6 +33,7 @@ const MachineFilter = () => {
       setDriveBridgeModels(response.data);
     });
 
+
   }, []);
 
   const [selectedTechnicalModel, setSelectedTechnicalModel] = useState("");
@@ -37,7 +41,7 @@ const MachineFilter = () => {
   const [selectedTransmissionModel, setSelectedTransmissionModel] = useState("");
   const [selectedContrBridgeModel, setSelectedContrBridgeModel] = useState("");
   const [selectedDriveBridgeModel, setSelectedDriveBridgeModel] = useState("");
-  const [selectedMachineFactoryNumber, setSelectedMachineFactoryNumber] = useState("");
+
 
 
   const handleFilter = () => {
@@ -49,7 +53,7 @@ const MachineFilter = () => {
           transmission_model__name: selectedTransmissionModel,
           controlled_bridge_model__name : selectedContrBridgeModel,
           driving_bridge_model__name : selectedDriveBridgeModel,
-          machine_factory_number: selectedMachineFactoryNumber,
+
         },
       })
       .then((response) => {
@@ -118,10 +122,6 @@ const MachineFilter = () => {
           ))}
         </select>
       </div>
-      <div className="filter-group">
-        <label>Machine Factory Number:</label>
-        <input type="text" onChange={(e) => setSelectedMachineFactoryNumber(e.target.value)} />
-      </div>
       <div className="filter-btn">
         <button type="button"  className="search-btn" onClick={handleFilter}>Показать</button>
       </div>
@@ -131,30 +131,32 @@ const MachineFilter = () => {
         <thead>
           <tr>
             <th>Machine Factory Number</th>
+            <th>Technical Model</th>
             <th>Engine Factory Number</th>
+            <th>Engine Model</th>
             <th>Transmission Factory Number</th>
+            <th>Transmission Model</th>
             <th>Driving Bridge Factory Number</th>
+            <th>Driving Bridge Model</th>
             <th>Controlled Bridge Factory Number</th>
-            <th>Delivery Contract</th>
-            <th>Shipment Date</th>
-            <th>Consignee</th>
-            <th>Delivery Address</th>
-            <th>Equipment</th>
+            <th>Controlled Bridge Model</th>
+
           </tr>
         </thead>
         <tbody>
           {machines.map((machine) => (
             <tr key={machine.id} className="machine-row">
               <td>{machine.machine_factory_number}</td>
+              <td>{machine.technical_model}</td>
               <td>{machine.engine_factory_number}</td>
+              <td>{machine.engine_model}</td>
               <td>{machine.transmission_factory_number}</td>
+              <td>{machine.transmission_model}</td>
               <td>{machine.driving_bridge_factory_number}</td>
+              <td>{machine.driving_bridge_model}</td>
               <td>{machine.controlled_bridge_factory_number}</td>
-              <td>{machine.delivery_contract}</td>
-              <td>{machine.shipment_date}</td>
-              <td>{machine.consignee}</td>
-              <td>{machine.delivery_address}</td>
-              <td>{machine.equipment}</td>
+              <td>{machine.controlled_bridge_model}</td>
+
             </tr>
           ))}
         </tbody>
