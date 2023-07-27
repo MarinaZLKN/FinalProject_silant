@@ -1,4 +1,5 @@
 import django_filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -145,7 +146,7 @@ class TypeOfMaintenanceViewset(viewsets.ModelViewSet):
 class RecoveryMethodViewset(viewsets.ModelViewSet):
     queryset = RecoveryMethod.objects.all()
     serializer_class = RecoveryMethodSerializer
-    serializer_class = ClientSerializer
+    #serializer_class = ClientSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_fields = ["name"]
 
@@ -191,17 +192,6 @@ class MachineViewset(viewsets.ModelViewSet):
     filterset_class = MachineFilter
     ordering_fields = ["-shipment_date"]
     ordering = ["-shipment_date"]
-    # filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
-    # filterset_fields = [
-    #     "machine_factory_number",
-    #     "technical_model",
-    #     "engine_model",
-    #     "transmission_model",
-    #     "driving_bridge_model",
-    #     "controlled_bridge_model",
-    #     "client",
-    #     "service_company"
-    # ]
 
 
 class MaintenanceViewset(viewsets.ModelViewSet):
@@ -209,8 +199,7 @@ class MaintenanceViewset(viewsets.ModelViewSet):
     serializer_class = MaintenanceSerializer
     ordering_fields = ['-date_of_maintenance']
     ordering = ['-date_of_maintenance']
-    # filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
-    # filterset_fields = ["type_of_maintenance", "machine", "service_company"]
+
 
 
 class MaintenanceFilterView(generics.ListAPIView):
@@ -232,6 +221,30 @@ class MaintenanceFilterView(generics.ListAPIView):
 
         if service_company:
             queryset = queryset.filter(service_company__name=service_company)
+
+        return queryset
+
+
+class ClaimFilterView(generics.ListAPIView):
+    serializer_class = ClaimSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['service_company__name', 'failure_node__name', 'recovery_method__name']
+
+    def get_queryset(self):
+        queryset = Claim.objects.all()
+
+        service_company = self.request.query_params.get('service_company', None)
+        failure_node = self.request.query_params.get('failure_node', None)
+        recovery_method = self.request.query_params.get('recovery_method', None)
+
+        if service_company:
+            queryset = queryset.filter(service_company__name=service_company)
+
+        if failure_node:
+            queryset = queryset.filter(failure_node__name=failure_node)
+
+        if recovery_method:
+            queryset = queryset.filter(recovery_method__name=recovery_method)
 
         return queryset
 

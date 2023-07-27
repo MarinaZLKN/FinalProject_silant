@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './MachineTable.css'
+import ClaimFilter from "./ClaimFilter";
 
 const ClaimTable = () => {
   const [claims, setClaims] = useState([]);
@@ -12,6 +14,9 @@ const ClaimTable = () => {
 
   return (
     <div>
+      <div className="mach-filter">
+          <ClaimFilter />
+        </div>
       <h1 className="h1">Рекламации</h1>
       <table className="machine-table">
         <thead>

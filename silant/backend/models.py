@@ -184,4 +184,11 @@ class Claim(models.Model):
         self.technical_downtime = (self.date_of_recovery - self.date_of_failure).days
         self.save()
 
+    def save(self, *args, **kwargs):
+        self.technical_downtime = (self.date_of_recovery - self.date_of_failure).days
+        super(Claim, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Claim #{self.id}"
+
 

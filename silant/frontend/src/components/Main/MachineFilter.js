@@ -65,6 +65,15 @@ const MachineFilter = () => {
       });
   };
 
+  const handleReset = () => {
+    setSelectedTechnicalModel("");
+    setSelectedEngineModel("");
+    setSelectedTransmissionModel("");
+    setSelectedContrBridgeModel("");
+    setSelectedDriveBridgeModel("");
+  };
+
+
   return (
     <div>
       <div className="filter-group">
@@ -124,7 +133,9 @@ const MachineFilter = () => {
       </div>
       <div className="filter-btn">
         <button type="button"  className="search-btn" onClick={handleFilter}>Показать</button>
+        <button type="button" className="search-btn" onClick={handleReset}>Сбросить</button>
       </div>
+
 
 
       <table className="machine-table">

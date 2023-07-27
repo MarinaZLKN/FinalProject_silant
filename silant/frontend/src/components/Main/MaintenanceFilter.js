@@ -10,6 +10,7 @@ const MaintenanceFilter = () => {
   const [typeOfMaintenanceList, setTypeOfMaintenanceList] = useState([]);
   const [serviceCompanyList, setServiceCompanyList] = useState([]);
   const [maintenanceData, setMaintenanceData] = useState([]);
+  const [filterdMaintenanceData, setFilteredMaintenanceData] = useState([]);
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/types_of_maintenance/").then((response) => {
@@ -20,6 +21,8 @@ const MaintenanceFilter = () => {
       setServiceCompanyList(response.data);
     });
   }, []);
+
+
 
   const handleFilter = () => {
     axios
@@ -47,6 +50,15 @@ const MaintenanceFilter = () => {
 
     return machineFactoryNumberMatch && typeOfMaintenanceMatch && serviceCompanyMatch;
   });
+
+    const handleReset = () => {
+      setMachineFactoryNumber("");
+      setSelectedTypeOfMaintenance("");
+      setSelectedServiceCompany("");
+      setFilteredMaintenanceData([]);
+    };
+
+
 
   return (
     <div>
@@ -81,6 +93,8 @@ const MaintenanceFilter = () => {
         </select>
       </div>
       <button type="button" className="search-btn" onClick={handleFilter}>Показать</button>
+      <button type="button" className="search-btn" onClick={handleReset}>Сбросить</button>
+
 
       <table className="machine-table">
         <thead>
