@@ -10,7 +10,6 @@ const MaintenanceFilter = () => {
   const [typeOfMaintenanceList, setTypeOfMaintenanceList] = useState([]);
   const [serviceCompanyList, setServiceCompanyList] = useState([]);
   const [maintenanceData, setMaintenanceData] = useState([]);
-  const [filteredMaintenanceData, setFilteredMaintenanceData] = useState([]);
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/types_of_maintenance/").then((response) => {
@@ -20,32 +19,34 @@ const MaintenanceFilter = () => {
     axios.get("http://127.0.0.1:8000/api/service_companies/").then((response) => {
       setServiceCompanyList(response.data);
     });
-
-    axios.get("http://127.0.0.1:8000/api/maintenances/").then((response) => {
-      setMaintenanceData(response.data);
-      setFilteredMaintenanceData(response.data);
-    });
   }, []);
 
   const handleFilter = () => {
-
-    const filteredData = maintenanceData.filter((maintenance) => {
-      const isMachineMatched =
-        machineFactoryNumber === "" ||
-        maintenance.machine.machine_factory_number.includes(machineFactoryNumber);
-
-      const isTypeMatched =
-        selectedTypeOfMaintenance === "" ||
-        maintenance.type_of_maintenance.name === selectedTypeOfMaintenance;
-
-      const isServiceCompanyMatched =
-        selectedServiceCompany === "" || maintenance.service_company.name === selectedServiceCompany;
-
-      return isMachineMatched && isTypeMatched && isServiceCompanyMatched;
-    });
-
-    setFilteredMaintenanceData(filteredData);
+    axios
+      .get("http://127.0.0.1:8000/api/maintenances/", {
+        params: {
+          machine__machine_factory_number: machineFactoryNumber,
+          type_of_maintenance__name: selectedTypeOfMaintenance,
+          service_company__name: selectedServiceCompany,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setMaintenanceData(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
+
+
+    const filteredMaintenanceData = maintenanceData.filter((maintenance) => {
+    const machineFactoryNumberMatch = !machineFactoryNumber || maintenance.machine.includes(machineFactoryNumber);
+    const typeOfMaintenanceMatch = !selectedTypeOfMaintenance || maintenance.type_of_maintenance === selectedTypeOfMaintenance;
+    const serviceCompanyMatch = !selectedServiceCompany || maintenance.service_company === selectedServiceCompany;
+
+    return machineFactoryNumberMatch && typeOfMaintenanceMatch && serviceCompanyMatch;
+  });
 
   return (
     <div>
@@ -103,8 +104,8 @@ const MaintenanceFilter = () => {
               <td>{maintenance.data_of_order}</td>
               <td>{maintenance.organization}</td>
               <td>{maintenance.type_of_maintenance}</td>
-              <td>{maintenance.machine.machine_factory_number}</td>
-              <td>{maintenance.service_company.name}</td>
+              <td>{maintenance.machine}</td>
+              <td>{maintenance.service_company}</td>
             </tr>
           ))}
         </tbody>
@@ -114,4 +115,5 @@ const MaintenanceFilter = () => {
 };
 
 export default MaintenanceFilter;
+
 
