@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './MachineTable.css';
 import '../Search/Search.css';
+import {useNavigate} from "react-router-dom";
 
 const MaintenanceFilter = () => {
   const [machineFactoryNumber, setMachineFactoryNumber] = useState("");
@@ -11,6 +12,8 @@ const MaintenanceFilter = () => {
   const [serviceCompanyList, setServiceCompanyList] = useState([]);
   const [maintenanceData, setMaintenanceData] = useState([]);
   const [filterdMaintenanceData, setFilteredMaintenanceData] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/types_of_maintenance/").then((response) => {
@@ -61,6 +64,11 @@ const MaintenanceFilter = () => {
       setSelectedServiceCompany("");
       setFilteredMaintenanceData([]);
     };
+
+
+    const handleRowClick = id => {
+    navigate(`/maintenances/${id}`);
+  };
 
 
 
@@ -115,7 +123,12 @@ const MaintenanceFilter = () => {
         </thead>
         <tbody>
           {filteredMaintenanceData.map((maintenance) => (
-            <tr key={maintenance.id}>
+              <tr
+              key={maintenance.id}
+              onClick={() => handleRowClick(maintenance.id)}
+              className="machine-row"
+            >
+            {/*// <tr key={maintenance.id}>*/}
               <td>{maintenance.date_of_maintenance}</td>
               <td>{maintenance.operating_time}</td>
               <td>{maintenance.order_number}</td>

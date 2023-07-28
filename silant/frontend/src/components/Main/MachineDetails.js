@@ -3,6 +3,10 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './MachineTable.css';
 import MachineForm from "./MachineForm";
+import TechnicalModel from "./Descriptions/TechnicalModel";
+import TransmissionModel from "./Descriptions/TransmissionModel";
+import EngineModel from "./Descriptions/EngineModel";
+import ControlledBridgeModel from "./Descriptions/ControlledBridgeModel";
 
 const MachineDetails = () => {
   const { id } = useParams();
@@ -32,7 +36,8 @@ const MachineDetails = () => {
         <tbody>
           <tr>
             <td>Technical Model:</td>
-            <td>{machineData.technical_model} {machineData.technical_model.description}</td>
+            <td>{machineData.technical_model} <i><TechnicalModel/></i></td>
+
           </tr>
           <tr>
             <td>Engine Factory Number:</td>
@@ -41,11 +46,11 @@ const MachineDetails = () => {
           </tr>
           <tr>
             <td>Engine Model:</td>
-            <td>{machineData.engine_model}</td>
+            <td>{machineData.engine_model} <i><EngineModel/></i></td>
           </tr>
           <tr>
             <td>Transmission Factory Number:</td>
-            <td>{machineData.transmission_factory_number}</td>
+            <td>{machineData.transmission_factory_number} <i><TransmissionModel/></i></td>
           </tr>
           <tr>
             <td>Transmission Model:</td>
@@ -65,7 +70,7 @@ const MachineDetails = () => {
           </tr>
           <tr>
             <td>Controlled Bridge Model:</td>
-            <td>{machineData.controlled_bridge_model}</td>
+            <td>{machineData.controlled_bridge_model} <i><ControlledBridgeModel/></i></td>
           </tr>
           <tr>
             <td>Delivery Contract:</td>

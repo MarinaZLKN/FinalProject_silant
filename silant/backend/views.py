@@ -309,6 +309,16 @@ def claim_detail(request, claim_id):
         return Response({'detail': 'Claim not found'}, status=404)
 
 
+@api_view(['GET'])
+def maintenance_detail(request, maintenance_id):
+    try:
+        maintenance = Maintenance.objects.get(id=maintenance_id)
+        serializer = MaintenanceSerializer(maintenance)
+        return Response(serializer.data)
+    except Maintenance.DoesNotExist:
+        return Response({'detail': 'Maintenance not found'}, status=404)
+
+
 @api_view(['GET', 'POST'])
 def machine_list(request):
     if request.method == 'GET':
