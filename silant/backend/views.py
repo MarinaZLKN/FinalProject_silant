@@ -172,24 +172,55 @@ class FailureNodeViewset(viewsets.ModelViewSet):
     filterset_fields = ["name"]
 
 
-class MachineFilter(filters.FilterSet):
-    class Meta:
-        model = Machine
-        fields = {
-            'technical_model__name': ['exact'],
-            'engine_model__name': ['exact'],
-            'transmission_model__name': ['exact'],
-            'controlled_bridge_model__name': ['exact'],
-            'driving_bridge_model__name': ['exact'],
-            'machine_factory_number': ['exact', 'contains'],
+# class MachineFilter(filters.FilterSet):
+#     class Meta:
+#         model = Machine
+#         fields = {
+#             'technical_model__name': ['exact'],
+#             'engine_model__name': ['exact'],
+#             'transmission_model__name': ['exact'],
+#             'controlled_bridge_model__name': ['exact'],
+#             'driving_bridge_model__name': ['exact'],
+#             'machine_factory_number': ['exact', 'contains'],
+#
+#         }
 
-        }
+class MachineFilterView(generics.ListAPIView):
+    serializer_class = MachineSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['technical_model__name', 'engine_model__name', 'transmission_model__name', 'controlled_bridge_model__name', 'driving_bridge_model__name']
+
+    def get_queryset(self):
+        queryset = Machine.objects.all()
+
+        technical_model = self.request.query_params.get('technical_model', None)
+        engine_model = self.request.query_params.get('engine_model', None)
+        transmission_model = self.request.query_params.get('transmission_model', None)
+        controlled_bridge_model = self.request.query_params.get('controlled_bridge_model', None)
+        driving_bridge_model = self.request.query_params.get('driving_bridge_model', None)
+
+        if technical_model:
+            queryset = queryset.filter(technical_model__name=technical_model)
+
+        if engine_model:
+            queryset = queryset.filter(engine_model__name=engine_model)
+
+        if transmission_model:
+            queryset = queryset.filter(transmission_model__name=transmission_model)
+
+        if controlled_bridge_model:
+            queryset = queryset.filter(controlled_bridge_model__name=controlled_bridge_model)
+
+        if driving_bridge_model:
+            queryset = queryset.filter(driving_bridge_model__name=driving_bridge_model)
+
+        return queryset
 
 
 class MachineViewset(viewsets.ModelViewSet):
     queryset = Machine.objects.all()
     serializer_class = MachineSerializer
-    filterset_class = MachineFilter
+    # filterset_class = MachineFilterView
     ordering_fields = ["-shipment_date"]
     ordering = ["-shipment_date"]
 
@@ -248,6 +279,7 @@ class ClaimFilterView(generics.ListAPIView):
 
         return queryset
 
+
 class ClaimViewset(viewsets.ModelViewSet):
     queryset = Claim.objects.all()
     serializer_class = ClaimSerializer
@@ -265,6 +297,16 @@ def machine_detail(request, machine_id):
         return Response(serializer.data)
     except Machine.DoesNotExist:
         return Response({'detail': 'Machine not found'}, status=404)
+
+
+@api_view(['GET'])
+def claim_detail(request, claim_id):
+    try:
+        claim = Claim.objects.get(id=claim_id)
+        serializer = ClaimSerializer(claim)
+        return Response(serializer.data)
+    except Claim.DoesNotExist:
+        return Response({'detail': 'Claim not found'}, status=404)
 
 
 @api_view(['GET', 'POST'])

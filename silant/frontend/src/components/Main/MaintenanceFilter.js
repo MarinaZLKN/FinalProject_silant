@@ -20,6 +20,10 @@ const MaintenanceFilter = () => {
     axios.get("http://127.0.0.1:8000/api/service_companies/").then((response) => {
       setServiceCompanyList(response.data);
     });
+
+    axios.get("http://127.0.0.1:8000/api/maintenances/").then((response) => {
+      setMaintenanceData(response.data);
+    });
   }, []);
 
 

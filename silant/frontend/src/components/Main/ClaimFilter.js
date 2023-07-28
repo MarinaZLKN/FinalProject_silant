@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './MachineTable.css';
 import '../Search/Search.css';
+import {useNavigate} from "react-router-dom";
 
 const ClaimFilter = () => {
   const [selectedServiceCompany, setSelectedServiceCompany] = useState("");
@@ -11,7 +12,9 @@ const ClaimFilter = () => {
   const [recoveryMethods, setRecoveryMethods] = useState([]);
   const [failureNodes, setFailureNodes] = useState([]);
   const [filteredClaims, setFilteredClaims] = useState([]);
-  const [claims, setClaims] = useState([]); // Store all claim data
+  const [claims, setClaims] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/service_companies/").then((response) => {
@@ -32,7 +35,7 @@ const ClaimFilter = () => {
   }, []);
 
   useEffect(() => {
-    // Apply filters whenever selected criteria change
+
     const filteredData = claims.filter((claim) => {
       const serviceCompanyMatch = !selectedServiceCompany || claim.service_company === selectedServiceCompany;
       const recoveryMethodMatch = !selectedRecoveryMethod || claim.recovery_method === selectedRecoveryMethod;
@@ -48,6 +51,10 @@ const ClaimFilter = () => {
     setSelectedServiceCompany("");
     setSelectedRecoveryMethod("");
     setSelectedFailureNode("");
+  };
+
+  const handleRowClick = id => {
+    navigate(`/claims/${id}`);
   };
 
   return (
@@ -90,22 +97,27 @@ const ClaimFilter = () => {
       <table className="machine-table">
         <thead>
           <tr>
+            <th>Machine Factory Number</th>
             <th>Date of Failure</th>
             <th>Operating Time</th>
             <th>Failure Node</th>
             <th>Recovery Method</th>
-            <th>Machine Factory Number</th>
             <th>Service Company</th>
           </tr>
         </thead>
         <tbody>
           {filteredClaims.map((claim) => (
-            <tr key={claim.id}>
+              <tr
+              key={claim.id}
+              onClick={() => handleRowClick(claim.id)}
+              className="machine-row"
+            >
+            {/*<tr key={claim.id}>*/}
+              <td>{claim.machine}</td>
               <td>{claim.date_of_failure}</td>
               <td>{claim.operating_time} м/час</td>
               <td>{claim.failure_node}</td>
               <td>{claim.recovery_method}</td>
-              <td>{claim.machine}</td>
               <td>{claim.service_company}</td>
             </tr>
           ))}

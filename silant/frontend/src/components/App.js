@@ -12,7 +12,7 @@ import MaintenanceTable from "./Main/MaintenanceTable";
 import Dashboard from "./Main/Dashboard";
 import './Main/Dashboard.css';
 import MachineDetails from "./Main/MachineDetails";
-import MachineFilter from "./Main/MachineFilter";
+import ClaimDetails from "./Main/ClaimDetails";
 
 function App () {
     return (
@@ -29,6 +29,7 @@ function App () {
           <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/machines/:id" element={<MachineDetails />} />
+              <Route path="/claims/:id" element={<ClaimDetails />} />
               <Route path="/" element={<Search />} />
               <Route path="/login" element={<Login />} />
               <Route path="/machines" element={<MachineTable />} />
