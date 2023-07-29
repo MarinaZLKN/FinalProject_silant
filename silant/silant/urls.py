@@ -30,6 +30,7 @@ urlpatterns = [
     path('front/', include('frontend.urls')),
     path('api/', include(router.urls)),
     path('api/machines/<int:machine_id>/', views.machine_detail, name='machine-detail'),
+    path('api/machines/', views.create_machine),
     # path('login/', CustomTokenObtainPairView.as_view(), name='login'),
     # path('login/', login_view, name='login'),
     path('api-auth/', include('rest_framework.urls')),

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './MachineTable.css';
-import MachineForm from "./MachineForm";
 import TechnicalModel from "./Descriptions/TechnicalModel";
 import TransmissionModel from "./Descriptions/TransmissionModel";
 import EngineModel from "./Descriptions/EngineModel";
 import ControlledBridgeModel from "./Descriptions/ControlledBridgeModel";
+import MachineForm from "./CreateForms/MachineForm";
 
 const MachineDetails = () => {
   const { id } = useParams();
@@ -102,7 +102,8 @@ const MachineDetails = () => {
           </tr>
         </tbody>
       </table>
-      {/*<MachineForm machineData={machineData} onSubmit={handleSubmit} />*/}
+      <MachineForm />
+
     </div>
   );
 };

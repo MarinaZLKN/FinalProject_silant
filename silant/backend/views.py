@@ -232,7 +232,6 @@ class MaintenanceViewset(viewsets.ModelViewSet):
     ordering = ['-date_of_maintenance']
 
 
-
 class MaintenanceFilterView(generics.ListAPIView):
     serializer_class = MaintenanceSerializer
     filter_backends = [SearchFilter]
@@ -285,8 +284,6 @@ class ClaimViewset(viewsets.ModelViewSet):
     serializer_class = ClaimSerializer
     ordering_fields = ['-date_of_failure']
     ordering = ['-date_of_failure']
-    # filter_backends = [filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
-    # filterset_fields = ["failure_node", "recovery_method", "service_company"]
 
 
 @api_view(['GET'])
@@ -333,22 +330,11 @@ def machine_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
-# def machine_detail(request, machine_id):
-#     try:
-#         machine = Machine.objects.get(id=machine_id)
-#     except Machine.DoesNotExist:
-#         return Response({'detail': 'Machine not found'}, status=status.HTTP_404_NOT_FOUND)
-#
-#     if request.method == 'GET':
-#         serializer = MachineSerializer(machine)
-#         return Response(serializer.data)
-#     elif request.method in ['PUT', 'PATCH']:
-#         serializer = MachineSerializer(machine, data=request.data, partial=request.method == 'PATCH')
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#     elif request.method == 'DELETE':
-#         machine.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
+@api_view(['POST'])
+def create_machine(request):
+    if request.method == 'POST':
+        serializer = MachineSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

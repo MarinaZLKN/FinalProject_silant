@@ -14,6 +14,7 @@ import './Main/Dashboard.css';
 import MachineDetails from "./Main/MachineDetails";
 import ClaimDetails from "./Main/ClaimDetails";
 import MaintenanceDetails from "./Main/MaintenanceDetails";
+import MachineForm from "./Main/CreateForms/MachineForm";
 
 function App () {
     return (
@@ -32,6 +33,7 @@ function App () {
               <Route path="/machines/:id" element={<MachineDetails />} />
               <Route path="/claims/:id" element={<ClaimDetails />} />
               <Route path="/maintenances/:id" element={<MaintenanceDetails />} />
+              <Route exact path="/create-machine" element={MachineForm} />
               <Route path="/" element={<Search />} />
               <Route path="/login" element={<Login />} />
               <Route path="/machines" element={<MachineTable />} />

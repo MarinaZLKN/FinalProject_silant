@@ -146,7 +146,7 @@ class Machine(models.Model):
     technical_model = models.ForeignKey(TechnicalModel, on_delete=models.CASCADE)
     transmission_model = models.ForeignKey(TransmissionModel, on_delete=models.CASCADE)
     driving_bridge_model = models.ForeignKey(DrivingBridgeModel, on_delete=models.CASCADE)
-    controlled_bridge_model = models.ForeignKey(ControlledBridgeModel, on_delete=models.CASCADE)
+    controlled_bridge_model = models.ForeignKey(ControlledBridgeModel, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.machine_factory_number
@@ -171,7 +171,7 @@ class Claim(models.Model):
     operating_time = models.IntegerField()  # наработка, м/час
     spare_parts_used = models.TextField(null=True, blank=True, default=None)  # используемые запасные части
     date_of_recovery = models.DateField()  # дата восстановления
-    technical_downtime = models.IntegerField(default=None)  # время простоя техники
+    technical_downtime = models.IntegerField(null=True)  # время простоя техники
     description_of_failure = models.CharField(max_length=100)  # Описание отказа
 
     failure_node = models.ForeignKey(FailureNode, on_delete=models.CASCADE)  # узел отказа
@@ -184,9 +184,9 @@ class Claim(models.Model):
         self.technical_downtime = (self.date_of_recovery - self.date_of_failure).days
         self.save()
 
-    def save(self, *args, **kwargs):
-        self.technical_downtime = (self.date_of_recovery - self.date_of_failure).days
-        super(Claim, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.technical_downtime = (self.date_of_recovery - self.date_of_failure).days
+    #     super(Claim, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"Claim #{self.id}"
