@@ -1,533 +1,282 @@
-import React, { useState } from "react";
-import axios from "axios";
-import './MachineForm.css';
-import '../../Search/Search.css'
-
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import './MachineForm.css'
 const MachineForm = () => {
-  const [formData, setFormData] = useState({
-    machine_factory_number: "",
-    engine_factory_number: "",
-    transmission_factory_number: "",
-    driving_bridge_factory_number: "",
-    controlled_bridge_factory_number: "",
-    delivery_contract: "",
-    shipment_date: "",
-    consignee: "",
-    delivery_address: "",
-    equipment: "",
-    client: "",
-    service_company: "",
-    engine_model: "",
-    technical_model: "",
-    transmission_model: "",
-    driving_bridge_model: "",
-    controlled_bridge_model: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+    const [machine, setMachine] = useState({
+        machine_factory_number: '',
+        engine_factory_number: '',
+        transmission_factory_number: '',
+        driving_bridge_factory_number: '',
+        controlled_bridge_factory_number: '',
+        delivery_contract: '',
+        shipment_date: '',
+        consignee: '',
+        delivery_address: '',
+        equipment: '',
+        client: '',
+        service_company: '',
+        engine_model: '',
+        technical_model: '',
+        transmission_model: '',
+        driving_bridge_model: '',
+        controlled_bridge_model: '',
     });
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post("http://127.0.0.1:8000/api/machines/", formData)
-      .then((response) => {
-        console.log("Machine created successfully:", response.data);
-        // Redirect or show a success message here if needed
-      })
-      .catch((error) => {
-        console.error("Error creating machine:", error);
-        // Handle error if necessary
-      });
-  };
+    const [data, setData] = useState({
+        clients: [],
+        serviceCompanies: [],
+        engineModels: [],
+        technicalModels: [],
+        transmissionModels: [],
+        drivingBridgeModels: [],
+        controlledBridgeModels: [],
+    });
 
-  return (
-    <div className="form-container">
-      <h2>Create a New Machine</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-row">
-          <label className="form-label">Machine Factory Number:</label>
-          <input
-            type="text"
-            name="machine_factory_number"
-            value={formData.machine_factory_number}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const responseClients = await axios.get('http://127.0.0.1:8000/api/clients/');
+                const responseServiceCompanies = await axios.get('http://127.0.0.1:8000/api/service_companies/');
+                const responseEngineModels = await axios.get('http://127.0.0.1:8000/api/engine_models/');
+                const responseTechnicalModels = await axios.get('http://127.0.0.1:8000/api/technical_models/');
+                const responseTransmissionModels = await axios.get('http://127.0.0.1:8000/api/transmission_models/');
+                const responseDrivingBridgeModels = await axios.get('http://127.0.0.1:8000/api/driving_bridge_models/');
+                const responseControlledBridgeModels = await axios.get('http://127.0.0.1:8000/api/controlled_bridge_models/');
+
+                setData({
+                    clients: responseClients.data,
+                    serviceCompanies: responseServiceCompanies.data,
+                    engineModels: responseEngineModels.data,
+                    technicalModels: responseTechnicalModels.data,
+                    transmissionModels: responseTransmissionModels.data,
+                    drivingBridgeModels: responseDrivingBridgeModels.data,
+                    controlledBridgeModels: responseControlledBridgeModels.data,
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    console.log('Data: ',data);
+
+    const handleChange = (e) => {
+        setMachine({
+            ...machine,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post('http://127.0.0.1:8000/api/machines/', machine,{
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
+
+    return (
+        <div className="form-container">
+            <h2 className="machine-form_h2">Добавить новую машину</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="form-row">
+                      <label className="form-label">Machine Factory Number:</label>
+                      <input
+                        type="text"
+                        name="machine_factory_number"
+                        value={machine.machine_factory_number}
+                        onChange={handleChange}
+                        required
+                        className="form-input"
+                      />
+                </div>
+                <div className="form-row">
+                      <label className="form-label">Engine Factory Number:</label>
+                      <input
+                        type="text"
+                        name="engine_factory_number"
+                        value={machine.engine_factory_number}
+                        onChange={handleChange}
+                        required
+                        className="form-input"
+                      />
+                </div>
+                <div className="form-row">
+                      <label className="form-label">Transmission Factory Number: </label>
+                      <input
+                        type="text"
+                        name="transmission_factory_number"
+                        value={machine.transmission_factory_number}
+                        onChange={handleChange}
+                        required
+                        className="form-input"
+                      />
+                </div>
+                <div className="form-row">
+                      <label className="form-label">Driving Bridge Factory Number:</label>
+                      <input
+                        type="text"
+                        name="driving_bridge_factory_number"
+                        value={machine.driving_bridge_factory_number}
+                        onChange={handleChange}
+                        required
+                        className="form-input"
+                      />
+                </div>
+                <div className="form-row">
+                      <label className="form-label">Controlled Bridge Factory Number:</label>
+                      <input
+                        type="text"
+                        name="controlled_bridge_factory_number"
+                        value={machine.controlled_bridge_factory_number}
+                        onChange={handleChange}
+                        required
+                        className="form-input"
+                      />
+                </div>
+                <div className="form-row">
+                      <label className="form-label">Delivery Contract:</label>
+                      <input
+                        type="text"
+                        name="delivery_contract"
+                        value={machine.delivery_contract}
+                        onChange={handleChange}
+                        required
+                        className="form-input"
+                      />
+                </div>
+                <div className="form-row">
+                      <label className="form-label">Shipment Date:</label>
+                      <input
+                        type="date"
+                        name="shipment_date"
+                        value={machine.shipment_date}
+                        onChange={handleChange}
+                        required
+                        className="form-input"
+                      />
+                </div>
+                <div className="form-row">
+                      <label className="form-label">Consignee:</label>
+                      <input
+                        type="text"
+                        name="consignee"
+                        value={machine.consignee}
+                        onChange={handleChange}
+                        required
+                        className="form-input"
+                      />
+                </div>
+                <div className="form-row">
+                      <label className="form-label">Delivery Address:</label>
+                      <input
+                        type="text"
+                        name="delivery_address"
+                        value={machine.delivery_address}
+                        onChange={handleChange}
+                        required
+                        className="form-input"
+                      />
+                </div>
+                <div className="form-row">
+                      <label className="form-label">Equipment:</label>
+                      <input
+                        type="text"
+                        name="equipment"
+                        value={machine.equipment}
+                        onChange={handleChange}
+                        required
+                        className="form-input"
+                      />
+                    </div>
+                <div className="form-row">
+                     <label className="form-label">
+                        Client:
+                        <select className="option"  name="client" onChange={handleChange}>
+                            {data.clients.map(client => (
+                                <option value={client.id}>{client.name}</option>
+                            ))}
+                        </select>
+                     </label>
+                </div>
+                <div className="form-row">
+                     <label className="form-label">
+                        Service Company:
+                            <select name="service_company" onChange={handleChange}>
+                                {data.serviceCompanies.map(company => (
+                                    <option value={company.id}>{company.name}</option>
+                                ))}
+                        </select>
+                     </label>
+                </div>
+                <div className="form-row">
+                     <label className="form-label">
+                        Engine Model:
+                        <select name="engine_model" onChange={handleChange}>
+                            {data.engineModels.map(model => (
+                                <option value={model.id}>{model.name}</option>
+                            ))}
+                        </select>
+                     </label>
+                </div>
+                <div className="form-row">
+                     <label className="form-label">
+                        Technical Model:
+                        <select name="technical_model" onChange={handleChange}>
+                            {data.technicalModels.map(model => (
+                                <option value={model.id}>{model.name}</option>
+                            ))}
+                        </select>
+                     </label>
+                </div>
+                <div className="form-row">
+                     <label className="form-label">
+                        Transmission Model:
+                        <select name="transmission_model" onChange={handleChange}>
+                            {data.transmissionModels.map(model => (
+                                <option value={model.id}>{model.name}</option>
+                            ))}
+                        </select>
+                     </label>
+                </div>
+                <div className="form-row">
+                     <label className="form-label">
+                        Driving Bridge Model:
+                        <select name="driving_bridge_model" onChange={handleChange}>
+                            {data.drivingBridgeModels.map(model => (
+                                <option value={model.id}>{model.name}</option>
+                            ))}
+                        </select>
+                     </label>
+                </div>
+                 <div className="form-row">
+                     <label className="form-label">
+                        Controlled Bridge Model:
+                        <select name="controlled_bridge_model" onChange={handleChange}>
+                            {data.controlledBridgeModels.map(model => (
+                                <option value={model.id}>{model.name}</option>
+                            ))}
+                        </select>
+                     </label>
+                </div>
+
+                <div className="form-buttons">
+                    <button type="submit" className="search-btn">Создать</button>
+                </div>
+        </form>
         </div>
 
-        <div className="form-row">
-          <label className="form-label">Engine Factory Number:</label>
-          <input
-            type="text"
-            name="engine_factory_number"
-            value={formData.engine_factory_number}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Transmission Factory Number: </label>
-          <input
-            type="text"
-            name="transmission_factory_number"
-            value={formData.transmission_factory_number}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Driving Bridge Factory Number:</label>
-          <input
-            type="text"
-            name="driving_bridge_factory_number"
-            value={formData.driving_bridge_factory_number}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Controlled Bridge Factory Number:</label>
-          <input
-            type="text"
-            name="controlled_bridge_factory_number"
-            value={formData.controlled_bridge_factory_number}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Delivery Contract:</label>
-          <input
-            type="text"
-            name="delivery_contract"
-            value={formData.delivery_contract}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Shipment Date:</label>
-          <input
-            type="date"
-            name="shipment_date"
-            value={formData.shipment_date}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Consignee:</label>
-          <input
-            type="text"
-            name="consignee"
-            value={formData.consignee}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Delivery Address:</label>
-          <input
-            type="text"
-            name="delivery_address"
-            value={formData.delivery_address}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Equipment:</label>
-          <input
-            type="text"
-            name="equipment"
-            value={formData.equipment}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Client:</label>
-          <input
-            type="text"
-            name="client"
-            value={formData.client}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Service Company:</label>
-          <input
-            type="text"
-            name="service_company"
-            value={formData.service_company}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Engine Model:</label>
-          <input
-            type="text"
-            name="engine_model"
-            value={formData.engine_model}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Technical Model:</label>
-          <input
-            type="text"
-            name="technical_model"
-            value={formData.technical_model}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Transmission Model:</label>
-          <input
-            type="text"
-            name="transmission_model"
-            value={formData.transmission_model}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Driving Bridge Model:</label>
-          <input
-            type="text"
-            name="driving_bridge_model"
-            value={formData.driving_bridge_model}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="form-label">Controlled Bridge Model:</label>
-          <input
-            type="text"
-            name="controlled_bridge_model"
-            value={formData.controlled_bridge_model}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-buttons">
-          <button type="submit" className="search-btn">Create Machine</button>
-          {/* You can add a cancel button here if needed */}
-        </div>
-      </form>
-    </div>
-  );
+    );
 };
 
 export default MachineForm;
 
 
-
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-// import MachineCreateForm from "./MachineCreateForm";
-//
-// const MachineForm = () => {
-//   const [formData, setFormData] = useState({
-//     // Your form fields...
-//     client: "",
-//   });
-//
-//   const [clients, setClients] = useState([]);
-//
-//   useEffect(() => {
-//     axios
-//       .get("http://127.0.0.1:8000/api/clients/")
-//       .then((response) => {
-//         setClients(response.data);
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching clients:", error);
-//       });
-//   }, []);
-//
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData({
-//       ...formData,
-//       [name]: value,
-//     });
-//   };
-//
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     axios
-//       .post("http://127.0.0.1:8000/api/machines/", formData)
-//       .then((response) => {
-//         console.log("Machine created successfully:", response.data);
-//         // Redirect here!!!
-//       })
-//       .catch((error) => {
-//         console.error("Error creating machine:", error);
-//       });
-//   };
-//
-//   // State to manage the modal visibility for adding a new client
-//   const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false);
-//
-//   // Function to handle modal close event
-//   const handleCloseAddClientModal = () => {
-//     setIsAddClientModalOpen(false);
-//   };
-//
-//   return (
-//     <div>
-//       <h2>Create a New Machine</h2>
-//       <form onSubmit={handleSubmit}>
-//         {/* Your existing form inputs */}
-//         <label>
-//           Client:
-//           <select
-//             name="client"
-//             value={formData.client}
-//             onChange={handleChange}
-//             required
-//           >
-//             <option value="">Select Client</option>
-//             {/* Map through the list of clients */}
-//             {clients.map((client) => (
-//               <option key={client.id} value={client.id}>
-//                 {client.name}
-//               </option>
-//             ))}
-//             {/* Add an option to add a new client */}
-//             <option value="add_new">Add New Client</option>
-//           </select>
-//         </label>
-//         {/* Your existing form inputs */}
-//         <button type="submit">Create Machine</button>
-//       </form>
-//       {/* Modal for adding a new client */}
-//       {isAddClientModalOpen && (
-//         <div className="modal">
-//           <div className="modal-content">
-//             {/* Render the MachineCreateForm component here */}
-//             <MachineCreateForm onCloseModal={handleCloseAddClientModal} />
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-//
-// export default MachineForm;
-
-
-
-
-// import React, { useState } from "react";
-// import axios from "axios";
-//
-// const MachineForm = () => {
-//   const [formData, setFormData] = useState({
-//     machine_factory_number: "",
-//     engine_factory_number: "",
-//     transmission_factory_number: "",
-//     driving_bridge_factory_number: "",
-//     controlled_bridge_factory_number: "",
-//     delivery_contract: "",
-//     shipment_date: "",
-//     consignee: "",
-//     delivery_address: "",
-//     equipment: "",
-//     client: "",
-//     service_company: "",
-//     engine_model: "",
-//     technical_model: "",
-//     transmission_model: "",
-//     driving_bridge_model: "",
-//     controlled_bridge_model: "",
-//   });
-//
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData({
-//       ...formData,
-//       [name]: value,
-//     });
-//   };
-//
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     axios
-//       .post("http://127.0.0.1:8000/api/machines/", formData)
-//       .then((response) => {
-//         console.log("Machine created successfully:", response.data);
-//         // redirect here!!!
-//       })
-//       .catch((error) => {
-//         console.error("Error creating machine:", error);
-//       });
-//   };
-//
-//   return (
-//     <div>
-//       <h2>Create a New Machine</h2>
-//       <form onSubmit={handleSubmit}>
-//         <label>
-//           Machine Factory Number:
-//           <input
-//             type="text"
-//             name="machine_factory_number"
-//             value={formData.machine_factory_number}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//
-//         <label>
-//           Engine Factory Number:
-//           <input
-//             type="text"
-//             name="engine_factory_number"
-//             value={formData.engine_factory_number}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//
-//         <label>
-//           Transmission Factory Number:
-//           <input
-//             type="text"
-//             name="transmission_factory_number"
-//             value={formData.transmission_factory_number}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//
-//         <label>
-//           Driving Bridge Factory Number:
-//           <input
-//             type="text"
-//             name="driving_bridge_factory_number"
-//             value={formData.driving_bridge_factory_number}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//
-//         <label>
-//           Controlled Bridge Factory Number:
-//           <input
-//             type="text"
-//             name="controlled_bridge_factory_number"
-//             value={formData.controlled_bridge_factory_number}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//
-//         <label>
-//           Delivery Contract:
-//           <input
-//             type="text"
-//             name="delivery_contract"
-//             value={formData.delivery_contract}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//
-//         <label>
-//           Shipment Date:
-//           <input
-//             type="date"
-//             name="shipment_date"
-//             value={formData.shipment_date}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//
-//         <label>
-//           Consignee:
-//           <input
-//             type="text"
-//             name="consignee"
-//             value={formData.consignee}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//
-//         <label>
-//           Delivery Address:
-//           <input
-//             type="text"
-//             name="delivery_address"
-//             value={formData.delivery_address}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//
-//         <label>
-//           Equipment:
-//           <input
-//             type="text"
-//             name="equipment"
-//             value={formData.equipment}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//
-//
-//         <button type="submit">Create Machine</button>
-//       </form>
-//     </div>
-//   );
-// };
-//
-// export default MachineForm;

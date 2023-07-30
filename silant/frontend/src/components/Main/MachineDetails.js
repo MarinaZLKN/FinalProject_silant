@@ -102,7 +102,7 @@ const MachineDetails = () => {
           </tr>
         </tbody>
       </table>
-      <MachineForm />
+      {/*<MachineForm />*/}
 
     </div>
   );

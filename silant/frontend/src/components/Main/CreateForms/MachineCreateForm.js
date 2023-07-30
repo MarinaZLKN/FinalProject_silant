@@ -44,7 +44,7 @@ const MachineCreateForm = () => {
       setIsModalOpen(false);
     } catch (error) {
       console.error('Error creating client:', error);
-      // Handle error if necessary
+
     }
   };
 
