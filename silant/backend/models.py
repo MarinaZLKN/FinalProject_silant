@@ -162,7 +162,6 @@ class Maintenance(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)  # Организация, проводившая ТО
     type_of_maintenance = models.ForeignKey(TypeOfMaintenance, on_delete=models.CASCADE)
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
-    service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE)
 
 
 # Рекламации
@@ -177,10 +176,11 @@ class Claim(models.Model):
     failure_node = models.ForeignKey(FailureNode, on_delete=models.CASCADE)  # узел отказа
     recovery_method = models.ForeignKey(RecoveryMethod, on_delete=models.CASCADE)
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
-    service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE)
+
+
 
     # по сути, дата восстановления - дата отказа
-    def technical_downtime(self):
+    def calculate_technical_downtime(self):
         self.technical_downtime = (self.date_of_recovery - self.date_of_failure).days
         self.save()
 

@@ -7,9 +7,9 @@ import {Link, useNavigate} from "react-router-dom";
 const MaintenanceFilter = () => {
   const [machineFactoryNumber, setMachineFactoryNumber] = useState("");
   const [selectedTypeOfMaintenance, setSelectedTypeOfMaintenance] = useState("");
-  const [selectedServiceCompany, setSelectedServiceCompany] = useState("");
+  const [selectedOrgCompany, setSelectedOrgCompany] = useState("");
   const [typeOfMaintenanceList, setTypeOfMaintenanceList] = useState([]);
-  const [serviceCompanyList, setServiceCompanyList] = useState([]);
+  const [orgCompanyList, setOrgCompanyList] = useState([]);
   const [maintenanceData, setMaintenanceData] = useState([]);
   const [filterdMaintenanceData, setFilteredMaintenanceData] = useState([]);
 
@@ -20,8 +20,8 @@ const MaintenanceFilter = () => {
       setTypeOfMaintenanceList(response.data);
     });
 
-    axios.get("http://127.0.0.1:8000/api/service_companies/").then((response) => {
-      setServiceCompanyList(response.data);
+    axios.get("http://127.0.0.1:8000/api/organizations/").then((response) => {
+      setOrgCompanyList(response.data);
     });
 
     axios.get("http://127.0.0.1:8000/api/maintenances/").then((response) => {
@@ -37,7 +37,7 @@ const MaintenanceFilter = () => {
         params: {
           machine__machine_factory_number: machineFactoryNumber,
           type_of_maintenance__name: selectedTypeOfMaintenance,
-          service_company__name: selectedServiceCompany,
+          organization__name: selectedOrgCompany,
         },
       })
       .then((response) => {
@@ -53,15 +53,15 @@ const MaintenanceFilter = () => {
     const filteredMaintenanceData = maintenanceData.filter((maintenance) => {
     const machineFactoryNumberMatch = !machineFactoryNumber || maintenance.machine.includes(machineFactoryNumber);
     const typeOfMaintenanceMatch = !selectedTypeOfMaintenance || maintenance.type_of_maintenance === selectedTypeOfMaintenance;
-    const serviceCompanyMatch = !selectedServiceCompany || maintenance.service_company === selectedServiceCompany;
+    const orgCompanyMatch = !selectedOrgCompany || maintenance.organization === selectedOrgCompany;
 
-    return machineFactoryNumberMatch && typeOfMaintenanceMatch && serviceCompanyMatch;
+    return machineFactoryNumberMatch && typeOfMaintenanceMatch && orgCompanyMatch;
   });
 
     const handleReset = () => {
       setMachineFactoryNumber("");
       setSelectedTypeOfMaintenance("");
-      setSelectedServiceCompany("");
+      setSelectedOrgCompany("");
       setFilteredMaintenanceData([]);
     };
 
@@ -95,9 +95,9 @@ const MaintenanceFilter = () => {
       </div>
       <div className="filter-group">
         <label>Service Company:</label>
-        <select onChange={(e) => setSelectedServiceCompany(e.target.value)}>
-          <option value="">Select Service Company</option>
-          {serviceCompanyList.map((company) => (
+        <select onChange={(e) => setSelectedOrgCompany(e.target.value)}>
+          <option value="">Select Organization</option>
+          {orgCompanyList.map((company) => (
             <option key={company.id} value={company.name}>
               {company.name}
             </option>
@@ -121,7 +121,6 @@ const MaintenanceFilter = () => {
             <th>Organization</th>
             <th>Type of Maintenance</th>
             <th>Machine Factory Number</th>
-            <th>Service Company</th>
           </tr>
         </thead>
         <tbody>
@@ -133,13 +132,12 @@ const MaintenanceFilter = () => {
             >
             {/*// <tr key={maintenance.id}>*/}
               <td>{maintenance.date_of_maintenance}</td>
-              <td>{maintenance.operating_time}</td>
+              <td>{maintenance.operating_time} м/час</td>
               <td>{maintenance.order_number}</td>
               <td>{maintenance.data_of_order}</td>
               <td>{maintenance.organization}</td>
               <td>{maintenance.type_of_maintenance}</td>
               <td>{maintenance.machine}</td>
-              <td>{maintenance.service_company}</td>
             </tr>
           ))}
         </tbody>

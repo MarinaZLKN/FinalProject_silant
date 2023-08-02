@@ -55,10 +55,7 @@ const MaintenanceDetails = () => {
             <td>Machine Factory Number:</td>
             <td>{maintenanceData.machine}</td>
           </tr>
-          <tr>
-            <td>Service Company:</td>
-            <td>{maintenanceData.service_company}</td>
-          </tr>
+
 
         </tbody>
       </table>

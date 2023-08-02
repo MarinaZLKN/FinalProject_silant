@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import './MachineForm.css'
-import ServiceCompany from "./ServiceCompany";
+
 const MachineForm = () => {
     const [machine, setMachine] = useState({
         machine_factory_number: '',
@@ -22,6 +22,25 @@ const MachineForm = () => {
         driving_bridge_model: '',
         controlled_bridge_model: '',
     });
+
+    const [newClient, setNewClient] = useState('');
+
+     const handleClientChange = (e) => {
+        setNewClient(e.target.value);
+      };
+
+     const createNewClient = async () => {
+        try {
+          const response = await axios.post('http://127.0.0.1:8000/api/clients/', {
+            name: newClient,
+          });
+          return response.data.id;
+        } catch (error) {
+          console.error(error);
+          return null;
+        }
+     };
+
 
 
     const [data, setData] = useState({
@@ -68,19 +87,20 @@ const MachineForm = () => {
         const { name, value } = e.target;
         setMachine({
             ...machine,
-            [name]: name === 'client' || name === 'service_company' ? parseInt(value, 10) : value,
+            [name]: name === 'client' || name === 'service_company' ? parseInt(value) : value,
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const additionalFormData = {
-        service_company: parseInt(e.target.service_company.value),
-        engine_model: parseInt(e.target.engine_model.value),
-        technical_model: parseInt(e.target.technical_model.value),
-        transmission_model: parseInt(e.target.transmission_model.value),
-        driving_bridge_model: parseInt(e.target.driving_bridge_model.value),
-        controlled_bridge_model: parseInt(e.target.controlled_bridge_model.value),
+            client: newClient ? await createNewClient() : null,
+            service_company: parseInt(e.target.service_company.value),
+            engine_model: parseInt(e.target.engine_model.value),
+            technical_model: parseInt(e.target.technical_model.value),
+            transmission_model: parseInt(e.target.transmission_model.value),
+            driving_bridge_model: parseInt(e.target.driving_bridge_model.value),
+            controlled_bridge_model: parseInt(e.target.controlled_bridge_model.value),
       };
 
     const postData = {
@@ -216,14 +236,23 @@ const MachineForm = () => {
                       />
                     </div>
                 <div className="form-row">
-                     <label className="form-label">
-                        Client:
-                        <select className="option"  name="client" onChange={handleChange}>
-                            {data.clients.map(client => (
-                                <option value={client.id}>{client.name}</option>
-                            ))}
-                        </select>
-                     </label>
+                    <label className="form-label">Client:</label>
+                          <input
+                            type="text"
+                            name="client"
+                            value={newClient}
+                            onChange={handleClientChange}
+                            required
+                            className="form-input"
+                          />
+                     {/*<label className="form-label">*/}
+                     {/*   Client:*/}
+                     {/*   <select className="option"  name="client" onChange={handleChange}>*/}
+                     {/*       {data.clients.map(client => (*/}
+                     {/*           <option value={client.id}>{client.name}</option>*/}
+                     {/*       ))}*/}
+                     {/*   </select>*/}
+                     {/*</label>*/}
                 </div>
                 <div className="form-row">
                      <label className="form-label">
