@@ -44,7 +44,7 @@ const MachineFilter = () => {
     });
 
     axios.get("http://127.0.0.1:8000/api/machines/").then((response) => {
-      setMachines(response.data); // Store all machine data
+      setMachines(response.data);
     });
   }, []);
 

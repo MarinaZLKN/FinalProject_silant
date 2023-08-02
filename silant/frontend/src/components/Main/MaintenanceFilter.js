@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './MachineTable.css';
 import '../Search/Search.css';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const MaintenanceFilter = () => {
   const [machineFactoryNumber, setMachineFactoryNumber] = useState("");
@@ -106,6 +106,9 @@ const MaintenanceFilter = () => {
       </div>
       <button type="button" className="search-btn" onClick={handleFilter}>Показать</button>
       <button type="button" className="search-btn" onClick={handleReset}>Сбросить</button>
+      <Link to="/create-main">
+          <button type="button" className="search-btn">Добавить</button>
+        </Link>
 
 
       <table className="machine-table">

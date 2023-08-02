@@ -1,4 +1,4 @@
-
+from . import apps
 from .models import *
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
@@ -134,13 +134,6 @@ class FailureNodeSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class MachineSerializer(serializers.HyperlinkedModelSerializer):
-    # service_company = serializers.PrimaryKeyRelatedField(queryset=ServiceCompany.objects.all())
-    # technical_model = serializers.PrimaryKeyRelatedField(queryset=TechnicalModel.objects.all())
-    # engine_model = serializers.PrimaryKeyRelatedField(queryset=EngineModel.objects.all())
-    # transmission_model = serializers.PrimaryKeyRelatedField(queryset=TransmissionModel.objects.all())
-    # driving_bridge_model = serializers.PrimaryKeyRelatedField(queryset=DrivingBridgeModel.objects.all())
-    # controlled_bridge_model = serializers.PrimaryKeyRelatedField(queryset=ControlledBridgeModel.objects.all())
-    # client = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all())
 
     service_company = serializers.StringRelatedField()
     technical_model = serializers.StringRelatedField()
@@ -172,39 +165,40 @@ class MachineSerializer(serializers.HyperlinkedModelSerializer):
                   'controlled_bridge_model',
                   ]
 
-        def create(self, validated_data):
-            service_company_name = validated_data.pop('service_company')
-            service_company = ServiceCompany.objects.get(name=service_company_name)
 
-            technical_model_name = validated_data.pop('technical_model')
-            technical_model = TechnicalModel.objects.get(name=technical_model_name)
-
-            engine_model_name = validated_data.pop('engine_model')
-            engine_model = EngineModel.objects.get(name=engine_model_name)
-
-            transmission_model_name = validated_data.pop('transmission_model')
-            transmission_model = TransmissionModel.objects.get(name=transmission_model_name)
-
-            driving_bridge_model_name = validated_data.pop('driving_bridge_model')
-            driving_bridge_model = DrivingBridgeModel.objects.get(name=driving_bridge_model_name)
-
-            controlled_bridge_model_name = validated_data.pop('controlled_bridge_model')
-            controlled_bridge_model = ControlledBridgeModel.objects.get(name=controlled_bridge_model_name)
-
-            client_name = validated_data.pop('client')
-            client = Client.objects.get(name=client_name)
-
-            machine = Machine.objects.create(
-                service_company=service_company,
-                technical_model=technical_model,
-                engine_model=engine_model,
-                transmission_model=transmission_model,
-                driving_bridge_model=driving_bridge_model,
-                controlled_bridge_model=controlled_bridge_model,
-                client=client,
-                **validated_data)
-
-            return machine
+        # def create(self, validated_data):
+        #     service_company_name = validated_data.pop('service_company')
+        #     service_company = ServiceCompany.objects.get(name=service_company_name)
+        #
+        #     technical_model_name = validated_data.pop('technical_model')
+        #     technical_model = TechnicalModel.objects.get(name=technical_model_name)
+        #
+        #     engine_model_name = validated_data.pop('engine_model')
+        #     engine_model = EngineModel.objects.get(name=engine_model_name)
+        #
+        #     transmission_model_name = validated_data.pop('transmission_model')
+        #     transmission_model = TransmissionModel.objects.get(name=transmission_model_name)
+        #
+        #     driving_bridge_model_name = validated_data.pop('driving_bridge_model')
+        #     driving_bridge_model = DrivingBridgeModel.objects.get(name=driving_bridge_model_name)
+        #
+        #     controlled_bridge_model_name = validated_data.pop('controlled_bridge_model')
+        #     controlled_bridge_model = ControlledBridgeModel.objects.get(name=controlled_bridge_model_name)
+        #
+        #     client_name = validated_data.pop('client')
+        #     client = Client.objects.get(name=client_name)
+        #
+        #     machine = Machine.objects.create(
+        #         service_company=service_company,
+        #         technical_model=technical_model,
+        #         engine_model=engine_model,
+        #         transmission_model=transmission_model,
+        #         driving_bridge_model=driving_bridge_model,
+        #         controlled_bridge_model=controlled_bridge_model,
+        #         client=client,
+        #         **validated_data)
+        #
+        #     return machine
 
 
 class MaintenanceSerializer(serializers.HyperlinkedModelSerializer):

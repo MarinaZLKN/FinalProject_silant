@@ -140,12 +140,12 @@ class Machine(models.Model):
     delivery_address = models.CharField(max_length=100)
     equipment = models.CharField(max_length=100)  # комплектация
 
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)  # покупатель
-    service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE)
-    engine_model = models.ForeignKey(EngineModel, on_delete=models.CASCADE)
-    technical_model = models.ForeignKey(TechnicalModel, on_delete=models.CASCADE)
-    transmission_model = models.ForeignKey(TransmissionModel, on_delete=models.CASCADE)
-    driving_bridge_model = models.ForeignKey(DrivingBridgeModel, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, blank=True, null=True)  # покупатель
+    service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE, blank=True, null=True)
+    engine_model = models.ForeignKey(EngineModel, on_delete=models.CASCADE, blank=True, null=True)
+    technical_model = models.ForeignKey(TechnicalModel, on_delete=models.CASCADE, blank=True, null=True)
+    transmission_model = models.ForeignKey(TransmissionModel, on_delete=models.CASCADE, blank=True, null=True)
+    driving_bridge_model = models.ForeignKey(DrivingBridgeModel, on_delete=models.CASCADE, blank=True, null=True)
     controlled_bridge_model = models.ForeignKey(ControlledBridgeModel, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):

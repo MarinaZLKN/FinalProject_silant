@@ -15,6 +15,8 @@ import MachineDetails from "./Main/MachineDetails";
 import ClaimDetails from "./Main/ClaimDetails";
 import MaintenanceDetails from "./Main/MaintenanceDetails";
 import MachineForm from "./Main/CreateForms/MachineForm";
+import MaintenanceForm from "./Main/CreateForms/MaintenanceForm";
+
 
 function App () {
     return (
@@ -34,6 +36,7 @@ function App () {
               <Route path="/claims/:id" element={<ClaimDetails />} />
               <Route path="/maintenances/:id" element={<MaintenanceDetails />} />
               <Route path="/create-machine" element={<MachineForm/>} />
+              <Route path="/create-main" element={<MaintenanceForm/>} />
               <Route path="/" element={<Search />} />
               <Route path="/login" element={<Login />} />
               <Route path="/machines" element={<MachineTable />} />

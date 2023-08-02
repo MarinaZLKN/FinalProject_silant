@@ -172,19 +172,6 @@ class FailureNodeViewset(viewsets.ModelViewSet):
     filterset_fields = ["name"]
 
 
-# class MachineFilter(filters.FilterSet):
-#     class Meta:
-#         model = Machine
-#         fields = {
-#             'technical_model__name': ['exact'],
-#             'engine_model__name': ['exact'],
-#             'transmission_model__name': ['exact'],
-#             'controlled_bridge_model__name': ['exact'],
-#             'driving_bridge_model__name': ['exact'],
-#             'machine_factory_number': ['exact', 'contains'],
-#
-#         }
-
 class MachineFilterView(generics.ListAPIView):
     serializer_class = MachineSerializer
     filter_backends = [DjangoFilterBackend]
@@ -337,4 +324,5 @@ def create_machine(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

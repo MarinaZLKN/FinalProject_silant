@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import './MachineForm.css'
+import ServiceCompany from "./ServiceCompany";
 const MachineForm = () => {
     const [machine, setMachine] = useState({
         machine_factory_number: '',
@@ -13,14 +14,15 @@ const MachineForm = () => {
         consignee: '',
         delivery_address: '',
         equipment: '',
-        client: '',
-        service_company: '',
+        client: null,
+        service_company: null,
         engine_model: '',
         technical_model: '',
         transmission_model: '',
         driving_bridge_model: '',
         controlled_bridge_model: '',
     });
+
 
     const [data, setData] = useState({
         clients: [],
@@ -52,6 +54,7 @@ const MachineForm = () => {
                     drivingBridgeModels: responseDrivingBridgeModels.data,
                     controlledBridgeModels: responseControlledBridgeModels.data,
                 });
+                console.log('Data to server:', data)
             } catch (error) {
                 console.error(error);
             }
@@ -62,26 +65,41 @@ const MachineForm = () => {
     console.log('Data: ',data);
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
         setMachine({
             ...machine,
-            [e.target.name]: e.target.value
+            [name]: name === 'client' || name === 'service_company' ? parseInt(value, 10) : value,
         });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://127.0.0.1:8000/api/machines/', machine,{
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
+        const additionalFormData = {
+        service_company: parseInt(e.target.service_company.value),
+        engine_model: parseInt(e.target.engine_model.value),
+        technical_model: parseInt(e.target.technical_model.value),
+        transmission_model: parseInt(e.target.transmission_model.value),
+        driving_bridge_model: parseInt(e.target.driving_bridge_model.value),
+        controlled_bridge_model: parseInt(e.target.controlled_bridge_model.value),
+      };
+
+    const postData = {
+      ...machine,
+      ...additionalFormData,
+    };
+
+    console.log('postData: ', postData)
+
+        axios.post('http://127.0.0.1:8000/api/machines/', postData)
             .then(response => {
-                console.log(response.data);
+                console.log('Response:',response.data);
             })
             .catch(error => {
                 console.error(error);
             });
     };
+
+
 
     return (
         <div className="form-container">
