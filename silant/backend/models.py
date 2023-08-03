@@ -176,8 +176,7 @@ class Claim(models.Model):
     failure_node = models.ForeignKey(FailureNode, on_delete=models.CASCADE)  # узел отказа
     recovery_method = models.ForeignKey(RecoveryMethod, on_delete=models.CASCADE)
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
-
-
+    service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE, null=True)
 
     # по сути, дата восстановления - дата отказа
     def calculate_technical_downtime(self):

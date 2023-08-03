@@ -104,7 +104,7 @@ const MaintenanceFilter = () => {
           ))}
         </select>
       </div>
-      <button type="button" className="search-btn" onClick={handleFilter}>Показать</button>
+      {/*<button type="button" className="search-btn" onClick={handleFilter}>Показать</button>*/}
       <button type="button" className="search-btn" onClick={handleReset}>Сбросить</button>
       <Link to="/create-main">
           <button type="button" className="search-btn">Добавить</button>
@@ -114,13 +114,13 @@ const MaintenanceFilter = () => {
       <table className="machine-table">
         <thead>
           <tr>
+            <th>Machine</th>
+            <th>Data of Order</th>
             <th>Date of Maintenance</th>
             <th>Operating Time</th>
             <th>Order Number</th>
-            <th>Data of Order</th>
             <th>Organization</th>
             <th>Type of Maintenance</th>
-            <th>Machine Factory Number</th>
           </tr>
         </thead>
         <tbody>
@@ -131,13 +131,13 @@ const MaintenanceFilter = () => {
               className="machine-row"
             >
             {/*// <tr key={maintenance.id}>*/}
-              <td>{maintenance.date_of_maintenance}</td>
-              <td>{maintenance.operating_time} м/час</td>
-              <td>{maintenance.order_number}</td>
-              <td>{maintenance.data_of_order}</td>
-              <td>{maintenance.organization}</td>
-              <td>{maintenance.type_of_maintenance}</td>
-              <td>{maintenance.machine}</td>
+                <td>{maintenance.machine}</td>
+                <td>{maintenance.data_of_order}</td>
+                <td>{maintenance.date_of_maintenance}</td>
+                <td>{maintenance.operating_time} м/час</td>
+                <td>{maintenance.order_number}</td>
+                <td>{maintenance.organization}</td>
+                <td>{maintenance.type_of_maintenance}</td>
             </tr>
           ))}
         </tbody>

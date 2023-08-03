@@ -157,7 +157,7 @@ const MachineFilter = () => {
         </select>
       </div>
       <div className="filter-btn">
-        <button type="button" className="search-btn" onClick={handleFilter}>Показать</button>
+        {/*<button type="button" className="search-btn" onClick={handleFilter}>Показать</button>*/}
         <button type="button" className="search-btn" onClick={handleReset}>Сбросить</button>
         <Link to="/create-machine">
           <button type="button" className="search-btn">Добавить</button>
