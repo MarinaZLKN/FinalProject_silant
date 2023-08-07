@@ -7,6 +7,7 @@ import TransmissionModel from "./Descriptions/TransmissionModel";
 import EngineModel from "./Descriptions/EngineModel";
 import ControlledBridgeModel from "./Descriptions/ControlledBridgeModel";
 import MachineForm from "./CreateForms/MachineForm";
+import DrivingBridgeModel from "./Descriptions/DrivingBridgeModel";
 
 const MachineDetails = () => {
   const { id } = useParams();
@@ -57,20 +58,20 @@ const MachineDetails = () => {
             <td>{machineData.transmission_model}</td>
           </tr>
           <tr>
+            <td>Driving Bridge Model:</td>
+            <td>{machineData.driving_bridge_model} <i><DrivingBridgeModel/></i></td>
+          </tr>
+          <tr>
             <td>Driving Bridge Factory Number:</td>
             <td>{machineData.driving_bridge_factory_number}</td>
           </tr>
           <tr>
-            <td>Driving Bridge Model:</td>
-            <td>{machineData.driving_bridge_model}</td>
+            <td>Controlled Bridge Model:</td>
+            <td>{machineData.controlled_bridge_model} <i><ControlledBridgeModel/></i></td>
           </tr>
           <tr>
             <td>Controlled Bridge Factory Number:</td>
             <td>{machineData.controlled_bridge_factory_number}</td>
-          </tr>
-          <tr>
-            <td>Controlled Bridge Model:</td>
-            <td>{machineData.controlled_bridge_model} <i><ControlledBridgeModel/></i></td>
           </tr>
           <tr>
             <td>Delivery Contract:</td>

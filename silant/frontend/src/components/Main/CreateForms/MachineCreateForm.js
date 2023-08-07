@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const MachineCreateForm = () => {
-  // State to manage the form data
+
   const [formData, setFormData] = useState({
-    // Your other form fields...
+
     client: '',
   });
 
@@ -14,7 +14,7 @@ const MachineCreateForm = () => {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // ... (Submit the form data to your backend API)
+
   };
 
   // Function to handle client selection
@@ -50,7 +50,6 @@ const MachineCreateForm = () => {
 
   return (
     <div>
-      {/* Your other form inputs... */}
       <div>
         <label>Client:</label>
         <select

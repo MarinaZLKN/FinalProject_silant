@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import './MachineTable.css';
+import FailureNode from "./Descriptions/FailureNode";
+import RecoveryMethod from "./Descriptions/RecoveryMethod";
 
 const ClaimDetails = () => {
   const { id } = useParams();
@@ -46,11 +48,11 @@ const ClaimDetails = () => {
           </tr>
           <tr>
             <td>Failure Node:</td>
-            <td>{claimData.failure_node}</td>
+            <td>{claimData.failure_node} <i><FailureNode/></i> </td>
           </tr>
           <tr>
             <td>Recovery Method:</td>
-            <td>{claimData.recovery_method}</td>
+            <td>{claimData.recovery_method} <i><RecoveryMethod/></i> </td>
           </tr>
         <tr>
             <td>Spare Parts Used:</td>

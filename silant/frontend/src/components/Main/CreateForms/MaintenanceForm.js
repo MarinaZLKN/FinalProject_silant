@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './MachineForm.css'
 
 const MaintenanceForm = () => {
   const [mainData, setMainData] = useState({
@@ -33,81 +34,112 @@ const MaintenanceForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Date of Maintenance:
-        <input
-          type="date"
-          name="date_of_maintenance"
-          value={mainData.date_of_maintenance}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Operating Time (hours):
-        <input
-          type="number"
-          name="operating_time"
-          value={mainData.operating_time}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Order Number:
-        <input
-          type="text"
-          name="order_number"
-          value={mainData.order_number}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Data of Order:
-        <input
-          type="date"
-          name="data_of_order"
-          value={mainData.data_of_order}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Organization:
-        <input
-          type="text"
-          name="organization"
-          value={mainData.organization}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Type of Maintenance:
-        <input
-          type="text"
-          name="type_of_maintenance"
-          value={mainData.type_of_maintenance}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Machine:
-        <input
-          type="text"
-          name="machine"
-          value={mainData.machine}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Service Company:
-        <input
-          type="text"
-          name="service_company"
-          value={mainData.service_company}
-          onChange={handleChange}
-        />
-      </label>
-      <button type="submit">Submit</button>
-    </form>
+      <div className="form-container_main">
+          <h2 className="machine-form_h2">Добавить ТО</h2>
+          <form onSubmit={handleSubmit}>
+              <div className="form-row">
+                  <label className="form-label">
+                    Date of Maintenance:
+                    <input
+                      type="date"
+                      name="date_of_maintenance"
+                      value={mainData.date_of_maintenance}
+                      onChange={handleChange}
+                      className="form-input"
+                    />
+                  </label>
+              </div>
+              <div className="form-row">
+                  <label className="form-label">
+                    Operating Time (hours):
+                    <input
+                      type="number"
+                      name="operating_time"
+                      value={mainData.operating_time}
+                      onChange={handleChange}
+                      className="form-input"
+                    />
+                  </label>
+              </div>
+              <div className="form-row">
+                  <label className="form-label">
+                    Order Number:
+                    <input
+                      type="text"
+                      name="order_number"
+                      value={mainData.order_number}
+                      onChange={handleChange}
+                      className="form-input"
+                    />
+                  </label>
+              </div>
+              <div className="form-row">
+                  <label className="form-label">
+                    Data of Order:
+                    <input
+                      type="date"
+                      name="data_of_order"
+                      value={mainData.data_of_order}
+                      onChange={handleChange}
+                      className="form-input"
+                    />
+                  </label>
+              </div>
+              <div className="form-row">
+                  <label className="form-label">
+                    Organization:
+                    <input
+                      type="text"
+                      name="organization"
+                      value={mainData.organization}
+                      onChange={handleChange}
+                      className="form-input"
+                    />
+                  </label>
+              </div>
+              <div className="form-row">
+                  <label className="form-label">
+                    Type of Maintenance:
+                    <input
+                      type="text"
+                      name="type_of_maintenance"
+                      value={mainData.type_of_maintenance}
+                      onChange={handleChange}
+                      className="form-input"
+                    />
+                  </label>
+              </div>
+              <div className="form-row">
+                  <label className="form-label">
+                    Machine:
+                    <input
+                      type="text"
+                      name="machine"
+                      value={mainData.machine}
+                      onChange={handleChange}
+                      className="form-input"
+                    />
+                  </label>
+              </div>
+              <div className="form-row">
+                  <label className="form-label">
+                    Service Company:
+                    <input
+                      type="text"
+                      name="service_company"
+                      value={mainData.service_company}
+                      onChange={handleChange}
+                      className="form-input"
+                    />
+                  </label>
+              </div>
+
+              <div className="form-buttons">
+                  <button type="submit" className="search-btn">Создать</button>
+              </div>
+          </form>
+      </div>
+
   );
 };
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import Organization from "./Descriptions/Organization";
+import TypeOfMaintenance from "./Descriptions/TypeOfMaintenance";
 
 const MaintenanceDetails = () => {
   const { id } = useParams();
@@ -45,11 +47,11 @@ const MaintenanceDetails = () => {
           </tr>
           <tr>
             <td>Organization:</td>
-            <td>{maintenanceData.organization}</td>
+            <td>{maintenanceData.organization} <i><Organization/></i> </td>
           </tr>
           <tr>
             <td>Type of Maintenance:</td>
-            <td>{maintenanceData.type_of_maintenance}</td>
+            <td>{maintenanceData.type_of_maintenance} <i><TypeOfMaintenance/></i> </td>
           </tr>
           <tr>
             <td>Machine Factory Number:</td>

@@ -63,6 +63,8 @@ const MaintenanceFilter = () => {
       setSelectedTypeOfMaintenance("");
       setSelectedOrgCompany("");
       setFilteredMaintenanceData([]);
+
+      setFilteredMaintenanceData(maintenanceData);
     };
 
 
@@ -84,7 +86,7 @@ const MaintenanceFilter = () => {
       </div>
       <div className="filter-group">
         <label>Type of Maintenance:</label>
-        <select onChange={(e) => setSelectedTypeOfMaintenance(e.target.value)}>
+        <select value={selectedTypeOfMaintenance} onChange={(e) => setSelectedTypeOfMaintenance(e.target.value)}>
           <option value="">Select Type of Maintenance</option>
           {typeOfMaintenanceList.map((maintenanceType) => (
             <option key={maintenanceType.id} value={maintenanceType.name}>
@@ -95,7 +97,7 @@ const MaintenanceFilter = () => {
       </div>
       <div className="filter-group">
         <label>Service Company:</label>
-        <select onChange={(e) => setSelectedOrgCompany(e.target.value)}>
+        <select value={selectedOrgCompany} onChange={(e) => setSelectedOrgCompany(e.target.value)}>
           <option value="">Select Organization</option>
           {orgCompanyList.map((company) => (
             <option key={company.id} value={company.name}>

@@ -46,6 +46,8 @@ def register_user(request):
 #                 'role': self.request.user.role,
 #             }
 #         return response
+
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')

@@ -18,7 +18,7 @@ const TransmissionModel = () => {
   }, [id]);
 
   if (!transmissionModel) {
-    return <p>Loading transmission model data...</p>;
+    return <p>Модель трансмиссии</p>;
   }
 
   return (

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import './MachineForm.css'
+import AddClientForm from "./MachineForm/AddClientForm";
 
 const MachineForm = () => {
     const [machine, setMachine] = useState({
@@ -14,7 +15,7 @@ const MachineForm = () => {
         consignee: '',
         delivery_address: '',
         equipment: '',
-        client: null,
+        client: '',
         service_company: null,
         engine_model: '',
         technical_model: '',
@@ -81,7 +82,6 @@ const MachineForm = () => {
         fetchData();
     }, []);
 
-    console.log('Data: ',data);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -237,14 +237,15 @@ const MachineForm = () => {
                     </div>
                 <div className="form-row">
                     <label className="form-label">Client:</label>
-                          <input
-                            type="text"
-                            name="client"
-                            value={newClient}
-                            onChange={handleClientChange}
-                            required
-                            className="form-input"
-                          />
+                        <AddClientForm/>
+                          {/*<input*/}
+                          {/*  type="text"*/}
+                          {/*  name="client"*/}
+                          {/*  value={newClient}*/}
+                          {/*  onChange={handleClientChange}*/}
+                          {/*  required*/}
+                          {/*  className="form-input"*/}
+                          {/*/>*/}
                      {/*<label className="form-label">*/}
                      {/*   Client:*/}
                      {/*   <select className="option"  name="client" onChange={handleChange}>*/}

@@ -51,6 +51,8 @@ const ClaimFilter = () => {
     setSelectedServiceCompany("");
     setSelectedRecoveryMethod("");
     setSelectedFailureNode("");
+
+    setFilteredClaims(claims);
   };
 
   const handleRowClick = id => {
@@ -61,7 +63,7 @@ const ClaimFilter = () => {
     <div>
       <div className="filter-group">
         <label>Service Company:</label>
-        <select onChange={(e) => setSelectedServiceCompany(e.target.value)}>
+        <select value={selectedServiceCompany} onChange={(e) => setSelectedServiceCompany(e.target.value)}>
           <option value="">Select Service Company</option>
           {serviceCompanies.map((company) => (
             <option key={company.id} value={company.name}>
@@ -72,7 +74,7 @@ const ClaimFilter = () => {
       </div>
       <div className="filter-group">
         <label>Recovery Method:</label>
-        <select onChange={(e) => setSelectedRecoveryMethod(e.target.value)}>
+        <select value={selectedRecoveryMethod}  onChange={(e) => setSelectedRecoveryMethod(e.target.value)}>
           <option value="">Select Recovery Method</option>
           {recoveryMethods.map((method) => (
             <option key={method.id} value={method.name}>
@@ -83,7 +85,7 @@ const ClaimFilter = () => {
       </div>
       <div className="filter-group">
         <label>Failure Node:</label>
-        <select onChange={(e) => setSelectedFailureNode(e.target.value)}>
+        <select value={selectedFailureNode} onChange={(e) => setSelectedFailureNode(e.target.value)}>
           <option value="">Select Failure Node</option>
           {failureNodes.map((node) => (
             <option key={node.id} value={node.name}>

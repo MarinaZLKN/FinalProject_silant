@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './MachineTable.css';
@@ -93,6 +91,9 @@ const MachineFilter = () => {
     setSelectedTransmissionModel("");
     setSelectedContrBridgeModel("");
     setSelectedDriveBridgeModel("");
+
+    setFilteredMachines(machines);
+
   };
 
   const handleRowClick = id => {
@@ -103,7 +104,7 @@ const MachineFilter = () => {
     <div>
       <div className="filter-group">
         <label>Technical Model:</label>
-        <select onChange={(e) => setSelectedTechnicalModel(e.target.value)}>
+        <select value={selectedTechnicalModel} onChange={(e) => setSelectedTechnicalModel(e.target.value)}>
           <option value="">Select Technical Model</option>
           {technicalModels.map((model) => (
             <option key={model.id} value={model.name}>
@@ -114,7 +115,7 @@ const MachineFilter = () => {
       </div>
       <div className="filter-group">
         <label>Engine Model:</label>
-        <select onChange={(e) => setSelectedEngineModel(e.target.value)}>
+        <select value={selectedEngineModel} onChange={(e) => setSelectedEngineModel(e.target.value)}>
           <option value="">Select Engine Model</option>
           {engineModels.map((model) => (
             <option key={model.id} value={model.name}>
@@ -125,7 +126,7 @@ const MachineFilter = () => {
       </div>
       <div className="filter-group">
         <label>Transmission Model:</label>
-        <select onChange={(e) => setSelectedTransmissionModel(e.target.value)}>
+        <select value={selectedTransmissionModel} onChange={(e) => setSelectedTransmissionModel(e.target.value)}>
           <option value="">Select Transmission Model</option>
           {transmissionModels.map((model) => (
             <option key={model.id} value={model.name}>
@@ -136,7 +137,7 @@ const MachineFilter = () => {
       </div>
       <div className="filter-group">
         <label>Controlled Bridge Model:</label>
-        <select onChange={(e) => setSelectedContrBridgeModel(e.target.value)}>
+        <select value={selectedContrBridgeModel} onChange={(e) => setSelectedContrBridgeModel(e.target.value)}>
           <option value="">Select Controlled Bridge Model</option>
           {contrBridgeModels.map((model) => (
             <option key={model.id} value={model.name}>
@@ -147,7 +148,7 @@ const MachineFilter = () => {
       </div>
       <div className="filter-group">
         <label>Driving Bridge Model:</label>
-        <select onChange={(e) => setSelectedDriveBridgeModel(e.target.value)}>
+        <select value={selectedDriveBridgeModel} onChange={(e) => setSelectedDriveBridgeModel(e.target.value)}>
           <option value="">Select Driving Bridge Model</option>
           {driveBridgeModels.map((model) => (
             <option key={model.id} value={model.name}>

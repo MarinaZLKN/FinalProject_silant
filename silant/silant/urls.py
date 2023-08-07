@@ -32,9 +32,9 @@ urlpatterns = [
     path('api/machines/<int:machine_id>/', views.machine_detail, name='machine-detail'),
     path('api/machines/', views.create_machine),
     # path('login/', CustomTokenObtainPairView.as_view(), name='login'),
-    # path('login/', login_view, name='login'),
+    path('login/', login_view, name='login'),
     path('api-auth/', include('rest_framework.urls')),
     path('accounts/', include('allauth.urls')),
-    # path('accounts/register/', register_user, name='register_user'),
+    path('accounts/register/', register_user, name='register_user'),
     # path('api/register/', UserRegistrationView.as_view(), name='user_registration_drf'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
