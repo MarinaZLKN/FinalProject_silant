@@ -1,7 +1,31 @@
+from rest_framework.serializers import Serializer, ModelSerializer, CharField
+from rest_framework.authtoken.models import Token
 from . import apps
 from .models import *
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
+
+# class UserSerializer(ModelSerializer):
+#
+#     class Meta:
+#         class Meta:
+#          model = CustomUser
+#          fields = ['username', 'first_name', 'last_name', 'email', 'date_joined']
+#
+#
+# class IssueTokenRequestSerializer(Serializer):
+#     model = CustomUser
+#
+#     username = CharField(required=True)
+#     password = CharField(required=True)
+#
+#
+# class TokenSeriazliser(ModelSerializer):
+#
+#     class Meta:
+#         model = Token
+#         fields = ['key']
 
 
 # class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -46,13 +70,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ['id', 'username', 'role', 'password']
 
-
-class GuestSerializer(serializers.ModelSerializer):
-    user = CustomUserSerializer()
-
-    class Meta:
-        model = Guest
-        fields = '__all__'
 
 
 class ClientSerializer(serializers.ModelSerializer):

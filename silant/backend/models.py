@@ -2,6 +2,25 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
 
+# class CustomUser(AbstractUser):
+#     CLIENT = 'Клиент'
+#     SERVICE = 'Сервис'
+#     MANAGER = 'Менеджер'
+#     ADMIN = 'Админ'
+#
+#     CHOICES = [
+#         (CLIENT, 'Клиент'),
+#         (SERVICE, 'Сервисная организация'),
+#         (MANAGER, 'Менеджер'),
+#         (ADMIN, 'Админ'),
+#     ]
+#
+#     role = models.CharField('Роль пользователя', max_length=10, choices=CHOICES, default='Клиент')
+#
+#     def __str__(self):
+#         return f'{self.first_name}'
+
+
 class CustomUser(AbstractUser):
     ROLES = (
         ('guest', 'Гость'),
@@ -18,8 +37,17 @@ class CustomUser(AbstractUser):
         return self.username
 
 
-class Guest(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
+# class Client(models.Model):
+#
+#     name = models.ForeignKey(CustomUser, verbose_name='Клиент', on_delete=models.CASCADE)
+#     description = models.TextField('Описание', max_length=500, null=True, blank=True)
+#
+#     class Meta:
+#         verbose_name = 'Клиент'
+#         verbose_name_plural = 'Клиент'
+#
+#     def __str__(self):
+#         return f'{self.name}'
 
 
 class Client(models.Model):
@@ -29,6 +57,19 @@ class Client(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# class ServiceCompany(models.Model):
+#     name = models.ForeignKey(CustomUser, verbose_name='Сервисная компания',
+#                              on_delete=models.CASCADE)
+#     description = models.TextField('Описание', max_length=500, null=True, blank=True)
+#
+#     class Meta:
+#         verbose_name = 'Сервисная компания'
+#         verbose_name_plural = 'Справочник сервисных компаний'
+#
+#     def __str__(self):
+#         return f'{self.name}'
 
 
 class ServiceCompany(models.Model):
@@ -182,10 +223,6 @@ class Claim(models.Model):
     def calculate_technical_downtime(self):
         self.technical_downtime = (self.date_of_recovery - self.date_of_failure).days
         self.save()
-
-    # def save(self, *args, **kwargs):
-    #     self.technical_downtime = (self.date_of_recovery - self.date_of_failure).days
-    #     super(Claim, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"Claim #{self.id}"

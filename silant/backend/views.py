@@ -1,33 +1,58 @@
 import django_filters
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.request import Request
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from .serializers import *
 from .models import *
 from allauth.account.views import SignupView
-from .forms import CustomSignupForm
 from rest_framework import generics
 from .serializers import UserSerializer
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm
 from django_filters import rest_framework as filters
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 
-def register_user(request):
-    if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            return redirect('/')
-    else:
-        form = UserRegistrationForm()
+# @api_view(['POST'])
+# @permission_classes([AllowAny])
+# def issue_token(request: Request):
+#     serializer = IssueTokenRequestSerializer(data=request.data)
+#     if serializer.is_valid():
+#         authenticated_user = authenticate(**serializer.validated_data)
+#         try:
+#             token = Token.objects.get(user=authenticated_user)
+#         except Token.DoesNotExist:
+#             token = Token.objects.create(user=authenticated_user)
+#         return Response(TokenSeriazliser(token).data)
+#     else:
+#         return Response(serializer.errors, status=400)
+#
+#
+# @api_view()
+# @permission_classes([IsAuthenticated])
+# @authentication_classes([TokenAuthentication])
+# def user(request: Request):
+#     return Response({
+#         'data': UserSerializer(request.user).data
+#     })
 
-    return render(request, 'accounts/register.html', {'form': form})
+
+# def register_user(request):
+#     if request.method == 'POST':
+#         form = UserRegistrationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             return redirect('/')
+#     else:
+#         form = UserRegistrationForm()
+#
+#     return render(request, 'accounts/register.html', {'form': form})
 #
 #
 # class CustomTokenObtainPairView(TokenObtainPairView):
@@ -48,28 +73,28 @@ def register_user(request):
 #         return response
 
 
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return JsonResponse({'message': 'Успешный вход!'})
-        else:
-            return JsonResponse({'message': 'Неверное имя или пароль!'}, status=401)
-
-    return JsonResponse({'message': 'Invalid reguest'}, status=400)
+# def login_view(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             return JsonResponse({'message': 'Успешный вход!'})
+#         else:
+#             return JsonResponse({'message': 'Неверное имя или пароль!'}, status=401)
+#
+#     return JsonResponse({'message': 'Invalid reguest'}, status=400)
 
 
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
 
-class CustomSignupView(SignupView):
-    form_class = CustomSignupForm
-    template_name = 'accounts/signup.html'
+# class CustomSignupView(SignupView):
+#     form_class = CustomSignupForm
+#     template_name = 'accounts/signup.html'
 
 
 def main(request):
@@ -86,9 +111,9 @@ class ClientList(viewsets.ModelViewSet):
     serializer_class = ClientSerializer
 
 
-class ServiceCompanyList(viewsets.ModelViewSet):
-    queryset = ServiceCompany.objects.all()
-    serializer_class = ServiceCompanySerializer
+# class ServiceCompanyList(viewsets.ModelViewSet):
+#     queryset = ServiceCompany.objects.all()
+#     serializer_class = ServiceCompanySerializer
 
 
 class ManagerList(viewsets.ModelViewSet):

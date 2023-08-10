@@ -106,7 +106,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# AUTH_USER_MODEL = 'backend.CustomUser'
+#AUTH_USER_MODEL = 'backend.CustomUser'
+
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
@@ -141,12 +142,14 @@ AUTHENTICATION_BACKENDS = [
 # LOGOUT_URL = '/accounts/logout/'
 # LOGOUT_REDIRECT_URL = 'http://localhost:8080/'
 #
-#
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login/'
 # ACCOUNT_EMAIL_REQUIRED = False
 # ACCOUNT_UNIQUE_USERNAME = True
 # ACCOUNT_USERNAME_REQUIRED = True
-# ACCOUNT_AUTHENTICATION_METHOD = 'username'
-# ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_ADAPTER = 'silant.adapter.SilantAccountAdapter'
 # # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
