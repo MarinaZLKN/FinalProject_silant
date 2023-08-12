@@ -65,15 +65,18 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+# class CustomUserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CustomUser
+#         fields = ['id', 'username', 'role', 'password']
+
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'role', 'password']
-
-
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'role']
 
 class ClientSerializer(serializers.ModelSerializer):
-    user = CustomUserSerializer()
+    name = CustomUserSerializer()
 
     class Meta:
         model = Client
@@ -81,11 +84,11 @@ class ClientSerializer(serializers.ModelSerializer):
 
 
 class ServiceCompanySerializer(serializers.ModelSerializer):
-    user = CustomUserSerializer()
+    name = CustomUserSerializer()
 
     class Meta:
         model = ServiceCompany
-        fields = '__all__'
+        fields = ['name', 'description']
 
 
 # class ManagerSerializer(serializers.ModelSerializer):

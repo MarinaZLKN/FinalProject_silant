@@ -96,7 +96,7 @@ const MaintenanceFilter = () => {
         </select>
       </div>
       <div className="filter-group">
-        <label>Service Company:</label>
+        <label>Organization:</label>
         <select value={selectedOrgCompany} onChange={(e) => setSelectedOrgCompany(e.target.value)}>
           <option value="">Select Organization</option>
           {orgCompanyList.map((company) => (

@@ -30,9 +30,11 @@ const ClaimFilter = () => {
     });
 
     axios.get("http://127.0.0.1:8000/api/claim/").then((response) => {
-      setClaims(response.data); // Store all claim data
+      setClaims(response.data);
     });
   }, []);
+
+  console.log('Service Companies', serviceCompanies)
 
   useEffect(() => {
 
@@ -66,8 +68,8 @@ const ClaimFilter = () => {
         <select value={selectedServiceCompany} onChange={(e) => setSelectedServiceCompany(e.target.value)}>
           <option value="">Select Service Company</option>
           {serviceCompanies.map((company) => (
-            <option key={company.id} value={company.name}>
-              {company.name}
+            <option key={company.name.id} value={company.name.first_name}>
+              {company.name.first_name}
             </option>
           ))}
         </select>
@@ -124,7 +126,7 @@ const ClaimFilter = () => {
                 <td>{claim.technical_downtime}</td>
                 <td>{claim.failure_node}</td>
                 <td>{claim.recovery_method}</td>
-                <td>{claim.service_company}</td>
+                <td>{claim.service_company.first_name}</td>
             </tr>
           ))}
         </tbody>

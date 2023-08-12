@@ -16,7 +16,7 @@ const MachineForm = () => {
         delivery_address: '',
         equipment: '',
         client: '',
-        service_company: null,
+        service_company: '',
         engine_model: '',
         technical_model: '',
         transmission_model: '',
@@ -24,23 +24,23 @@ const MachineForm = () => {
         controlled_bridge_model: '',
     });
 
-    const [newClient, setNewClient] = useState('');
+    // const [newClient, setNewClient] = useState('');
+    //
+    //  const handleClientChange = (e) => {
+    //     setNewClient(e.target.value);
+    //   };
 
-     const handleClientChange = (e) => {
-        setNewClient(e.target.value);
-      };
-
-     const createNewClient = async () => {
-        try {
-          const response = await axios.post('http://127.0.0.1:8000/api/clients/', {
-            name: newClient,
-          });
-          return response.data.id;
-        } catch (error) {
-          console.error(error);
-          return null;
-        }
-     };
+     // const createNewClient = async () => {
+     //    try {
+     //      const response = await axios.post('http://127.0.0.1:8000/api/clients/', {
+     //        name: newClient,
+     //      });
+     //      return response.data.id;
+     //    } catch (error) {
+     //      console.error(error);
+     //      return null;
+     //    }
+     // };
 
 
 
@@ -94,7 +94,7 @@ const MachineForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const additionalFormData = {
-            client: newClient ? await createNewClient() : null,
+            client: parseInt(e.target.client.value),
             service_company: parseInt(e.target.service_company.value),
             engine_model: parseInt(e.target.engine_model.value),
             technical_model: parseInt(e.target.technical_model.value),
@@ -103,21 +103,73 @@ const MachineForm = () => {
             controlled_bridge_model: parseInt(e.target.controlled_bridge_model.value),
       };
 
-    const postData = {
-      ...machine,
-      ...additionalFormData,
-    };
+       const postData = {
+          ...machine,
+          ...additionalFormData,
+       };
 
-    console.log('postData: ', postData)
+
+        console.log('postData: ', postData)
 
         axios.post('http://127.0.0.1:8000/api/machines/', postData)
             .then(response => {
-                console.log('Response:',response.data);
+                console.log('Response:', response.data);
             })
             .catch(error => {
-                console.error(error);
+                if (error.response) {
+                    console.error('Server responded with an error:', error.response.data);
+                } else if (error.request) {
+                    console.error('No response received from server:', error.request);
+                } else {
+                    console.error('Error setting up the request:', error.message);
+                }
             });
     };
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //
+    //     const parseValue = (value) => {
+    //         const parsed = parseInt(value);
+    //         if (isNaN(parsed)) {
+    //             throw new Error(`Failed to parse value: ${value}`);
+    //         }
+    //         return parsed;
+    //     }
+    //
+    //     const additionalFormData = {
+    //         client: parseValue(e.target.client.value),
+    //         service_company: parseValue(e.target.service_company.value),
+    //         engine_model: parseValue(e.target.engine_model.value),
+    //         technical_model: parseValue(e.target.technical_model.value),
+    //         transmission_model: parseValue(e.target.transmission_model.value),
+    //         driving_bridge_model: parseValue(e.target.driving_bridge_model.value),
+    //         controlled_bridge_model: parseValue(e.target.controlled_bridge_model.value),
+    //     };
+    //
+    //     const postData = {
+    //         ...machine,
+    //         ...additionalFormData,
+    //     };
+    //
+    //     console.log('postData: ', postData);
+    //
+    //     try {
+    //         const response = await axios.post('http://127.0.0.1:8000/api/machines/', postData, {
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         });
+    //         console.log('Response:', response.data);
+    //     } catch (error) {
+    //         if (error.response) {
+    //             console.error('Server responded with an error:', error.response.data);
+    //         } else if (error.request) {
+    //             console.error('No response received from server:', error.request);
+    //         } else {
+    //             console.error('Error setting up the request:', error.message);
+    //         }
+    //     }
+    // };
 
 
 
@@ -237,7 +289,7 @@ const MachineForm = () => {
                     </div>
                 <div className="form-row">
                     <label className="form-label">Client:</label>
-                        <AddClientForm/>
+                        {/*<AddClientForm/>*/}
                           {/*<input*/}
                           {/*  type="text"*/}
                           {/*  name="client"*/}
@@ -246,21 +298,20 @@ const MachineForm = () => {
                           {/*  required*/}
                           {/*  className="form-input"*/}
                           {/*/>*/}
-                     {/*<label className="form-label">*/}
-                     {/*   Client:*/}
-                     {/*   <select className="option"  name="client" onChange={handleChange}>*/}
-                     {/*       {data.clients.map(client => (*/}
-                     {/*           <option value={client.id}>{client.name}</option>*/}
-                     {/*       ))}*/}
-                     {/*   </select>*/}
-                     {/*</label>*/}
+                     <label className="form-label">
+                        <select className="option"  name="client" onChange={handleChange}>
+                            {data.clients.map(client => (
+                                <option value={client.id}>{client.name.first_name}</option>
+                            ))}
+                        </select>
+                     </label>
                 </div>
                 <div className="form-row">
                      <label className="form-label">
                         Service Company:
                             <select name="service_company" onChange={handleChange}>
                                 {data.serviceCompanies.map(company => (
-                                    <option value={company.id}>{company.name}</option>
+                                    <option value={company.name.id}>{company.name.first_name}</option>
                                 ))}
                         </select>
                      </label>
