@@ -1,92 +1,84 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
-
-
+from django.utils.translation import gettext as _
 # class CustomUser(AbstractUser):
-#     CLIENT = 'Клиент'
-#     SERVICE = 'Сервис'
-#     MANAGER = 'Менеджер'
-#     ADMIN = 'Админ'
+#     ROLES = (
+#         ('guest', 'Гость'),
+#         ('client', 'Клиент'),
+#         ('service_company', 'Сервисная организация'),
+#         ('manager', 'Менеджер'),
+#     )
+#     role = models.CharField(max_length=15, choices=ROLES)
 #
-#     CHOICES = [
-#         (CLIENT, 'Клиент'),
-#         (SERVICE, 'Сервисная организация'),
-#         (MANAGER, 'Менеджер'),
-#         (ADMIN, 'Админ'),
-#     ]
-#
-#     role = models.CharField('Роль пользователя', max_length=10, choices=CHOICES, default='Клиент')
+#     groups = models.ManyToManyField(Group, related_name='customuser_set', blank=True)
+#     user_permissions = models.ManyToManyField(Permission, related_name='customuser_set', blank=True)
 #
 #     def __str__(self):
-#         return f'{self.first_name}'
+#         return self.username
+
+# class ServiceCompany(models.Model):
+#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
+#     name = models.CharField(max_length=100)
+#     description = models.TextField()
+#
+#     def __str__(self):
+#         return self.name
 
 
-class CustomUser(AbstractUser):
-    ROLES = (
-        ('guest', 'Гость'),
-        ('client', 'Клиент'),
-        ('service_company', 'Сервисная организация'),
-        ('manager', 'Менеджер'),
-    )
-    role = models.CharField(max_length=15, choices=ROLES)
-
-    groups = models.ManyToManyField(Group, related_name='customuser_set', blank=True)
-    user_permissions = models.ManyToManyField(Permission, related_name='customuser_set', blank=True)
-
-    def __str__(self):
-        return self.username
-
+# class Manager(models.Model):
+#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
+#     name = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return self.name
 
 # class Client(models.Model):
-#
-#     name = models.ForeignKey(CustomUser, verbose_name='Клиент', on_delete=models.CASCADE)
-#     description = models.TextField('Описание', max_length=500, null=True, blank=True)
-#
-#     class Meta:
-#         verbose_name = 'Клиент'
-#         verbose_name_plural = 'Клиент'
+#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
+#     name = models.CharField(max_length=100)
+#     description = models.TextField()
 #
 #     def __str__(self):
-#         return f'{self.name}'
+#         return self.name
+
+class CustomUser(AbstractUser):
+    CLIENT = 'Клиент'
+    SERVICE = 'Сервис'
+    MANAGER = 'Менеджер'
+    ADMIN = 'Админ'
+
+    CHOICES = [
+        (CLIENT, 'Клиент'),
+        (SERVICE, 'Сервисная организация'),
+        (MANAGER, 'Менеджер'),
+        (ADMIN, 'Админ'),
+    ]
+
+    role = models.CharField('Роль пользователя', max_length=10, choices=CHOICES, default='Админ')
+
+    def save(self, *args, **kwargs):
+        if self.is_superuser:
+            self.role = self.ADMIN
+        super(CustomUser, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.first_name}'
 
 
 class Client(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-    name = models.CharField(max_length=100)
-    description = models.TextField()
+    name = models.ForeignKey(CustomUser, verbose_name='Клиент', on_delete=models.CASCADE)
+    description = models.TextField('Описание', max_length=500, null=True, blank=True)
 
     def __str__(self):
-        return self.name
-
-
-# class ServiceCompany(models.Model):
-#     name = models.ForeignKey(CustomUser, verbose_name='Сервисная компания',
-#                              on_delete=models.CASCADE)
-#     description = models.TextField('Описание', max_length=500, null=True, blank=True)
-#
-#     class Meta:
-#         verbose_name = 'Сервисная компания'
-#         verbose_name_plural = 'Справочник сервисных компаний'
-#
-#     def __str__(self):
-#         return f'{self.name}'
+        return f'{self.name}'
 
 
 class ServiceCompany(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-    name = models.CharField(max_length=100)
-    description = models.TextField()
+    name = models.ForeignKey(CustomUser, verbose_name='Сервисная компания',
+                             on_delete=models.CASCADE)
+    description = models.TextField('Описание', max_length=500, null=True, blank=True)
 
     def __str__(self):
-        return self.name
-
-
-class Manager(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 # Техническая модель

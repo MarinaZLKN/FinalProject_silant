@@ -88,12 +88,12 @@ class ServiceCompanySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ManagerSerializer(serializers.ModelSerializer):
-    user = CustomUserSerializer()
-
-    class Meta:
-        model = Manager
-        fields = '__all__'
+# class ManagerSerializer(serializers.ModelSerializer):
+#     user = CustomUserSerializer()
+#
+#     class Meta:
+#         model = Manager
+#         fields = '__all__'
 
 
 class TechnicalModelSerializer(serializers.HyperlinkedModelSerializer):
@@ -181,41 +181,6 @@ class MachineSerializer(serializers.HyperlinkedModelSerializer):
                   'driving_bridge_model',
                   'controlled_bridge_model',
                   ]
-
-
-        # def create(self, validated_data):
-        #     service_company_name = validated_data.pop('service_company')
-        #     service_company = ServiceCompany.objects.get(name=service_company_name)
-        #
-        #     technical_model_name = validated_data.pop('technical_model')
-        #     technical_model = TechnicalModel.objects.get(name=technical_model_name)
-        #
-        #     engine_model_name = validated_data.pop('engine_model')
-        #     engine_model = EngineModel.objects.get(name=engine_model_name)
-        #
-        #     transmission_model_name = validated_data.pop('transmission_model')
-        #     transmission_model = TransmissionModel.objects.get(name=transmission_model_name)
-        #
-        #     driving_bridge_model_name = validated_data.pop('driving_bridge_model')
-        #     driving_bridge_model = DrivingBridgeModel.objects.get(name=driving_bridge_model_name)
-        #
-        #     controlled_bridge_model_name = validated_data.pop('controlled_bridge_model')
-        #     controlled_bridge_model = ControlledBridgeModel.objects.get(name=controlled_bridge_model_name)
-        #
-        #     client_name = validated_data.pop('client')
-        #     client = Client.objects.get(name=client_name)
-        #
-        #     machine = Machine.objects.create(
-        #         service_company=service_company,
-        #         technical_model=technical_model,
-        #         engine_model=engine_model,
-        #         transmission_model=transmission_model,
-        #         driving_bridge_model=driving_bridge_model,
-        #         controlled_bridge_model=controlled_bridge_model,
-        #         client=client,
-        #         **validated_data)
-        #
-        #     return machine
 
 
 class MaintenanceSerializer(serializers.HyperlinkedModelSerializer):

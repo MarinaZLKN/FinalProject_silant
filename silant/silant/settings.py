@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#AUTH_USER_MODEL = 'backend.CustomUser'
+AUTH_USER_MODEL = 'backend.CustomUser'
 
 
 REST_FRAMEWORK = {
@@ -144,14 +144,12 @@ AUTHENTICATION_BACKENDS = [
 #
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login/'
-# ACCOUNT_EMAIL_REQUIRED = False
-# ACCOUNT_UNIQUE_USERNAME = True
-# ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_ADAPTER = 'silant.adapter.SilantAccountAdapter'
+
+
 # # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -163,13 +161,11 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "frontend/static"]
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SITE_ID = 1

@@ -116,9 +116,9 @@ class ClientList(viewsets.ModelViewSet):
 #     serializer_class = ServiceCompanySerializer
 
 
-class ManagerList(viewsets.ModelViewSet):
-    queryset = Manager.objects.all()
-    serializer_class = ManagerSerializer
+# class ManagerList(viewsets.ModelViewSet):
+#     queryset = Manager.objects.all()
+#     serializer_class = ManagerSerializer
 
 
 class ServiceCompanyViewset(viewsets.ModelViewSet):
