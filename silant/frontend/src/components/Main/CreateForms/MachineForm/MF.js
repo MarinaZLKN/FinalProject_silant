@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import ForeignKeyField from './ForeignKeyField'; // adjust path as necessary
+import ForeignKeyField from './ForeignKeyField';
+import TechnicalModelField from "./TechnicalModelField";
+import EngineModelField from "./EngineModelField";
+import TransmissionModelField from "./TransmissionModelField";
+import ControlledBridgeModelField from "./ControlledBridgeModelField";
+import DrivingBridgeModelField from "./DrivingBridgeModelField";
+import SCField from "./SCField";
+import ClientField from "./ClientField";
 
 function MF() {
     const [machine, setMachine] = useState({
@@ -13,52 +20,38 @@ function MF() {
         consignee: '',
         delivery_address: '',
         equipment: '',
-        client: { name: { id: null, username: '', first_name: '', last_name: '', email: '', role: 'Клиент' }, description: '' },
-        service_company: { name: { id: null, username: '', first_name: '', last_name: '', email: '', role: 'Сервис' }, description: '' },
-        engine_model: { name: '', description: '' },
-        technical_model: { name: '', description: '' },
-        transmission_model: { name: '', description: '' },
-        driving_bridge_model: { name: '', description: '' },
-        controlled_bridge_model: { name: '', description: '' },
+        client: null,
+        service_company: null,
+        engine_model: null,
+        technical_model: null,
+        transmission_model: null,
+        driving_bridge_model: null,
+        controlled_bridge_model: null,
     });
 
-    const [feedback, setFeedback] = useState(''); // New state for feedback message
 
-    // const isFormValid = () => {
-    //     // Basic validation to ensure all fields are filled
-    //     for (let key in machine) {
-    //         if (!machine[key]) return false;
-    //     }
-    //     return true;
-    // };
+
+    const [feedback, setFeedback] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setMachine(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleForeignKeyChange = (name, value) => {
-        console.log("Updating", name, "with value", value); // Log to debug
-        setMachine(prev => ({ ...prev, [name]: value }));
+    const updateMachineData = (field, id) => {
+        setMachine(prev => ({ ...prev, [field]: id }));
     };
 
+    const sendDataToServer = (fieldName, id, error) => {
+        if (id) {
+            setMachine(prevState => ({ ...prevState, [fieldName]: id }));
+        } else if (error) {
+            setFeedback(error);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Validation: Ensure all fields are filled before submitting.
-        const isFormValid = () => {
-            for (let key in machine) {
-                if (!machine[key]) return false;
-            }
-            return true;
-        };
-
-        if (!isFormValid()) {
-            setFeedback('Please fill all fields.');
-            return;
-        }
-
         const apiUrl = 'http://127.0.0.1:8000/api/machines/';
 
         try {
@@ -70,19 +63,17 @@ function MF() {
                 body: JSON.stringify(machine)
             });
 
-            const data = await response.json();  // Assuming server responds with json
+            const data = await response.json();
 
-            if(response.ok) {
-                setFeedback("Successfully submitted.");
-                // If you have any post-submission logic, like redirecting to another page, you can add that here
+            if (response.ok) {
+                console.log("Successfully submitted:", data);
+
             } else {
-                // Improved error message
-                setFeedback(data.error || "Error submitting form.");
-                // Handle errors, maybe update the UI to show an error message
+                console.error("Error submitting form:", data);
+
             }
         } catch (error) {
-            setFeedback("There was an error submitting the form. Please try again.");
-            // Handle unexpected errors, maybe update the UI to show an error message
+            console.error("There was an error:", error);
         }
     };
 
@@ -101,14 +92,13 @@ function MF() {
                 <input name="delivery_address" value={machine.delivery_address} onChange={handleChange} placeholder="Delivery Address" />
                 <input name="equipment" value={machine.equipment} onChange={handleChange} placeholder="Equipment" />
 
-                <ForeignKeyField name="client" data={machine.client} onChange={handleForeignKeyChange}/>
-                <ForeignKeyField name="technical_model" data={machine.technical_model} onChange={handleForeignKeyChange}/>
-                <ForeignKeyField name="transmission_model" data={machine.transmission_model} onChange={handleForeignKeyChange} />
-                <ForeignKeyField name="driving_bridge_model" data={machine.driving_bridge_model} onChange={handleForeignKeyChange}/>
-                <ForeignKeyField name="controlled_bridge_model" data={machine.controlled_bridge_model} onChange={handleForeignKeyChange} />
-                <ForeignKeyField name="engine_model" data={machine.engine_model} onChange={handleForeignKeyChange} />
-                <ForeignKeyField name="service_company" data={machine.service_company} onChange={handleForeignKeyChange}/>
-
+                <TransmissionModelField sendDataToServer={sendDataToServer} onUpdate={updateMachineData} />
+                <TechnicalModelField sendDataToServer={sendDataToServer} onUpdate={updateMachineData} />
+                <EngineModelField sendDataToServer={sendDataToServer} onUpdate={updateMachineData} />
+                <ControlledBridgeModelField sendDataToServer={sendDataToServer} onUpdate={updateMachineData} />
+                <DrivingBridgeModelField sendDataToServer={sendDataToServer} onUpdate={updateMachineData} />
+                <SCField sendDataToServer={sendDataToServer} onUpdate={updateMachineData} />
+                <ClientField sendDataToServer={sendDataToServer} onUpdate={updateMachineData} />
 
             <button type="submit">Save</button>
         </form>

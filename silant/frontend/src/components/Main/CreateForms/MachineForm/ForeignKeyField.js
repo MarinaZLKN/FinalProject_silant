@@ -34,7 +34,7 @@ function ForeignKeyField({ name, data, onChange }) {
                         onBlur={handleBlur}
                         placeholder={`${name} Username`}
                     />
-                    {/* Note: You can add other fields like first_name, last_name, email, role similarly if needed */}
+
                 </>
             ) : (
                 <>
