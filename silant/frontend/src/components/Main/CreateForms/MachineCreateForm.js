@@ -1,100 +1,227 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const MachineCreateForm = () => {
+function MachineCreateForm() {
+    const [machineData, setMachineData] = useState({
+        machine_factory_number: '',
+        engine_factory_number: '',
+        transmission_factory_number: '',
+        driving_bridge_factory_number: '',
+        controlled_bridge_factory_number: '',
+        delivery_contract: '',
+        shipment_date: '',
+        consignee: '',
+        delivery_address: '',
+        equipment: '',
+        technical_model: {
+            name: '',
+            description: ''
+        },
+        transmission_model: {
+            name: '',
+            description: ''
+        },
+        engine_model: {
+            name: '',
+            description: ''
+        },
+        controlled_bridge_model: {
+            name: '',
+            description: ''
+        },
+        driving_bridge_model: {
+            name: '',
+            description: ''
+        },
+        service_company: {
+            name: {
+                // details for CustomUser, e.g.:
+                first_name: "John",
+                last_name: "Doe",
+                // ... other fields for CustomUser ...
+            },
+            description: "Some description",
+        }
+    });
 
-  const [formData, setFormData] = useState({
+    const handleChange = (e, nestedModel=null) => {
+        if (nestedModel) {
+            setMachineData(prevState => ({
+                ...prevState,
+                [nestedModel]: {
+                    ...prevState[nestedModel],
+                    [e.target.name]: e.target.value
+                }
+            }));
+        } else {
+            setMachineData(prevState => ({
+                ...prevState,
+                [e.target.name]: e.target.value
+            }));
+        }
+    };
 
-    client: '',
-  });
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post('http://127.0.0.1:8000/api/machines/', machineData)
+            .then(response => {
+                console.log('machineData:', machineData);
+                console.log('Response:', response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    };
 
-  // State to manage the modal visibility
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Function to handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-  };
-
-  // Function to handle client selection
-  const handleClientSelection = (value) => {
-    if (value === 'add_new') {
-      setIsModalOpen(true);
-    } else {
-      setFormData((prevData) => ({ ...prevData, client: value }));
-    }
-  };
-
-  // Function to handle modal close
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  // Function to handle adding a new client
-  const handleAddClient = async (newClientData) => {
-    try {
-      // Send a POST request to your backend API to create the new client
-      const response = await axios.post('http://127.0.0.1:8000/api/clients/', newClientData);
-      // Assuming the response contains the newly created client data with an ID
-      const newClientId = response.data.id;
-      // Update the client dropdown with the new client
-      setFormData((prevData) => ({ ...prevData, client: newClientId }));
-      // Close the modal after successful creation
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error('Error creating client:', error);
-
-    }
-  };
-
-  return (
-    <div>
-      <div>
-        <label>Client:</label>
-        <select
-          name="client"
-          value={formData.client}
-          onChange={(e) => handleClientSelection(e.target.value)}
-          required
-        >
-          <option value="">Select Client</option>
-          {/* Map through the list of clients */}
-          {clients.map((client) => (
-            <option key={client.id} value={client.id}>
-              {client.name}
-            </option>
-          ))}
-          {/* Add an option to add a new client */}
-          <option value="add_new">Add New Client</option>
-        </select>
-      </div>
-      {/* Your other form inputs and submit button... */}
-
-      {/* Modal for adding a new client */}
-      {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Add New Client</h2>
-            {/* Add your form fields for creating a new client here */}
+    return (
+        <div>
             <form onSubmit={handleSubmit}>
-              <label>Name:</label>
-              <input type="text" name="name" required />
+                {/* Fields for Machine */}
+                <input
+                    type="text"
+                    name="machine_factory_number"
+                    onChange={handleChange}
+                    placeholder="Machine Factory Number"
+                />
+                <input
+                    type="text"
+                    name="engine_factory_number"
+                    onChange={handleChange}
+                    placeholder="Engine Factory Number"
+                />
+                <input
+                    type="text"
+                    name="transmission_factory_number"
+                    onChange={handleChange}
+                    placeholder="Transmission Factory Number"
+                />
+                <input
+                    type="text"
+                    name="driving_bridge_factory_number"
+                    onChange={handleChange}
+                    placeholder="Driving Bridge Factory Number"
+                />
+                <input
+                    type="text"
+                    name="controlled_bridge_factory_number"
+                    onChange={handleChange}
+                    placeholder="Controlled Bridge Factory Number"
+                />
+                <input
+                    type="text"
+                    name="delivery_contract"
+                    onChange={handleChange}
+                    placeholder="Delivery Contract"
+                />
+                <input
+                    type="date"
+                    name="shipment_date"
+                    onChange={handleChange}
+                    placeholder="Shipment Date"
+                />
+                <input
+                    type="text"
+                    name="consignee"
+                    onChange={handleChange}
+                    placeholder="Consignee"
+                />
+                <input
+                    type="text"
+                    name="delivery_address"
+                    onChange={handleChange}
+                    placeholder="Delivery Address"
+                />
+                <input
+                    type="text"
+                    name="equipment"
+                    onChange={handleChange}
+                    placeholder="Equipment"
+                />
 
-              {/* Add other client-related form fields as needed... */}
+                {/* Fields for TechnicalModel */}
+                <input
+                    type="text"
+                    name="name"
+                    onChange={(e) => handleChange(e, 'technical_model')}
+                    placeholder="Technical Model Name"
+                />
+                <textarea
+                    name="description"
+                    onChange={(e) => handleChange(e, 'technical_model')}
+                    placeholder="Technical Model Description"
+                ></textarea>
 
-              <button type="submit" onClick={handleAddClient}>
-                Create Client
-              </button>
-              <button type="button" onClick={handleCloseModal}>
-                Cancel
-              </button>
+                {/* Fields for TransmissionModel */}
+                <input
+                    type="text"
+                    name="name"
+                    onChange={(e) => handleChange(e, 'transmission_model')}
+                    placeholder="Transmission Model Name"
+                />
+                <textarea
+                    name="description"
+                    onChange={(e) => handleChange(e, 'transmission_model')}
+                    placeholder="Transmission Model Description"
+                ></textarea>
+
+                {/* Fields for EngineModel */}
+                <input
+                    type="text"
+                    name="name"
+                    onChange={(e) => handleChange(e, 'engine_model')}
+                    placeholder="Engine Model Name"
+                />
+                <textarea
+                    name="description"
+                    onChange={(e) => handleChange(e, 'engine_model')}
+                    placeholder="Engine Model Description"
+                ></textarea>
+
+                {/* Fields for ControlledBridgeModel */}
+                <input
+                    type="text"
+                    name="name"
+                    onChange={(e) => handleChange(e, 'controlled_bridge_model')}
+                    placeholder="Controlled Bridge Model Name"
+                />
+                <textarea
+                    name="description"
+                    onChange={(e) => handleChange(e, 'controlled_bridge_model')}
+                    placeholder="Controlled Bridge Model Description"
+                ></textarea>
+
+                {/* Fields for DrivingBridgeModel */}
+                <input
+                    type="text"
+                    name="name"
+                    onChange={(e) => handleChange(e, 'driving_bridge_model')}
+                    placeholder="Driving Bridge Model Name"
+                />
+                <textarea
+                    name="description"
+                    onChange={(e) => handleChange(e, 'driving_bridge_model')}
+                    placeholder="Driving Bridge Model Description"
+                ></textarea>
+
+                {/* Fields for ServiceCompany */}
+                <input
+                    type="text"
+                    name="name"
+                    onChange={(e) => handleChange(e, 'service_company')}
+                    placeholder="Service Company Name"
+                />
+                <textarea
+                    name="description"
+                    onChange={(e) => handleChange(e, 'service_company')}
+                    placeholder="Service Company Description"
+                ></textarea>
+
+
+                <button type="submit">Create Machine</button>
             </form>
-          </div>
         </div>
-      )}
-    </div>
-  );
-};
+    );
+}
 
 export default MachineCreateForm;
+

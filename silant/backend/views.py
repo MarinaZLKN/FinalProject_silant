@@ -199,6 +199,7 @@ class FailureNodeViewset(viewsets.ModelViewSet):
     filterset_fields = ["name"]
 
 
+# Serializer for Machine instance filtration
 class MachineFilterView(generics.ListAPIView):
     serializer_class = MachineSerializer
     filter_backends = [DjangoFilterBackend]
@@ -246,6 +247,7 @@ class MaintenanceViewset(viewsets.ModelViewSet):
     ordering = ['-date_of_maintenance']
 
 
+# Serializer for Maintenance instance filtration
 class MaintenanceFilterView(generics.ListAPIView):
     serializer_class = MaintenanceSerializer
     filter_backends = [SearchFilter]
@@ -269,6 +271,7 @@ class MaintenanceFilterView(generics.ListAPIView):
         return queryset
 
 
+# Serializer for Claim instance filtration
 class ClaimFilterView(generics.ListAPIView):
     serializer_class = ClaimSerializer
     filter_backends = [DjangoFilterBackend]
@@ -300,6 +303,7 @@ class ClaimViewset(viewsets.ModelViewSet):
     ordering = ['-date_of_failure']
 
 
+# Machine instance detail view
 @api_view(['GET'])
 def machine_detail(request, machine_id):
     try:
@@ -310,6 +314,7 @@ def machine_detail(request, machine_id):
         return Response({'detail': 'Machine not found'}, status=404)
 
 
+# Claim instance detail view
 @api_view(['GET'])
 def claim_detail(request, claim_id):
     try:
@@ -320,6 +325,7 @@ def claim_detail(request, claim_id):
         return Response({'detail': 'Claim not found'}, status=404)
 
 
+# Maintenance instance detail view
 @api_view(['GET'])
 def maintenance_detail(request, maintenance_id):
     try:
@@ -330,6 +336,7 @@ def maintenance_detail(request, maintenance_id):
         return Response({'detail': 'Maintenance not found'}, status=404)
 
 
+# Machine instance list
 @api_view(['GET', 'POST'])
 def machine_list(request):
     if request.method == 'GET':
@@ -344,13 +351,25 @@ def machine_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
-def create_machine(request):
-    if request.method == 'POST':
-        serializer = MachineSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        print(serializer.errors)
-        print('Request data: ', request.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# Machine instance creation
+# @api_view(['POST'])
+# def create_machine(request):
+#     if request.method == 'POST':
+#         serializer = MachineSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         print(serializer.errors)
+#         print('Request data: ', request.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MachineCreateView(generics.CreateAPIView):
+    queryset = Machine.objects.all()
+    serializer_class = MachineSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

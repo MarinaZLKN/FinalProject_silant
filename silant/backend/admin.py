@@ -1,12 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-# from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import *
 from django.utils.translation import gettext_lazy as _
 
 
+# For Admin to create new users with role field
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
@@ -42,7 +41,6 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
-
 admin.site.register(Machine)
 admin.site.register(TechnicalModel)
 admin.site.register(EngineModel)

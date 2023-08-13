@@ -1,44 +1,6 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
-from django.utils.translation import gettext as _
-# class CustomUser(AbstractUser):
-#     ROLES = (
-#         ('guest', 'Гость'),
-#         ('client', 'Клиент'),
-#         ('service_company', 'Сервисная организация'),
-#         ('manager', 'Менеджер'),
-#     )
-#     role = models.CharField(max_length=15, choices=ROLES)
-#
-#     groups = models.ManyToManyField(Group, related_name='customuser_set', blank=True)
-#     user_permissions = models.ManyToManyField(Permission, related_name='customuser_set', blank=True)
-#
-#     def __str__(self):
-#         return self.username
 
-# class ServiceCompany(models.Model):
-#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-#     name = models.CharField(max_length=100)
-#     description = models.TextField()
-#
-#     def __str__(self):
-#         return self.name
-
-
-# class Manager(models.Model):
-#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-#     name = models.CharField(max_length=100)
-#
-#     def __str__(self):
-#         return self.name
-
-# class Client(models.Model):
-#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-#     name = models.CharField(max_length=100)
-#     description = models.TextField()
-#
-#     def __str__(self):
-#         return self.name
 
 class CustomUser(AbstractUser):
     CLIENT = 'Клиент'
@@ -81,7 +43,6 @@ class ServiceCompany(models.Model):
         return f'{self.name}'
 
 
-# Техническая модель
 class TechnicalModel(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -90,7 +51,6 @@ class TechnicalModel(models.Model):
         return self.name
 
 
-# Модель трансмиссии
 class TransmissionModel(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -99,7 +59,6 @@ class TransmissionModel(models.Model):
         return self.name
 
 
-# Модель двигетеля
 class EngineModel(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -108,7 +67,6 @@ class EngineModel(models.Model):
         return self.name
 
 
-# Модель управляемого моста
 class ControlledBridgeModel(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -117,7 +75,6 @@ class ControlledBridgeModel(models.Model):
         return self.name
 
 
-# Модель ведущего моста
 class DrivingBridgeModel(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -126,7 +83,6 @@ class DrivingBridgeModel(models.Model):
         return self.name
 
 
-# Тип технического обслуживания
 class TypeOfMaintenance(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -135,7 +91,6 @@ class TypeOfMaintenance(models.Model):
         return self.name
 
 
-# Метод восстановления
 class RecoveryMethod(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -160,7 +115,6 @@ class FailureNode(models.Model):
         return self.name
 
 
-# Машина
 class Machine(models.Model):
     machine_factory_number = models.CharField(max_length=4)  # заводской номер машины
     engine_factory_number = models.CharField(max_length=100)  # заводской номер двигателя
@@ -197,7 +151,6 @@ class Maintenance(models.Model):
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
 
 
-# Рекламации
 class Claim(models.Model):
     date_of_failure = models.DateField()  # дата отказа
     operating_time = models.IntegerField()  # наработка, м/час

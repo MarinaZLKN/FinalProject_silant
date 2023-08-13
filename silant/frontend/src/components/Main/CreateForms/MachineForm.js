@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import './MachineForm.css'
-import AddClientForm from "./MachineForm/AddClientForm";
+
 
 const MachineForm = () => {
     const [machine, setMachine] = useState({
@@ -82,17 +82,74 @@ const MachineForm = () => {
         fetchData();
     }, []);
 
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     const newValue =
+    //           [
+    //             'client',
+    //             'service_company',
+    //             'engine_model',
+    //             'technical_model',
+    //             'transmission_model',
+    //             'driving_bridge_model',
+    //             'controlled_bridge_model'
+    //           ].includes(name) ? parseInt(value) : value;
+    //
+    //     setMachine({
+    //         ...machine,
+    //         [name]: isNaN(newValue) ? "" : newValue,
+    //     });
+    // };
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setMachine({
+    //         ...machine,
+    //         [name]:
+    //           [
+    //             'client',
+    //             'service_company',
+    //             'engine_model',
+    //             'technical_model',
+    //             'transmission_model',
+    //             'driving_bridge_model',
+    //             'controlled_bridge_model'
+    //           ].includes(name) ? parseInt(value) : value,
+    //     });
+    // };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setMachine({
-            ...machine,
-            [name]: name === 'client' || name === 'service_company' ? parseInt(value) : value,
-        });
+
+        const fieldsToInt = [
+            'client',
+            'service_company',
+            'engine_model',
+            'technical_model',
+            'transmission_model',
+            'driving_bridge_model',
+            'controlled_bridge_model'
+        ];
+
+        if (fieldsToInt.includes(name) && value !== "") {
+            const newValue = parseInt(value, 10);
+
+            if (!isNaN(newValue)) {
+                setMachine(prevMachine => ({
+                    ...prevMachine,
+                    [name]: newValue,
+                }));
+            }
+        } else {
+            setMachine(prevMachine => ({
+                ...prevMachine,
+                [name]: value,
+            }));
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const additionalFormData = {
             client: parseInt(e.target.client.value),
             service_company: parseInt(e.target.service_company.value),
@@ -301,7 +358,7 @@ const MachineForm = () => {
                      <label className="form-label">
                         <select className="option"  name="client" onChange={handleChange}>
                             {data.clients.map(client => (
-                                <option value={client.id}>{client.name.first_name}</option>
+                                <option  key={client.id} value={client.id}>{client.name.first_name}</option>
                             ))}
                         </select>
                      </label>

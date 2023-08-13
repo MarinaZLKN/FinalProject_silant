@@ -21,6 +21,8 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ('username', 'email')
 
 
+# Not really necessary logic for registration
+
 # class CustomSignupForm(SignupForm):
 #     role = forms.ChoiceField(choices=CustomUser.ROLES, label='Role')
 #
