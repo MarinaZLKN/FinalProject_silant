@@ -21,6 +21,13 @@ const MachineFilter = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+   axios.get("http://127.0.0.1:8000/api/machines/").then((response) => {
+      console.log("Fetched machines:", response.data);
+      setMachines(response.data);
+   });
+}, []);
+
+  useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/technical_models/").then((response) => {
       setTechnicalModels(response.data);
     });
@@ -48,11 +55,11 @@ const MachineFilter = () => {
 
   useEffect(() => {
     const filteredData = machines.filter((machine) => {
-      const technicalModelMatch = !selectedTechnicalModel || machine.technical_model === selectedTechnicalModel;
-      const engineModelMatch = !selectedEngineModel || machine.engine_model === selectedEngineModel;
-      const transmissionModelMatch = !selectedTransmissionModel || machine.transmission_model === selectedTransmissionModel;
-      const contrBridgeModelMatch = !selectedContrBridgeModel || machine.controlled_bridge_model === selectedContrBridgeModel;
-      const driveBridgeModelMatch = !selectedDriveBridgeModel || machine.driving_bridge_model === selectedDriveBridgeModel;
+      const technicalModelMatch = !selectedTechnicalModel || machine.technical_model === parseInt(selectedTechnicalModel);
+      const engineModelMatch = !selectedEngineModel || machine.engine_model === parseInt(selectedEngineModel);
+      const transmissionModelMatch = !selectedTransmissionModel || machine.transmission_model === parseInt(selectedTransmissionModel);
+      const contrBridgeModelMatch = !selectedContrBridgeModel || machine.controlled_bridge_model === parseInt(selectedContrBridgeModel);
+      const driveBridgeModelMatch = !selectedDriveBridgeModel || machine.driving_bridge_model === parseInt(selectedDriveBridgeModel);
 
       return (
         technicalModelMatch &&
@@ -62,7 +69,7 @@ const MachineFilter = () => {
         driveBridgeModelMatch
       );
     });
-
+    console.log("Filtered machines based on selection:", filteredData);
     setFilteredMachines(filteredData);
   }, [selectedTechnicalModel, selectedEngineModel, selectedTransmissionModel, selectedContrBridgeModel, selectedDriveBridgeModel, machines]);
 
@@ -78,6 +85,7 @@ const MachineFilter = () => {
         },
       })
       .then((response) => {
+        console.log("Machines after applying API filter:", response.data);
         setMachines(response.data);
       })
       .catch((error) => {
@@ -92,6 +100,7 @@ const MachineFilter = () => {
     setSelectedContrBridgeModel("");
     setSelectedDriveBridgeModel("");
 
+    console.log("Machines after resetting filters:", machines);
     setFilteredMachines(machines);
 
   };
@@ -101,10 +110,13 @@ const MachineFilter = () => {
   };
 
   const getModelNameById = (id, models) => {
+
     const model = models.find(model => model.id === id);
+
     return model ? model.name : 'None';
   }
 
+  console.log("Rendering machines:", filteredMachines);
 
   return (
     <div>
@@ -113,7 +125,7 @@ const MachineFilter = () => {
         <select value={selectedTechnicalModel} onChange={(e) => setSelectedTechnicalModel(e.target.value)}>
           <option value="">Select Technical Model</option>
           {technicalModels.map((model) => (
-            <option key={model.id} value={model.name}>
+            <option key={model.id} value={model.id}>
               {model.name}
             </option>
           ))}
@@ -124,7 +136,7 @@ const MachineFilter = () => {
         <select value={selectedEngineModel} onChange={(e) => setSelectedEngineModel(e.target.value)}>
           <option value="">Select Engine Model</option>
           {engineModels.map((model) => (
-            <option key={model.id} value={model.name}>
+            <option key={model.id} value={model.id}>
               {model.name}
             </option>
           ))}
@@ -135,7 +147,7 @@ const MachineFilter = () => {
         <select value={selectedTransmissionModel} onChange={(e) => setSelectedTransmissionModel(e.target.value)}>
           <option value="">Select Transmission Model</option>
           {transmissionModels.map((model) => (
-            <option key={model.id} value={model.name}>
+            <option key={model.id} value={model.id}>
               {model.name}
             </option>
           ))}
@@ -146,7 +158,7 @@ const MachineFilter = () => {
         <select value={selectedContrBridgeModel} onChange={(e) => setSelectedContrBridgeModel(e.target.value)}>
           <option value="">Select Controlled Bridge Model</option>
           {contrBridgeModels.map((model) => (
-            <option key={model.id} value={model.name}>
+            <option key={model.id} value={model.id}>
               {model.name}
             </option>
           ))}
@@ -157,7 +169,7 @@ const MachineFilter = () => {
         <select value={selectedDriveBridgeModel} onChange={(e) => setSelectedDriveBridgeModel(e.target.value)}>
           <option value="">Select Driving Bridge Model</option>
           {driveBridgeModels.map((model) => (
-            <option key={model.id} value={model.name}>
+            <option key={model.id} value={model.id}>
               {model.name}
             </option>
           ))}
@@ -213,3 +225,5 @@ const MachineFilter = () => {
 };
 
 export default MachineFilter;
+
+

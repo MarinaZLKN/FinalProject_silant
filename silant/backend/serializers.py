@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework.serializers import Serializer, ModelSerializer, CharField
 from rest_framework.authtoken.models import Token
 from . import apps
@@ -76,6 +78,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         # fields = '__all__'
         fields = ['id', 'username', 'first_name', 'last_name', 'email', 'role']
 
+
 class ClientSerializer(serializers.ModelSerializer):
     name = CustomUserSerializer()
 
@@ -122,15 +125,15 @@ class DrivingBridgeModelSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'name', 'description', ]
 
 
-class TypeOfMaintenanceSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = TypeOfMaintenance
-        fields = ['id', 'name', 'description', ]
-
-
 class RecoveryMethodSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RecoveryMethod
+        fields = ['id', 'name', 'description', ]
+
+
+class TypeOfMaintenanceSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = TypeOfMaintenance
         fields = ['id', 'name', 'description', ]
 
 
@@ -156,14 +159,6 @@ class MachineSerializer(serializers.ModelSerializer):
     driving_bridge_model = serializers.PrimaryKeyRelatedField(queryset=DrivingBridgeModel.objects.all())
     controlled_bridge_model = serializers.PrimaryKeyRelatedField(queryset=ControlledBridgeModel.objects.all())
 
-    # service_company = serializers.StringRelatedField()
-    # technical_model = serializers.StringRelatedField()
-    # engine_model = serializers.StringRelatedField()
-    # transmission_model = serializers.StringRelatedField()
-    # driving_bridge_model = serializers.StringRelatedField()
-    # controlled_bridge_model = serializers.StringRelatedField()
-    # client = serializers.StringRelatedField()
-
     class Meta:
         model = Machine
         fields = ['id',
@@ -186,67 +181,11 @@ class MachineSerializer(serializers.ModelSerializer):
                   'controlled_bridge_model',
                   ]
 
-        # def to_representation(self, instance):
-        #     representation = super().to_representation(instance)
-        #     representation['service_company'] = str(instance.service_company)
-        #     representation['technical_model'] = str(instance.technical_model)
-        #     representation['engine_model'] = str(instance.engine_model)
-        #     representation['transmission_model'] = str(instance.transmission_model)
-        #     representation['driving_bridge_model'] = str(instance.driving_bridge_model)
-        #     representation['controlled_bridge_model'] = str(instance.controlled_bridge_model)
-        #     representation['client'] = str(instance.client)
-        #     return representation
 
-
-# class MachineSerializer(serializers.ModelSerializer):
-#     technical_model = TechnicalModelSerializer()
-#     transmission_model = TransmissionModelSerializer()
-#     engine_model = EngineModelSerializer()
-#     controlled_bridge_model = ControlledBridgeModelSerializer()
-#     driving_bridge_model = DrivingBridgeModelSerializer()
-#     service_company = ServiceCompanySerializer()
-#
-#     class Meta:
-#         model = Machine
-#         fields = '__all__'
-#
-#     def create(self, validated_data):
-#         technical_model_data = validated_data.pop('technical_model')
-#         technical_model = TechnicalModel.objects.create(**technical_model_data)
-#
-#         transmission_model_data = validated_data.pop('transmission_model')
-#         transmission_model = TransmissionModel.objects.create(**transmission_model_data)
-#
-#         engine_model_data = validated_data.pop('engine_model')
-#         engine_model = EngineModel.objects.create(**engine_model_data)
-#
-#         controlled_bridge_model_data = validated_data.pop('controlled_bridge_model')
-#         controlled_bridge_model = ControlledBridgeModel.objects.create(**controlled_bridge_model_data)
-#
-#         driving_bridge_model_data = validated_data.pop('driving_bridge_model')
-#         driving_bridge_model = DrivingBridgeModel.objects.create(**driving_bridge_model_data)
-#
-#         service_company_data = validated_data.pop('service_company')
-#         service_company = ServiceCompany.objects.create(**service_company_data)
-#
-#         # service_company = ServiceCompany.objects.create(**service_company_data)
-#
-#         machine = Machine.objects.create(
-#             technical_model=technical_model,
-#             transmission_model=transmission_model,
-#             engine_model=engine_model,
-#             controlled_bridge_model=controlled_bridge_model,
-#             driving_bridge_model=driving_bridge_model,
-#             service_company=service_company,
-#             **validated_data
-#         )
-#         return machine
-
-class MaintenanceSerializer(serializers.HyperlinkedModelSerializer):
-    type_of_maintenance = serializers.StringRelatedField()
-    organization = serializers.StringRelatedField()
-    machine = serializers.StringRelatedField()
-    service_company = serializers.StringRelatedField()
+class MaintenanceSerializer(serializers.ModelSerializer):
+    type_of_maintenance = serializers.PrimaryKeyRelatedField(queryset=TypeOfMaintenance.objects.all())
+    organization = serializers.PrimaryKeyRelatedField(queryset=Organization.objects.all())
+    machine = serializers.PrimaryKeyRelatedField(queryset=Machine.objects.all())
 
     class Meta:
         model = Maintenance
@@ -258,7 +197,6 @@ class MaintenanceSerializer(serializers.HyperlinkedModelSerializer):
                   'organization',
                   'type_of_maintenance',
                   'machine',
-                  'service_company',
                   ]
 
 
@@ -283,6 +221,4 @@ class ClaimSerializer(serializers.HyperlinkedModelSerializer):
                   'machine',
                   'service_company',
                   ]
-
-
 

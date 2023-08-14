@@ -49,11 +49,12 @@ const MaintenanceFilter = () => {
       });
   };
 
+    const machineFactoryNumberInt = machineFactoryNumber ? parseInt(machineFactoryNumber, 10) : null;
 
     const filteredMaintenanceData = maintenanceData.filter((maintenance) => {
-    const machineFactoryNumberMatch = !machineFactoryNumber || maintenance.machine.includes(machineFactoryNumber);
-    const typeOfMaintenanceMatch = !selectedTypeOfMaintenance || maintenance.type_of_maintenance === selectedTypeOfMaintenance;
-    const orgCompanyMatch = !selectedOrgCompany || maintenance.organization === selectedOrgCompany;
+    const machineFactoryNumberMatch = !machineFactoryNumber || maintenance.machine === machineFactoryNumberInt;
+    const typeOfMaintenanceMatch = !selectedTypeOfMaintenance || maintenance.type_of_maintenance === parseInt(selectedTypeOfMaintenance);
+    const orgCompanyMatch = !selectedOrgCompany || maintenance.organization === parseInt(selectedOrgCompany);
 
     return machineFactoryNumberMatch && typeOfMaintenanceMatch && orgCompanyMatch;
   });
@@ -72,6 +73,13 @@ const MaintenanceFilter = () => {
     navigate(`/maintenances/${id}`);
   };
 
+    const getModelNameById = (id, models) => {
+
+    const model = models.find(model => model.id === id);
+
+    return model ? model.name : 'None';
+  }
+
 
 
   return (
@@ -89,7 +97,7 @@ const MaintenanceFilter = () => {
         <select value={selectedTypeOfMaintenance} onChange={(e) => setSelectedTypeOfMaintenance(e.target.value)}>
           <option value="">Select Type of Maintenance</option>
           {typeOfMaintenanceList.map((maintenanceType) => (
-            <option key={maintenanceType.id} value={maintenanceType.name}>
+            <option key={maintenanceType.id} value={maintenanceType.id}>
               {maintenanceType.name}
             </option>
           ))}
@@ -100,7 +108,7 @@ const MaintenanceFilter = () => {
         <select value={selectedOrgCompany} onChange={(e) => setSelectedOrgCompany(e.target.value)}>
           <option value="">Select Organization</option>
           {orgCompanyList.map((company) => (
-            <option key={company.id} value={company.name}>
+            <option key={company.id} value={company.id}>
               {company.name}
             </option>
           ))}
@@ -138,8 +146,8 @@ const MaintenanceFilter = () => {
                 <td>{maintenance.date_of_maintenance}</td>
                 <td>{maintenance.operating_time} м/час</td>
                 <td>{maintenance.order_number}</td>
-                <td>{maintenance.organization}</td>
-                <td>{maintenance.type_of_maintenance}</td>
+                <td>{getModelNameById(maintenance.organization, orgCompanyList )}</td>
+                <td>{getModelNameById(maintenance.type_of_maintenance, typeOfMaintenanceList )}</td>
             </tr>
           ))}
         </tbody>

@@ -7,6 +7,8 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
+
+from .filters import MachineFilter, MaintenanceFilter
 from .serializers import *
 from .models import *
 from allauth.account.views import SignupView
@@ -200,36 +202,53 @@ class FailureNodeViewset(viewsets.ModelViewSet):
 
 
 # Serializer for Machine instance filtration
+
 class MachineFilterView(generics.ListAPIView):
     serializer_class = MachineSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['technical_model__name', 'engine_model__name', 'transmission_model__name', 'controlled_bridge_model__name', 'driving_bridge_model__name']
+    filterset_class = MachineFilter
 
     def get_queryset(self):
-        queryset = Machine.objects.all()
+        return Machine.objects.all()
 
-        technical_model = self.request.query_params.get('technical_model', None)
-        engine_model = self.request.query_params.get('engine_model', None)
-        transmission_model = self.request.query_params.get('transmission_model', None)
-        controlled_bridge_model = self.request.query_params.get('controlled_bridge_model', None)
-        driving_bridge_model = self.request.query_params.get('driving_bridge_model', None)
 
-        if technical_model:
-            queryset = queryset.filter(technical_model__name=technical_model)
+class MaintenanceFilterView(generics.ListAPIView):
+    serializer_class = MaintenanceSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = MaintenanceFilter
 
-        if engine_model:
-            queryset = queryset.filter(engine_model__name=engine_model)
-
-        if transmission_model:
-            queryset = queryset.filter(transmission_model__name=transmission_model)
-
-        if controlled_bridge_model:
-            queryset = queryset.filter(controlled_bridge_model__name=controlled_bridge_model)
-
-        if driving_bridge_model:
-            queryset = queryset.filter(driving_bridge_model__name=driving_bridge_model)
-
-        return queryset
+    def get_queryset(self):
+        return Maintenance.objects.all()
+# class MachineFilterView(generics.ListAPIView):
+#     serializer_class = MachineSerializer
+#     filter_backends = [DjangoFilterBackend]
+#     filterset_fields = ['technical_model__name', 'engine_model__name', 'transmission_model__name', 'controlled_bridge_model__name', 'driving_bridge_model__name']
+#
+#     def get_queryset(self):
+#         queryset = Machine.objects.all()
+#
+#         technical_model = self.request.query_params.get('technical_model', None)
+#         engine_model = self.request.query_params.get('engine_model', None)
+#         transmission_model = self.request.query_params.get('transmission_model', None)
+#         controlled_bridge_model = self.request.query_params.get('controlled_bridge_model', None)
+#         driving_bridge_model = self.request.query_params.get('driving_bridge_model', None)
+#
+#         if technical_model:
+#             queryset = queryset.filter(technical_model__name=technical_model)
+#
+#         if engine_model:
+#             queryset = queryset.filter(engine_model__name=engine_model)
+#
+#         if transmission_model:
+#             queryset = queryset.filter(transmission_model__name=transmission_model)
+#
+#         if controlled_bridge_model:
+#             queryset = queryset.filter(controlled_bridge_model__name=controlled_bridge_model)
+#
+#         if driving_bridge_model:
+#             queryset = queryset.filter(driving_bridge_model__name=driving_bridge_model)
+#
+#         return queryset
 
 
 class MachineViewset(viewsets.ModelViewSet):
@@ -248,27 +267,27 @@ class MaintenanceViewset(viewsets.ModelViewSet):
 
 
 # Serializer for Maintenance instance filtration
-class MaintenanceFilterView(generics.ListAPIView):
-    serializer_class = MaintenanceSerializer
-    filter_backends = [SearchFilter]
-    search_fields = ['machine__machine_factory_number', 'type_of_maintenance__name', 'service_company__name']
-
-    def get_queryset(self):
-        queryset = Maintenance.objects.all()
-        machine_factory_number = self.request.query_params.get('machine_factory_number', None)
-        type_of_maintenance = self.request.query_params.get('type_of_maintenance', None)
-        service_company = self.request.query_params.get('service_company', None)
-
-        if machine_factory_number:
-            queryset = queryset.filter(machine__machine_factory_number=machine_factory_number)
-
-        if type_of_maintenance:
-            queryset = queryset.filter(type_of_maintenance__name=type_of_maintenance)
-
-        if service_company:
-            queryset = queryset.filter(service_company__name=service_company)
-
-        return queryset
+# class MaintenanceFilterView(generics.ListAPIView):
+#     serializer_class = MaintenanceSerializer
+#     filter_backends = [SearchFilter]
+#     search_fields = ['machine__machine_factory_number', 'type_of_maintenance__name', 'service_company__name']
+#
+#     def get_queryset(self):
+#         queryset = Maintenance.objects.all()
+#         machine_factory_number = self.request.query_params.get('machine_factory_number', None)
+#         type_of_maintenance = self.request.query_params.get('type_of_maintenance', None)
+#         service_company = self.request.query_params.get('service_company', None)
+#
+#         if machine_factory_number:
+#             queryset = queryset.filter(machine__machine_factory_number=machine_factory_number)
+#
+#         if type_of_maintenance:
+#             queryset = queryset.filter(type_of_maintenance__name=type_of_maintenance)
+#
+#         if service_company:
+#             queryset = queryset.filter(service_company__name=service_company)
+#
+#         return queryset
 
 
 # Serializer for Claim instance filtration
@@ -363,13 +382,14 @@ def create_machine(request):
         print('Request data: ', request.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# class MachineCreateView(generics.CreateAPIView):
-#     queryset = Machine.objects.all()
-#     serializer_class = MachineSerializer
-#
-#     def create(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         self.perform_create(serializer)
-#         headers = self.get_success_headers(serializer.data)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+@api_view(['POST'])
+def create_maintenance(request):
+    if request.method == 'POST':
+        serializer = MaintenanceSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        print('Request data: ', request.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
