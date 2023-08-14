@@ -100,6 +100,12 @@ const MachineFilter = () => {
     navigate(`/machines/${id}`);
   };
 
+  const getModelNameById = (id, models) => {
+    const model = models.find(model => model.id === id);
+    return model ? model.name : 'None';
+  }
+
+
   return (
     <div>
       <div className="filter-group">
@@ -189,15 +195,15 @@ const MachineFilter = () => {
               className="machine-row"
             >
               <td>{machine.machine_factory_number}</td>
-              <td>{machine.technical_model}</td>
+              <td>{getModelNameById(machine.technical_model, technicalModels)}</td>
               <td>{machine.engine_factory_number}</td>
-              <td>{machine.engine_model}</td>
+              <td>{getModelNameById(machine.engine_model, engineModels)}</td>
               <td>{machine.transmission_factory_number}</td>
-              <td>{machine.transmission_model}</td>
+              <td>{getModelNameById(machine.transmission_model, transmissionModels)}</td>
               <td>{machine.driving_bridge_factory_number}</td>
-              <td>{machine.driving_bridge_model}</td>
+              <td>{getModelNameById(machine.driving_bridge_model, driveBridgeModels)}</td>
               <td>{machine.controlled_bridge_factory_number}</td>
-              <td>{machine.controlled_bridge_model}</td>
+              <td>{getModelNameById(machine.controlled_bridge_model, contrBridgeModels)}</td>
             </tr>
           ))}
         </tbody>

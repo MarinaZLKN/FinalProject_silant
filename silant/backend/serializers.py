@@ -89,7 +89,7 @@ class ServiceCompanySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceCompany
-        fields = ['name', 'description']
+        fields = '__all__'
 
 
 class TechnicalModelSerializer(serializers.HyperlinkedModelSerializer):
@@ -146,15 +146,23 @@ class FailureNodeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'name', 'description', ]
 
 
-class MachineSerializer(serializers.HyperlinkedModelSerializer):
+class MachineSerializer(serializers.ModelSerializer):
 
-    service_company = serializers.StringRelatedField()
-    technical_model = serializers.StringRelatedField()
-    engine_model = serializers.StringRelatedField()
-    transmission_model = serializers.StringRelatedField()
-    driving_bridge_model = serializers.StringRelatedField()
-    controlled_bridge_model = serializers.StringRelatedField()
-    client = serializers.StringRelatedField()
+    client = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all())
+    service_company = serializers.PrimaryKeyRelatedField(queryset=ServiceCompany.objects.all())
+    technical_model = serializers.PrimaryKeyRelatedField(queryset=TechnicalModel.objects.all())
+    engine_model = serializers.PrimaryKeyRelatedField(queryset=EngineModel.objects.all())
+    transmission_model = serializers.PrimaryKeyRelatedField(queryset=TransmissionModel.objects.all())
+    driving_bridge_model = serializers.PrimaryKeyRelatedField(queryset=DrivingBridgeModel.objects.all())
+    controlled_bridge_model = serializers.PrimaryKeyRelatedField(queryset=ControlledBridgeModel.objects.all())
+
+    # service_company = serializers.StringRelatedField()
+    # technical_model = serializers.StringRelatedField()
+    # engine_model = serializers.StringRelatedField()
+    # transmission_model = serializers.StringRelatedField()
+    # driving_bridge_model = serializers.StringRelatedField()
+    # controlled_bridge_model = serializers.StringRelatedField()
+    # client = serializers.StringRelatedField()
 
     class Meta:
         model = Machine
@@ -177,6 +185,17 @@ class MachineSerializer(serializers.HyperlinkedModelSerializer):
                   'driving_bridge_model',
                   'controlled_bridge_model',
                   ]
+
+        # def to_representation(self, instance):
+        #     representation = super().to_representation(instance)
+        #     representation['service_company'] = str(instance.service_company)
+        #     representation['technical_model'] = str(instance.technical_model)
+        #     representation['engine_model'] = str(instance.engine_model)
+        #     representation['transmission_model'] = str(instance.transmission_model)
+        #     representation['driving_bridge_model'] = str(instance.driving_bridge_model)
+        #     representation['controlled_bridge_model'] = str(instance.controlled_bridge_model)
+        #     representation['client'] = str(instance.client)
+        #     return representation
 
 
 # class MachineSerializer(serializers.ModelSerializer):

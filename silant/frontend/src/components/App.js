@@ -37,7 +37,7 @@ function App () {
               <Route path="/machines/:id" element={<MachineDetails />} />
               <Route path="/claims/:id" element={<ClaimDetails />} />
               <Route path="/maintenances/:id" element={<MaintenanceDetails />} />
-              <Route path="/create-machine" element={<MF/>} />
+              <Route path="/create-machine" element={<MachineForm/>} />
               <Route path="/create-main" element={<MaintenanceForm/>} />
               <Route path="/" element={<Search />} />
               <Route path="/login" element={<Login />} />

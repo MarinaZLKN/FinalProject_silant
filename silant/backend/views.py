@@ -352,24 +352,24 @@ def machine_list(request):
 
 
 # Machine instance creation
-# @api_view(['POST'])
-# def create_machine(request):
-#     if request.method == 'POST':
-#         serializer = MachineSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         print(serializer.errors)
-#         print('Request data: ', request.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['POST'])
+def create_machine(request):
+    if request.method == 'POST':
+        serializer = MachineSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        print('Request data: ', request.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class MachineCreateView(generics.CreateAPIView):
-    queryset = Machine.objects.all()
-    serializer_class = MachineSerializer
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+# class MachineCreateView(generics.CreateAPIView):
+#     queryset = Machine.objects.all()
+#     serializer_class = MachineSerializer
+#
+#     def create(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         self.perform_create(serializer)
+#         headers = self.get_success_headers(serializer.data)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

@@ -2,8 +2,13 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import './MachineForm.css'
 
-
+const parseValue = (value) => {
+    if (value === "") return null;
+    const intValue = parseInt(value);
+    return isNaN(intValue) ? value : intValue;
+};
 const MachineForm = () => {
+    // State Initialization - state holds details related to a machine
     const [machine, setMachine] = useState({
         machine_factory_number: '',
         engine_factory_number: '',
@@ -23,24 +28,6 @@ const MachineForm = () => {
         driving_bridge_model: '',
         controlled_bridge_model: '',
     });
-
-    // const [newClient, setNewClient] = useState('');
-    //
-    //  const handleClientChange = (e) => {
-    //     setNewClient(e.target.value);
-    //   };
-
-     // const createNewClient = async () => {
-     //    try {
-     //      const response = await axios.post('http://127.0.0.1:8000/api/clients/', {
-     //        name: newClient,
-     //      });
-     //      return response.data.id;
-     //    } catch (error) {
-     //      console.error(error);
-     //      return null;
-     //    }
-     // };
 
 
 
@@ -82,41 +69,11 @@ const MachineForm = () => {
         fetchData();
     }, []);
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     const newValue =
-    //           [
-    //             'client',
-    //             'service_company',
-    //             'engine_model',
-    //             'technical_model',
-    //             'transmission_model',
-    //             'driving_bridge_model',
-    //             'controlled_bridge_model'
-    //           ].includes(name) ? parseInt(value) : value;
-    //
-    //     setMachine({
-    //         ...machine,
-    //         [name]: isNaN(newValue) ? "" : newValue,
-    //     });
-    // };
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setMachine({
-    //         ...machine,
-    //         [name]:
-    //           [
-    //             'client',
-    //             'service_company',
-    //             'engine_model',
-    //             'technical_model',
-    //             'transmission_model',
-    //             'driving_bridge_model',
-    //             'controlled_bridge_model'
-    //           ].includes(name) ? parseInt(value) : value,
-    //     });
-    // };
-
+    // This function handles changes to form inputs. Whenever an input value changes, it updates
+    // the corresponding value in the machine state.
+    // For certain fields (defined in the fieldsToInt array), the function attempts to convert the input value
+    // to an integer before saving it to the state. If the value isn't a valid number,
+    // it won't update the state for that particular field.
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -146,19 +103,26 @@ const MachineForm = () => {
             }));
         }
     };
-
+    // On submit, first, it constructs the additionalFormData object by gathering and parsing the relevant
+    // form values into integers. This seems a bit redundant since handleChange already does this
+    // for some fields. Unless there's a specific reason for this, you might be able to optimize this step.
+    // The postData object is then created by merging the values of machine and additionalFormData.
+    // A POST request is then sent to the server with postData as the request body. If the request is successful,
+    // the response is logged to the console. If there's an error, appropriate error handling and
+    // logging are done based on the nature of the error.
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const additionalFormData = {
-            client: parseInt(e.target.client.value),
-            service_company: parseInt(e.target.service_company.value),
-            engine_model: parseInt(e.target.engine_model.value),
-            technical_model: parseInt(e.target.technical_model.value),
-            transmission_model: parseInt(e.target.transmission_model.value),
-            driving_bridge_model: parseInt(e.target.driving_bridge_model.value),
-            controlled_bridge_model: parseInt(e.target.controlled_bridge_model.value),
+            client: parseValue(e.target.client.value),
+            service_company: parseValue(e.target.service_company.value),
+            engine_model: parseValue(e.target.engine_model.value),
+            technical_model: parseValue(e.target.technical_model.value),
+            transmission_model: parseValue(e.target.transmission_model.value),
+            driving_bridge_model: parseValue(e.target.driving_bridge_model.value),
+            controlled_bridge_model: parseValue(e.target.controlled_bridge_model.value),
       };
+        console.log('additionalFormData: ', additionalFormData)
 
        const postData = {
           ...machine,
@@ -168,13 +132,21 @@ const MachineForm = () => {
 
         console.log('postData: ', postData)
 
-        axios.post('http://127.0.0.1:8000/api/machines/', postData)
-            .then(response => {
+        axios.post('http://127.0.0.1:8000/api/machines/', postData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }) .then(response => {
                 console.log('Response:', response.data);
             })
             .catch(error => {
                 if (error.response) {
-                    console.error('Server responded with an error:', error.response.data);
+                    console.error('Server responded with an error:', error.response.status, error.response.data);
+                    if (error.response.data) {
+                        for (const [key, value] of Object.entries(error.response.data)) {
+                            console.error(`${key}: ${value}`);
+                        }
+                    }
                 } else if (error.request) {
                     console.error('No response received from server:', error.request);
                 } else {
@@ -182,52 +154,6 @@ const MachineForm = () => {
                 }
             });
     };
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //
-    //     const parseValue = (value) => {
-    //         const parsed = parseInt(value);
-    //         if (isNaN(parsed)) {
-    //             throw new Error(`Failed to parse value: ${value}`);
-    //         }
-    //         return parsed;
-    //     }
-    //
-    //     const additionalFormData = {
-    //         client: parseValue(e.target.client.value),
-    //         service_company: parseValue(e.target.service_company.value),
-    //         engine_model: parseValue(e.target.engine_model.value),
-    //         technical_model: parseValue(e.target.technical_model.value),
-    //         transmission_model: parseValue(e.target.transmission_model.value),
-    //         driving_bridge_model: parseValue(e.target.driving_bridge_model.value),
-    //         controlled_bridge_model: parseValue(e.target.controlled_bridge_model.value),
-    //     };
-    //
-    //     const postData = {
-    //         ...machine,
-    //         ...additionalFormData,
-    //     };
-    //
-    //     console.log('postData: ', postData);
-    //
-    //     try {
-    //         const response = await axios.post('http://127.0.0.1:8000/api/machines/', postData, {
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             }
-    //         });
-    //         console.log('Response:', response.data);
-    //     } catch (error) {
-    //         if (error.response) {
-    //             console.error('Server responded with an error:', error.response.data);
-    //         } else if (error.request) {
-    //             console.error('No response received from server:', error.request);
-    //         } else {
-    //             console.error('Error setting up the request:', error.message);
-    //         }
-    //     }
-    // };
-
 
 
     return (
@@ -346,15 +272,6 @@ const MachineForm = () => {
                     </div>
                 <div className="form-row">
                     <label className="form-label">Client:</label>
-                        {/*<AddClientForm/>*/}
-                          {/*<input*/}
-                          {/*  type="text"*/}
-                          {/*  name="client"*/}
-                          {/*  value={newClient}*/}
-                          {/*  onChange={handleClientChange}*/}
-                          {/*  required*/}
-                          {/*  className="form-input"*/}
-                          {/*/>*/}
                      <label className="form-label">
                         <select className="option"  name="client" onChange={handleChange}>
                             {data.clients.map(client => (
@@ -368,7 +285,7 @@ const MachineForm = () => {
                         Service Company:
                             <select name="service_company" onChange={handleChange}>
                                 {data.serviceCompanies.map(company => (
-                                    <option value={company.name.id}>{company.name.first_name}</option>
+                                    <option key={company.id} value={company.id}>{company.name.first_name}</option>
                                 ))}
                         </select>
                      </label>

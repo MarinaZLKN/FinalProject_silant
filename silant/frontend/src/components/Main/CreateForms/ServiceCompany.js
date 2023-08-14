@@ -18,7 +18,7 @@ function ServiceCompany( {onChange} ) {
 
     };
 
-    console.log('response.data.rersults: ', ReqService)
+    console.log('response.data.results: ', ReqService)
 
     if(requested === false){
         ReqService().then(data => {setResponse(data)});
