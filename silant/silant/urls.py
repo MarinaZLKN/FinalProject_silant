@@ -33,6 +33,7 @@ urlpatterns = [
     path('api/machines/<int:machine_id>/', views.machine_detail, name='machine-detail'),
     path('api/machines/', views.create_machine),
     path('api/maintenances/', views.create_maintenance),
+    path('api/claims/', views.create_claim),
     # path('api/user', views.user, name='user'),
     # path('api/login', views.issue_token, name='issue_token'),
     # path('login/', CustomTokenObtainPairView.as_view(), name='login'),

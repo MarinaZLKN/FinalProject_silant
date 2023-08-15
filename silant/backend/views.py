@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 
-from .filters import MachineFilter, MaintenanceFilter
+from .filters import MachineFilter, MaintenanceFilter, ClaimFilter
 from .serializers import *
 from .models import *
 from allauth.account.views import SignupView
@@ -201,7 +201,7 @@ class FailureNodeViewset(viewsets.ModelViewSet):
     filterset_fields = ["name"]
 
 
-# Serializer for Machine instance filtration
+# Serializer for Machine/Maintenance/Claim instance filtration
 
 class MachineFilterView(generics.ListAPIView):
     serializer_class = MachineSerializer
@@ -219,6 +219,19 @@ class MaintenanceFilterView(generics.ListAPIView):
 
     def get_queryset(self):
         return Maintenance.objects.all()
+
+
+class ClaimFilterView(generics.ListAPIView):
+    serializer_class = ClaimSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ClaimFilter
+
+    def get_queryset(self):
+        return Claim.objects.all()
+
+
+
+
 # class MachineFilterView(generics.ListAPIView):
 #     serializer_class = MachineSerializer
 #     filter_backends = [DjangoFilterBackend]
@@ -254,7 +267,6 @@ class MaintenanceFilterView(generics.ListAPIView):
 class MachineViewset(viewsets.ModelViewSet):
     queryset = Machine.objects.all()
     serializer_class = MachineSerializer
-    # filterset_class = MachineFilterView
     ordering_fields = ["-shipment_date"]
     ordering = ["-shipment_date"]
 
@@ -265,6 +277,12 @@ class MaintenanceViewset(viewsets.ModelViewSet):
     ordering_fields = ['-date_of_maintenance']
     ordering = ['-date_of_maintenance']
 
+
+class ClaimViewset(viewsets.ModelViewSet):
+    queryset = Claim.objects.all()
+    serializer_class = ClaimSerializer
+    ordering_fields = ['-date_of_failure']
+    ordering = ['-date_of_failure']
 
 # Serializer for Maintenance instance filtration
 # class MaintenanceFilterView(generics.ListAPIView):
@@ -291,35 +309,30 @@ class MaintenanceViewset(viewsets.ModelViewSet):
 
 
 # Serializer for Claim instance filtration
-class ClaimFilterView(generics.ListAPIView):
-    serializer_class = ClaimSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['service_company__name', 'failure_node__name', 'recovery_method__name']
+# class ClaimFilterView(generics.ListAPIView):
+#     serializer_class = ClaimSerializer
+#     filter_backends = [DjangoFilterBackend]
+#     filterset_fields = ['service_company__name', 'failure_node__name', 'recovery_method__name']
+#
+#     def get_queryset(self):
+#         queryset = Claim.objects.all()
+#
+#         service_company = self.request.query_params.get('service_company', None)
+#         failure_node = self.request.query_params.get('failure_node', None)
+#         recovery_method = self.request.query_params.get('recovery_method', None)
+#
+#         if service_company:
+#             queryset = queryset.filter(service_company__name=service_company)
+#
+#         if failure_node:
+#             queryset = queryset.filter(failure_node__name=failure_node)
+#
+#         if recovery_method:
+#             queryset = queryset.filter(recovery_method__name=recovery_method)
+#
+#         return queryset
 
-    def get_queryset(self):
-        queryset = Claim.objects.all()
 
-        service_company = self.request.query_params.get('service_company', None)
-        failure_node = self.request.query_params.get('failure_node', None)
-        recovery_method = self.request.query_params.get('recovery_method', None)
-
-        if service_company:
-            queryset = queryset.filter(service_company__name=service_company)
-
-        if failure_node:
-            queryset = queryset.filter(failure_node__name=failure_node)
-
-        if recovery_method:
-            queryset = queryset.filter(recovery_method__name=recovery_method)
-
-        return queryset
-
-
-class ClaimViewset(viewsets.ModelViewSet):
-    queryset = Claim.objects.all()
-    serializer_class = ClaimSerializer
-    ordering_fields = ['-date_of_failure']
-    ordering = ['-date_of_failure']
 
 
 # Machine instance detail view
@@ -387,6 +400,18 @@ def create_machine(request):
 def create_maintenance(request):
     if request.method == 'POST':
         serializer = MaintenanceSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        print('Request data: ', request.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def create_claim(request):
+    if request.method == 'POST':
+        serializer = ClaimSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

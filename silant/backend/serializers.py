@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from rest_framework.serializers import Serializer, ModelSerializer, CharField
 from rest_framework.authtoken.models import Token
 from . import apps
@@ -183,6 +181,7 @@ class MachineSerializer(serializers.ModelSerializer):
 
 
 class MaintenanceSerializer(serializers.ModelSerializer):
+
     type_of_maintenance = serializers.PrimaryKeyRelatedField(queryset=TypeOfMaintenance.objects.all())
     organization = serializers.PrimaryKeyRelatedField(queryset=Organization.objects.all())
     machine = serializers.PrimaryKeyRelatedField(queryset=Machine.objects.all())
@@ -201,11 +200,11 @@ class MaintenanceSerializer(serializers.ModelSerializer):
 
 
 class ClaimSerializer(serializers.HyperlinkedModelSerializer):
-    recovery_method = serializers.StringRelatedField()
-    failure_node = serializers.StringRelatedField()
-    description_of_failure = serializers.StringRelatedField()
-    machine = serializers.StringRelatedField()
-    service_company = serializers.StringRelatedField()
+
+    machine = serializers.PrimaryKeyRelatedField(queryset=Machine.objects.all())
+    failure_node = serializers.PrimaryKeyRelatedField(queryset=FailureNode.objects.all())
+    recovery_method = serializers.PrimaryKeyRelatedField(queryset=RecoveryMethod.objects.all())
+    service_company = serializers.PrimaryKeyRelatedField(queryset=ServiceCompany.objects.all())
 
     class Meta:
         model = Claim

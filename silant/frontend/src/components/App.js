@@ -18,6 +18,7 @@ import MachineForm from "./Main/CreateForms/MachineForm";
 import MaintenanceForm from "./Main/CreateForms/MaintenanceForm";
 import MachineCreateForm from "./Main/CreateForms/MachineCreateForm";
 import MF from "./Main/CreateForms/MachineForm/MF";
+import ClaimForm from "./Main/CreateForms/ClaimForm";
 
 
 function App () {
@@ -39,6 +40,7 @@ function App () {
               <Route path="/maintenances/:id" element={<MaintenanceDetails />} />
               <Route path="/create-machine" element={<MachineForm/>} />
               <Route path="/create-main" element={<MaintenanceForm/>} />
+              <Route path="/create-claim" element={<ClaimForm/>} />
               <Route path="/" element={<Search />} />
               <Route path="/login" element={<Login />} />
               <Route path="/machines" element={<MachineTable />} />

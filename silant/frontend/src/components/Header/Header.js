@@ -16,11 +16,8 @@ const Header = () => {
                     </div>
                     <div className="header-info"> +7-8352-20-12-09, telegram</div>
                     <button className="auth-btn">
-                        <Link to="/create-machine">
-                          <button type="button" className="search-btn">Добавить</button>
-                        </Link>
-                        {/*<Link to="/login" className="auth-link">*/}
-                        {/*    <span className="auth-label">Авторизация</span> </Link>*/}
+                        <Link to="/login" className="auth-link">
+                            <span className="auth-label">Авторизация</span> </Link>
                     </button>
                 </div>
                 <div className="header-down">

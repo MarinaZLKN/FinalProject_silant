@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './MachineTable.css';
 import '../Search/Search.css';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const ClaimFilter = () => {
   const [selectedServiceCompany, setSelectedServiceCompany] = useState("");
@@ -39,9 +39,9 @@ const ClaimFilter = () => {
   useEffect(() => {
 
     const filteredData = claims.filter((claim) => {
-      const serviceCompanyMatch = !selectedServiceCompany || claim.service_company === selectedServiceCompany;
-      const recoveryMethodMatch = !selectedRecoveryMethod || claim.recovery_method === selectedRecoveryMethod;
-      const failureNodeMatch = !selectedFailureNode || claim.failure_node === selectedFailureNode;
+      const serviceCompanyMatch = !selectedServiceCompany || claim.service_company === parseInt(selectedServiceCompany);
+      const recoveryMethodMatch = !selectedRecoveryMethod || claim.recovery_method === parseInt(selectedRecoveryMethod);
+      const failureNodeMatch = !selectedFailureNode || claim.failure_node === parseInt(selectedFailureNode);
 
       return serviceCompanyMatch && recoveryMethodMatch && failureNodeMatch;
     });
@@ -68,7 +68,7 @@ const ClaimFilter = () => {
         <select value={selectedServiceCompany} onChange={(e) => setSelectedServiceCompany(e.target.value)}>
           <option value="">Select Service Company</option>
           {serviceCompanies.map((company) => (
-            <option key={company.name.id} value={company.name.first_name}>
+            <option key={company.name.id} value={company.id}>
               {company.name.first_name}
             </option>
           ))}
@@ -79,7 +79,7 @@ const ClaimFilter = () => {
         <select value={selectedRecoveryMethod}  onChange={(e) => setSelectedRecoveryMethod(e.target.value)}>
           <option value="">Select Recovery Method</option>
           {recoveryMethods.map((method) => (
-            <option key={method.id} value={method.name}>
+            <option key={method.id} value={method.id}>
               {method.name}
             </option>
           ))}
@@ -90,13 +90,16 @@ const ClaimFilter = () => {
         <select value={selectedFailureNode} onChange={(e) => setSelectedFailureNode(e.target.value)}>
           <option value="">Select Failure Node</option>
           {failureNodes.map((node) => (
-            <option key={node.id} value={node.name}>
+            <option key={node.id} value={node.id}>
               {node.name}
             </option>
           ))}
         </select>
       </div>
       <button type="button" className="search-btn" onClick={handleReset}>Сбросить</button>
+      <Link to="/create-claim">
+          <button type="button" className="search-btn">Добавить</button>
+        </Link>
 
       <table className="machine-table">
         <thead>

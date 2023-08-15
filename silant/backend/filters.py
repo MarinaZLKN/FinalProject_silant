@@ -1,5 +1,5 @@
 import django_filters
-from .models import Machine, Maintenance
+from .models import Machine, Maintenance, Claim
 
 
 class MachineFilter(django_filters.FilterSet):
@@ -21,5 +21,15 @@ class MaintenanceFilter(django_filters.FilterSet):
 
     class Meta:
         model = Maintenance
+        fields = []
+
+
+class ClaimFilter(django_filters.FilterSet):
+    service_company = django_filters.CharFilter(field_name="service_company__name")
+    failure_node = django_filters.CharFilter(field_name="failure_node__name")
+    recovery_method = django_filters.CharFilter(field_name="recovery_method__name")
+
+    class Meta:
+        model = Claim
         fields = []
 
