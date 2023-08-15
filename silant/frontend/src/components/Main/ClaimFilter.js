@@ -13,6 +13,7 @@ const ClaimFilter = () => {
   const [failureNodes, setFailureNodes] = useState([]);
   const [filteredClaims, setFilteredClaims] = useState([]);
   const [claims, setClaims] = useState([]);
+  const [machines, setMachines] = useState([]);
 
   const navigate = useNavigate();
 
@@ -57,9 +58,34 @@ const ClaimFilter = () => {
     setFilteredClaims(claims);
   };
 
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/api/machines/").then((response) => {
+      setMachines(response.data);
+    });
+  }, []);
+
   const handleRowClick = id => {
     navigate(`/claims/${id}`);
   };
+
+  // Functions to display the proper names in the tables
+  const getModelNameById = (id, models) => {
+
+    const model = models.find(model => model.id === id);
+
+    return model ? model.name : 'None';
+  }
+
+  const getModelFirstNameById = (id, models) => {
+
+    const model = models.find(model => model.id === id);
+
+    return model ? model.name.first_name : 'None';
+  }
+  const getMachineFactoryNumberById = (id) => {
+    const machine = machines.find(m => m.id === id);
+    return machine ? machine.machine_factory_number : 'None';
+  }
 
   return (
     <div>
@@ -122,14 +148,14 @@ const ClaimFilter = () => {
               className="machine-row"
             >
             {/*<tr key={claim.id}>*/}
-                <td>{claim.machine}</td>
+                <td>{getMachineFactoryNumberById(claim.machine, machines)}</td>
                 <td>{claim.date_of_failure}</td>
                 <td>{claim.date_of_recovery}</td>
                 <td>{claim.operating_time} м/час</td>
-                <td>{claim.technical_downtime}</td>
-                <td>{claim.failure_node}</td>
-                <td>{claim.recovery_method}</td>
-                <td>{claim.service_company.first_name}</td>
+                <td>{claim.technical_downtime} days</td>
+                <td>{getModelNameById(claim.failure_node, failureNodes)}</td>
+                <td>{getModelNameById(claim.recovery_method, recoveryMethods)}</td>
+                <td>{getModelFirstNameById(claim.service_company, serviceCompanies )}</td>
             </tr>
           ))}
         </tbody>

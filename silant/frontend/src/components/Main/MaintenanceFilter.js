@@ -12,6 +12,7 @@ const MaintenanceFilter = () => {
   const [orgCompanyList, setOrgCompanyList] = useState([]);
   const [maintenanceData, setMaintenanceData] = useState([]);
   const [filterdMaintenanceData, setFilteredMaintenanceData] = useState([]);
+  const [machines, setMachines] = useState([]);
 
   const navigate = useNavigate();
 
@@ -26,6 +27,12 @@ const MaintenanceFilter = () => {
 
     axios.get("http://127.0.0.1:8000/api/maintenances/").then((response) => {
       setMaintenanceData(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/api/machines/").then((response) => {
+      setMachines(response.data);
     });
   }, []);
 
@@ -79,7 +86,10 @@ const MaintenanceFilter = () => {
 
     return model ? model.name : 'None';
   }
-
+  const getMachineFactoryNumberById = (id) => {
+    const machine = machines.find(m => m.id === id);
+    return machine ? machine.machine_factory_number : 'None';
+  }
 
 
   return (
@@ -141,7 +151,7 @@ const MaintenanceFilter = () => {
               className="machine-row"
             >
             {/*// <tr key={maintenance.id}>*/}
-                <td>{maintenance.machine}</td>
+                <td>{getMachineFactoryNumberById(maintenance.machine, machines)}</td>
                 <td>{maintenance.data_of_order}</td>
                 <td>{maintenance.date_of_maintenance}</td>
                 <td>{maintenance.operating_time} м/час</td>

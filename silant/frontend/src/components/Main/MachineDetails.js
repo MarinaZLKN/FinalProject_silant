@@ -6,7 +6,6 @@ import TechnicalModel from "./Descriptions/TechnicalModel";
 import TransmissionModel from "./Descriptions/TransmissionModel";
 import EngineModel from "./Descriptions/EngineModel";
 import ControlledBridgeModel from "./Descriptions/ControlledBridgeModel";
-import MachineForm from "./CreateForms/MachineForm";
 import DrivingBridgeModel from "./Descriptions/DrivingBridgeModel";
 
 const MachineDetails = () => {

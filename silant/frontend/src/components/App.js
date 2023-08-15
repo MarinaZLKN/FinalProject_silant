@@ -5,7 +5,7 @@ import Footer from "./Footer/Footer";
 import Search from "./Search/Search";
 import {Route, Routes} from "react-router-dom";
 import Login from "./Header/Login";
-import Main from "./Main/Main";
+import MainPicture from "./Main/MainPicture";
 import MachineTable from "./Main/MachineTable";
 import ClaimTable from "./Main/ClaimTable";
 import MaintenanceTable from "./Main/MaintenanceTable";
@@ -16,8 +16,6 @@ import ClaimDetails from "./Main/ClaimDetails";
 import MaintenanceDetails from "./Main/MaintenanceDetails";
 import MachineForm from "./Main/CreateForms/MachineForm";
 import MaintenanceForm from "./Main/CreateForms/MaintenanceForm";
-import MachineCreateForm from "./Main/CreateForms/MachineCreateForm";
-import MF from "./Main/CreateForms/MachineForm/MF";
 import ClaimForm from "./Main/CreateForms/ClaimForm";
 
 
@@ -26,15 +24,14 @@ function App () {
     <div className="main-page">
       <Header />
 
-
       <main className="content">
           <div className="dashboard">
-            < Dashboard />
-
-              {/*<Search/>*/}
+              < Dashboard />
+              <Search/>
+              <MainPicture />
         </div>
           <Routes>
-              <Route path="/" element={<Main />} />
+              <Route path="/" element={<MainPicture />} />
               <Route path="/machines/:id" element={<MachineDetails />} />
               <Route path="/claims/:id" element={<ClaimDetails />} />
               <Route path="/maintenances/:id" element={<MaintenanceDetails />} />
