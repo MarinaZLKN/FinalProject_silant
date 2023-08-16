@@ -6,21 +6,14 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.filters import SearchFilter
 from rest_framework.views import APIView
-
 from .filters import MachineFilter, MaintenanceFilter, ClaimFilter
 from .serializers import *
 from .models import *
-from allauth.account.views import SignupView
 from rest_framework import generics
 from .serializers import UserSerializer
-from django.shortcuts import render, redirect
-from django_filters import rest_framework as filters
-from django.contrib.auth import authenticate, login, logout
-from rest_framework_jwt.settings import api_settings
-from django.http import JsonResponse
-from rest_framework_simplejwt.views import TokenObtainPairView
+from django.shortcuts import render
+from django.contrib.auth import authenticate, logout
 
 
 @api_view(['POST'])
@@ -34,7 +27,7 @@ def issue_token(request: Request):
     if serializer.is_valid():
         authenticated_user = authenticate(**serializer.validated_data)
 
-        # Check if authenticate returned a valid user
+        # Checking if authenticate returned a valid user
         if authenticated_user is None:
             return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -42,21 +35,6 @@ def issue_token(request: Request):
         return Response(TokenSeriazliser(token).data)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# @api_view(['POST'])
-# @permission_classes([AllowAny])
-# def issue_token(request: Request):
-#     serializer = IssueTokenRequestSerializer(data=request.data)
-#     if serializer.is_valid():
-#         authenticated_user = authenticate(**serializer.validated_data)
-#         try:
-#             token = Token.objects.get(user=authenticated_user)
-#         except Token.DoesNotExist:
-#             token = Token.objects.create(user=authenticated_user)
-#         return Response(TokenSeriazliser(token).data)
-#     else:
-#         return Response(serializer.errors, status=400)
 
 
 @api_view()

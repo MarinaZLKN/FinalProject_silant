@@ -5,25 +5,38 @@ import './Search.css';
 const Search = () => {
   const [data, setData] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchAttempted, setSearchAttempted] = useState(false);
   const url = 'http://127.0.0.1:8000/api/machines/';
 
   const handleSearchChange = (event) => {
     const { value } = event.target;
-    setSearchTerm(value);
+    setSearchTerm(value.trim()); // trim white spaces
   };
 
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
 
+    setSearchAttempted(true);
+
     try {
       const response = await axios.get(url, {
         params: { machine_factory_number: searchTerm }
       });
-      const machineData = response.data[0];
-      setData(machineData);
+
+      const machineData = Array.isArray(response.data) ? response.data : [];
+      const matchingMachine = machineData.find(machine =>
+        String(machine.machine_factory_number) === String(searchTerm)
+      );
+      setData(matchingMachine ? [matchingMachine] : []); // if a machine matches, set it to state. Otherwise, set an empty array.
+
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  };
+   const handleReset = () => {
+    setSearchTerm('');
+    setData(null);
+    setSearchAttempted(false);
   };
 
   return (
@@ -38,48 +51,48 @@ const Search = () => {
             placeholder="Введите заводской номер машины"
           />
           <button className="search-btn" type="submit">Поиск</button>
+          <button className="search-btn" type="button" onClick={handleReset}>Сброс</button>
         </div>
       </form>
 
-      {data ? (
-        <div>
-          <h2 className="search-info_label">Информация о машине с номером {data.machine_factory_number}</h2>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Техническая модель</th>
-                <th>Модель двигателя</th>
-                <th>Зав. № двигателя</th>
-                <th>Зав. № трансмиссии</th>
-                <th>Зав. № ведущего моста</th>
-                <th>Зав. № управляемого моста</th>
-                <th>Модель трансмиссии</th>
-                <th>Модель ведущего моста</th>
-                <th>Модель управляемого моста</th>
-
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{data.technical_model}</td>
-                <td>{data.engine_model}</td>
-                <td>{data.engine_factory_number}</td>
-                <td>{data.transmission_factory_number}</td>
-                <td>{data.driving_bridge_factory_number}</td>
-                <td>{data.controlled_bridge_factory_number}</td>
-                <td>{data.transmission_model}</td>
-                <td>{data.driving_bridge_model}</td>
-                <td>{data.controlled_bridge_model}</td>
-
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      ) : (
+      {data && data.length > 0 ? (
+          <div >
+            <h2 className="search-info_label">Информация о машине с номером {data[0].machine_factory_number}</h2>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Техническая модель</th>
+                  <th>Модель двигателя</th>
+                  <th>Зав. № двигателя</th>
+                  <th>Зав. № трансмиссии</th>
+                  <th>Зав. № ведущего моста</th>
+                  <th>Зав. № управляемого моста</th>
+                  <th>Модель трансмиссии</th>
+                  <th>Модель ведущего моста</th>
+                  <th>Модель управляемого моста</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{data[0].technical_model}</td>
+                  <td>{data[0].engine_model}</td>
+                  <td>{data[0].engine_factory_number}</td>
+                  <td>{data[0].transmission_factory_number}</td>
+                  <td>{data[0].driving_bridge_factory_number}</td>
+                  <td>{data[0].controlled_bridge_factory_number}</td>
+                  <td>{data[0].transmission_model}</td>
+                  <td>{data[0].driving_bridge_model}</td>
+                  <td>{data[0].controlled_bridge_model}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      ) : searchAttempted && (
         <p>Данных о машине с таким заводским номером нет в системе</p>
       )}
     </div>
-  );
+);
+
 };
 
 export default Search;
