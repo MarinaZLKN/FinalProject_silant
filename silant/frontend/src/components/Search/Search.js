@@ -10,7 +10,7 @@ const Search = () => {
 
   const handleSearchChange = (event) => {
     const { value } = event.target;
-    setSearchTerm(value.trim()); // trim white spaces
+    setSearchTerm(value.trim());
   };
 
   const handleSearchSubmit = async (event) => {
@@ -27,7 +27,7 @@ const Search = () => {
       const matchingMachine = machineData.find(machine =>
         String(machine.machine_factory_number) === String(searchTerm)
       );
-      setData(matchingMachine ? [matchingMachine] : []); // if a machine matches, set it to state. Otherwise, set an empty array.
+      setData(matchingMachine ? [matchingMachine] : []);
 
     } catch (error) {
       console.error('Error fetching data:', error);

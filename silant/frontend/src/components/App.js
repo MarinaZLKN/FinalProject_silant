@@ -18,6 +18,7 @@ import MachineForm from "./Main/CreateForms/MachineForm";
 import MaintenanceForm from "./Main/CreateForms/MaintenanceForm";
 import ClaimForm from "./Main/CreateForms/ClaimForm";
 import LogoutButton from "./Header/Logout";
+import PrivateRoute from "./Main/Auth/PrivateRoute";
 
 
 function App () {
@@ -33,6 +34,7 @@ function App () {
         </div>
           {/*<MainPicture />*/}
           <Routes>
+              <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
               <Route path="/" element={<MainPicture />} />
               <Route path="/machines/:id" element={<MachineDetails />} />
               <Route path="/claims/:id" element={<ClaimDetails />} />
