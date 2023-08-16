@@ -2,11 +2,12 @@ import django_filters
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.request import Request
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
+from rest_framework.views import APIView
 
 from .filters import MachineFilter, MaintenanceFilter, ClaimFilter
 from .serializers import *
@@ -16,9 +17,31 @@ from rest_framework import generics
 from .serializers import UserSerializer
 from django.shortcuts import render, redirect
 from django_filters import rest_framework as filters
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from rest_framework_jwt.settings import api_settings
 from django.http import JsonResponse
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def issue_token(request: Request):
+    serializer = IssueTokenRequestSerializer(data=request.data)
+    if request.user.is_authenticated:
+        print("User is logged in!")
+    else:
+        print("User is not logged in!")
+    if serializer.is_valid():
+        authenticated_user = authenticate(**serializer.validated_data)
+
+        # Check if authenticate returned a valid user
+        if authenticated_user is None:
+            return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        token, created = Token.objects.get_or_create(user=authenticated_user)
+        return Response(TokenSeriazliser(token).data)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # @api_view(['POST'])
@@ -34,16 +57,28 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 #         return Response(TokenSeriazliser(token).data)
 #     else:
 #         return Response(serializer.errors, status=400)
-#
-#
-# @api_view()
-# @permission_classes([IsAuthenticated])
-# @authentication_classes([TokenAuthentication])
-# def user(request: Request):
-#     return Response({
-#         'data': UserSerializer(request.user).data
-#     })
 
+
+@api_view()
+@permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+def user(request: Request):
+    if request.user.is_authenticated:
+        print("User is logged in!")
+    else:
+        print("User is not logged in!")
+    return Response({
+        'data': UserSerializer(request.user).data
+    })
+
+
+class UserLogout(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+    def post(self, request):
+        print("User  is logged out!")
+        logout(request)
+        return Response(status=status.HTTP_200_OK)
 
 # def register_user(request):
 #     if request.method == 'POST':
@@ -56,24 +91,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 #
 #     return render(request, 'accounts/register.html', {'form': form})
 #
-#
-# class CustomTokenObtainPairView(TokenObtainPairView):
-#     serializer_class = CustomTokenObtainPairSerializer
-#
-#     def post(self, request, *args, **kwargs):
-#         response = super().post(request, *args, **kwargs)
-#         refresh_token = response.data.get('refresh')
-#         access_token = response.data.get('access')
-#         if refresh_token and access_token:
-#             response.data['refresh_token'] = refresh_token
-#             response.data['access_token'] = access_token
-#             response.data['user'] = {
-#                 'id': self.request.user.id,
-#                 'username': self.request.user.username,
-#                 'role': self.request.user.role,
-#             }
-#         return response
-
 
 # def login_view(request):
 #     if request.method == 'POST':
@@ -111,16 +128,6 @@ class CustomUserList(viewsets.ModelViewSet):
 class ClientList(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-
-
-# class ServiceCompanyList(viewsets.ModelViewSet):
-#     queryset = ServiceCompany.objects.all()
-#     serializer_class = ServiceCompanySerializer
-
-
-# class ManagerList(viewsets.ModelViewSet):
-#     queryset = Manager.objects.all()
-#     serializer_class = ManagerSerializer
 
 
 class ServiceCompanyViewset(viewsets.ModelViewSet):
@@ -175,7 +182,6 @@ class TypeOfMaintenanceViewset(viewsets.ModelViewSet):
 class RecoveryMethodViewset(viewsets.ModelViewSet):
     queryset = RecoveryMethod.objects.all()
     serializer_class = RecoveryMethodSerializer
-    #serializer_class = ClientSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_fields = ["name"]
 
@@ -230,40 +236,7 @@ class ClaimFilterView(generics.ListAPIView):
         return Claim.objects.all()
 
 
-
-
-# class MachineFilterView(generics.ListAPIView):
-#     serializer_class = MachineSerializer
-#     filter_backends = [DjangoFilterBackend]
-#     filterset_fields = ['technical_model__name', 'engine_model__name', 'transmission_model__name', 'controlled_bridge_model__name', 'driving_bridge_model__name']
-#
-#     def get_queryset(self):
-#         queryset = Machine.objects.all()
-#
-#         technical_model = self.request.query_params.get('technical_model', None)
-#         engine_model = self.request.query_params.get('engine_model', None)
-#         transmission_model = self.request.query_params.get('transmission_model', None)
-#         controlled_bridge_model = self.request.query_params.get('controlled_bridge_model', None)
-#         driving_bridge_model = self.request.query_params.get('driving_bridge_model', None)
-#
-#         if technical_model:
-#             queryset = queryset.filter(technical_model__name=technical_model)
-#
-#         if engine_model:
-#             queryset = queryset.filter(engine_model__name=engine_model)
-#
-#         if transmission_model:
-#             queryset = queryset.filter(transmission_model__name=transmission_model)
-#
-#         if controlled_bridge_model:
-#             queryset = queryset.filter(controlled_bridge_model__name=controlled_bridge_model)
-#
-#         if driving_bridge_model:
-#             queryset = queryset.filter(driving_bridge_model__name=driving_bridge_model)
-#
-#         return queryset
-
-
+# Machine/Maintenance/Claim instance ViewSets
 class MachineViewset(viewsets.ModelViewSet):
     queryset = Machine.objects.all()
     serializer_class = MachineSerializer
@@ -283,56 +256,6 @@ class ClaimViewset(viewsets.ModelViewSet):
     serializer_class = ClaimSerializer
     ordering_fields = ['-date_of_failure']
     ordering = ['-date_of_failure']
-
-# Serializer for Maintenance instance filtration
-# class MaintenanceFilterView(generics.ListAPIView):
-#     serializer_class = MaintenanceSerializer
-#     filter_backends = [SearchFilter]
-#     search_fields = ['machine__machine_factory_number', 'type_of_maintenance__name', 'service_company__name']
-#
-#     def get_queryset(self):
-#         queryset = Maintenance.objects.all()
-#         machine_factory_number = self.request.query_params.get('machine_factory_number', None)
-#         type_of_maintenance = self.request.query_params.get('type_of_maintenance', None)
-#         service_company = self.request.query_params.get('service_company', None)
-#
-#         if machine_factory_number:
-#             queryset = queryset.filter(machine__machine_factory_number=machine_factory_number)
-#
-#         if type_of_maintenance:
-#             queryset = queryset.filter(type_of_maintenance__name=type_of_maintenance)
-#
-#         if service_company:
-#             queryset = queryset.filter(service_company__name=service_company)
-#
-#         return queryset
-
-
-# Serializer for Claim instance filtration
-# class ClaimFilterView(generics.ListAPIView):
-#     serializer_class = ClaimSerializer
-#     filter_backends = [DjangoFilterBackend]
-#     filterset_fields = ['service_company__name', 'failure_node__name', 'recovery_method__name']
-#
-#     def get_queryset(self):
-#         queryset = Claim.objects.all()
-#
-#         service_company = self.request.query_params.get('service_company', None)
-#         failure_node = self.request.query_params.get('failure_node', None)
-#         recovery_method = self.request.query_params.get('recovery_method', None)
-#
-#         if service_company:
-#             queryset = queryset.filter(service_company__name=service_company)
-#
-#         if failure_node:
-#             queryset = queryset.filter(failure_node__name=failure_node)
-#
-#         if recovery_method:
-#             queryset = queryset.filter(recovery_method__name=recovery_method)
-#
-#         return queryset
-
-
 
 
 # Machine instance detail view

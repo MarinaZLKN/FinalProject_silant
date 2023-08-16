@@ -17,6 +17,7 @@ import MaintenanceDetails from "./Main/MaintenanceDetails";
 import MachineForm from "./Main/CreateForms/MachineForm";
 import MaintenanceForm from "./Main/CreateForms/MaintenanceForm";
 import ClaimForm from "./Main/CreateForms/ClaimForm";
+import LogoutButton from "./Header/Logout";
 
 
 function App () {
@@ -28,8 +29,9 @@ function App () {
           <div className="dashboard">
               < Dashboard />
               <Search/>
-              <MainPicture />
+               <LogoutButton />
         </div>
+          {/*<MainPicture />*/}
           <Routes>
               <Route path="/" element={<MainPicture />} />
               <Route path="/machines/:id" element={<MachineDetails />} />
@@ -38,7 +40,7 @@ function App () {
               <Route path="/create-machine" element={<MachineForm/>} />
               <Route path="/create-main" element={<MaintenanceForm/>} />
               <Route path="/create-claim" element={<ClaimForm/>} />
-              <Route path="/" element={<Search />} />
+              {/*<Route path="/" element={<Search />} />*/}
               <Route path="/login" element={<Login />} />
               <Route path="/machines" element={<MachineTable />} />
               <Route path="/claim" element={<ClaimTable />} />

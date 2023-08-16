@@ -14,30 +14,20 @@ from rest_framework import serializers
 #          fields = ['username', 'first_name', 'last_name', 'email', 'date_joined']
 #
 #
-# class IssueTokenRequestSerializer(Serializer):
-#     model = CustomUser
-#
-#     username = CharField(required=True)
-#     password = CharField(required=True)
-#
-#
-# class TokenSeriazliser(ModelSerializer):
-#
-#     class Meta:
-#         model = Token
-#         fields = ['key']
+class IssueTokenRequestSerializer(Serializer):
+    model = CustomUser
+
+    username = CharField(required=True)
+    password = CharField(required=True)
 
 
-# class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-#     @classmethod
-#     def get_token(cls, user):
-#         token = super().get_token(user)
-#
-#         # Add custom claims to the token payload
-#         token['role'] = user.role
-#
-#         return token
-#
+class TokenSeriazliser(ModelSerializer):
+
+    class Meta:
+        model = Token
+        fields = ['key']
+
+
 User = get_user_model()
 ROLES_CHOICES = (
     ('guest', 'Guest'),
@@ -64,11 +54,6 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
-
-# class CustomUserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CustomUser
-#         fields = ['id', 'username', 'role', 'password']
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:

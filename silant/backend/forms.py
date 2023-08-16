@@ -14,6 +14,7 @@ class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput, help_text="Enter the same password as above, for verification.")
 
+
 class CustomUserChangeForm(UserChangeForm):
 
     class Meta:
@@ -21,7 +22,7 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ('username', 'email')
 
 
-# Not really necessary logic for registration
+# Not really necessary logic for registration if ever needed
 
 # class CustomSignupForm(SignupForm):
 #     role = forms.ChoiceField(choices=CustomUser.ROLES, label='Role')
