@@ -13,7 +13,7 @@ const LogoutButton = () => {
             .then(() => {
                 logout();
                 axios.defaults.headers.common['Authorization'] = '';
-                navigate('/login');
+                navigate('/');
             })
             .catch(error => {
                 console.error("Failed to logout:", error);

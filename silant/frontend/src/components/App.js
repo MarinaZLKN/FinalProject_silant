@@ -30,7 +30,8 @@ function App () {
           <div className="dashboard">
               < Dashboard />
               <Search/>
-               <LogoutButton />
+
+
         </div>
           {/*<MainPicture />*/}
           <Routes>

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {useAuth} from "../Main/Auth/AuthContext";
-
+import './Login.css'
+import Logout from "./Logout";
 
 const axiosInstance = axios.create({
     baseURL: 'http://127.0.0.1:8000/',
@@ -15,11 +16,10 @@ const Login = () => {
     const navigate = useNavigate();
 
     // Destructure the login function from the AuthContext
-    const { login } = useAuth();
+    const { login, isAuthenticated } = useAuth();
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
-        console.log('Username:', event.target.value);
     };
 
     const handlePasswordChange = (event) => {
@@ -54,13 +54,17 @@ const Login = () => {
             });
     };
 
+    if (isAuthenticated) {
+        return <Logout />;
+    }
+
 
     return (
         <div className="login-container">
-            <h2 className="login-title">Авторизация</h2>
+            {/*<h2 className="login-title">Авторизация</h2>*/}
             <form className="login_form" onSubmit={handleSubmit}>
                 <label className="login_label">
-                    Никнейм:
+                    Username:
                     <input
                         className="login_input"
                         type="text"
@@ -70,7 +74,7 @@ const Login = () => {
                     />
                 </label>
                 <label className="login_label">
-                    Пароль:
+                    Password:
                     <input
                         className="login_input"
                         type="password"
@@ -80,7 +84,7 @@ const Login = () => {
                     />
                 </label>
                 <button className="login-btn" type="submit">
-                    Войти в систему
+                    <p className="login_p">Войти в систему</p>
                 </button>
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
             </form>

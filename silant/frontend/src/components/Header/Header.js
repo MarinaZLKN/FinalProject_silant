@@ -1,9 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Header.css'
 import Logo from "./Logo";
 import {Link} from "react-router-dom";
+import Login from "./Login";
+import {useAuth} from "../Main/Auth/AuthContext";
+import LogoutButton from "./Logout";
 
 const Header = () => {
+    const [showLogin, setShowLogin] = useState(false);
+    const { isAuthenticated } = useAuth();
 
     return (
         <header className="header">
@@ -15,10 +20,7 @@ const Header = () => {
                          </Link>
                     </div>
                     <div className="header-info"> +7-8352-20-12-09, telegram</div>
-                    <button className="auth-btn">
-                        <Link to="/login" className="auth-link">
-                            <span className="auth-label">Авторизация</span> </Link>
-                    </button>
+                    {isAuthenticated ? <LogoutButton /> : <Login />}
                 </div>
                 <div className="header-down">
                     <p>Электронная сервисная книжка "Мой Силант"</p>

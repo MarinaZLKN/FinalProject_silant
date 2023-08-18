@@ -1,6 +1,6 @@
 .header {
   background-color: #EBE6D6;
-  padding: 20px;
+  padding: 10px 20px;
 }
 
 .header-main {
@@ -20,6 +20,7 @@
     text-align: center;
     font-size: 18px;
     font-weight: bold;
+    margin-top: 0px;
 
 }
 .auth-btn {
