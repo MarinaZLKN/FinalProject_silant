@@ -3,7 +3,7 @@ import '../styles/App.css';
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import Search from "./Search/Search";
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import Login from "./Header/Login";
 import MainPicture from "./Main/MainPicture";
 import MachineTable from "./Main/MachineTable";
@@ -35,6 +35,7 @@ function App () {
         </div>
           {/*<MainPicture />*/}
           <Routes>
+              <Route path="*" element={<Navigate to="/" replace />} />
               <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
               <Route path="/" element={<MainPicture />} />
               <Route path="/machines/:id" element={<MachineDetails />} />

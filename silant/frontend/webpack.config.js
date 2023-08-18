@@ -23,20 +23,16 @@ module.exports = {
                 use: ['style-loader', 'css-loader']
             },
             {
-                test: /\.(jpg|png|svg)$/,
-                loader: 'url-loader',
-            },
-            {
-                test: /\.(png|jpe?g|gif)$/i,
+                test: /\.(png|jpe?g|gif|svg)$/i,
                 use: [
-                  {
-                    loader: "file-loader",
-                      options: {
-                        name: 'images/[name].[hash:8].[ext]'
-                    }
-                  },
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: 'images/[name].[hash:8].[ext]'
+                        }
+                    },
                 ],
-            },
+            }
         ]
     },
 

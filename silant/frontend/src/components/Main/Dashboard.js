@@ -1,15 +1,15 @@
 import React, {useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import './Dashboard.css';
+import {useAuth} from "./Auth/AuthContext";
 
 const Dashboard = () => {
-    const navigate = useNavigate();
+    const { isAuthenticated } = useAuth();
 
-     useEffect(() => {
-        if (!localStorage.getItem('authToken')) {
-            navigate('/login');
-        }
-    }, [navigate]);
+    if (!isAuthenticated) {
+        return null;
+    }
+
   return (
       <div className="main-page_content">
           <div className="main-page_selection">

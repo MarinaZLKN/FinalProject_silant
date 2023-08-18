@@ -7,7 +7,6 @@ import {useAuth} from "../Main/Auth/AuthContext";
 import LogoutButton from "./Logout";
 
 const Header = () => {
-    const [showLogin, setShowLogin] = useState(false);
     const { isAuthenticated } = useAuth();
 
     return (
