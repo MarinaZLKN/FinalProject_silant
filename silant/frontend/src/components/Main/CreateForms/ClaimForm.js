@@ -184,6 +184,18 @@ const ClaimForm = () => {
                     />
                   </label>
               </div>
+              <div className="form-row">
+                  <label className="form-label">
+                    Spare parts used:
+                    <input
+                      type="text"
+                      name="spare_parts_used"
+                      value={claimData.spare_parts_used}
+                      onChange={handleChange}
+                      className="form-input"
+                    />
+                  </label>
+              </div>
 
               <div className="form-row">
                     <label className="form-label">Failure Node:</label>

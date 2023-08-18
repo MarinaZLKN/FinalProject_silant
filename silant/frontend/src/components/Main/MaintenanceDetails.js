@@ -6,21 +6,39 @@ import TypeOfMaintenance from "./Descriptions/TypeOfMaintenance";
 
 const MaintenanceDetails = () => {
   const { id } = useParams();
-  const [maintenanceData, setMaintenanceData] = useState(null);
+  const [maintenanceDetails, setMaintenanceDetails] = useState({
+    maintenanceData: null,
+    organizationName: '',
+    typeOfMaintenanceName: '',
+    machineName: '',
+  });
 
   useEffect(() => {
     axios
       .get(`http://127.0.0.1:8000/api/maintenances/${id}/`)
       .then((response) => {
-        console.log('API Response:', response.data);
-        setMaintenanceData(response.data);
-      })
-      .catch((error) => console.log(error));
-  }, [id]);
+        const data = response.data;
+        console.log('API Response:',data);
 
-  if (!maintenanceData) {
-    return <p>Loading maintenance data...</p>;
-  }
+        return Promise.all([
+                    axios.get(`http://127.0.0.1:8000/api/organizations/${data.organization}/`),
+                    axios.get(`http://127.0.0.1:8000/api/types_of_maintenance/${data.type_of_maintenance}/`),
+                    axios.get(`http://127.0.0.1:8000/api/machines/${data.machine}/`),
+                ]).then(([org, type, machine,]) => {
+                    setMaintenanceDetails({
+                        maintenanceData: data,
+                        organizationName: org.data.name,
+                        typeOfMaintenanceName: type.data.name,
+                        machineName: machine.data.machine_factory_number,
+                    });
+                });
+            })
+            .catch(error => console.log(error));
+    }, [id]);
+
+    if (!maintenanceDetails.maintenanceData) {
+        return <p>Loading maintenance data...</p>;
+    }
 
   return (
     <div>
@@ -29,33 +47,33 @@ const MaintenanceDetails = () => {
       </div>
       <table className="machine-table">
         <tbody>
+        <tr>
+            <td>Data of Order:</td>
+            <td>{maintenanceDetails.maintenanceData.data_of_order}</td>
+          </tr>
           <tr>
             <td>Date of Maintenance:</td>
-            <td>{maintenanceData.date_of_maintenance}</td>
+            <td>{maintenanceDetails.maintenanceData.date_of_maintenance}</td>
           </tr>
           <tr>
             <td>Operating Time:</td>
-            <td>{maintenanceData.operating_time} м/час</td>
+            <td>{maintenanceDetails.maintenanceData.operating_time} м/час</td>
           </tr>
           <tr>
             <td>Order Number:</td>
-            <td>{maintenanceData.order_number}</td>
-          </tr>
-          <tr>
-            <td>Data of Order:</td>
-            <td>{maintenanceData.data_of_order}</td>
+            <td>{maintenanceDetails.maintenanceData.order_number}</td>
           </tr>
           <tr>
             <td>Organization:</td>
-            <td>{maintenanceData.organization} <i><Organization/></i> </td>
+            <td>{maintenanceDetails.organizationName} <i><Organization/></i> </td>
           </tr>
           <tr>
             <td>Type of Maintenance:</td>
-            <td>{maintenanceData.type_of_maintenance} <i><TypeOfMaintenance/></i> </td>
+            <td>{maintenanceDetails.typeOfMaintenanceName} <i><TypeOfMaintenance/></i> </td>
           </tr>
           <tr>
             <td>Machine Factory Number:</td>
-            <td>{maintenanceData.machine}</td>
+            <td>{maintenanceDetails.machineName}</td>
           </tr>
 
 

@@ -7,21 +7,43 @@ import RecoveryMethod from "./Descriptions/RecoveryMethod";
 
 const ClaimDetails = () => {
   const { id } = useParams();
-  const [claimData, setClaimData] = useState(null);
+  const [claimDetails, setClaimDetails] = useState({
+      claimData: null,
+      failureNodeName: '',
+      recoveryMethodName: '',
+      serviceCompanyName: '',
+      machineName: '',
+
+  });
 
   useEffect(() => {
     axios
       .get(`http://127.0.0.1:8000/api/claim/${id}/`)
       .then((response) => {
-        console.log('API Response:', response.data);
-        setClaimData(response.data);
-      })
-      .catch((error) => console.log(error));
-  }, [id]);
+          const data = response.data;
+          console.log('API Response:', data);
 
-  if (!claimData) {
-    return <p>Loading claim data...</p>;
-  }
+          return Promise.all([
+                    axios.get(`http://127.0.0.1:8000/api/failure_nodes/${data.failure_node}/`),
+                    axios.get(`http://127.0.0.1:8000/api/recovery_methods/${data.recovery_method}/`),
+                    axios.get(`http://127.0.0.1:8000/api/machines/${data.machine}/`),
+                    axios.get(`http://127.0.0.1:8000/api/service_companies/${data.service_company}/`),
+                ]).then(([failure, method, machine, serviceCompany,client]) => {
+                    setClaimDetails({
+                        claimData: data,
+                        failureNodeName: failure.data.name,
+                        recoveryMethodName: method.data.name,
+                        machineName: machine.data.machine_factory_number,
+                        serviceCompanyName: serviceCompany.data.name.first_name,
+                    });
+                });
+            })
+            .catch(error => console.log(error));
+    }, [id]);
+
+    if (!claimDetails.claimData) {
+        return <p>Loading claim data...</p>;
+    }
 
   return (
     <div>
@@ -32,41 +54,40 @@ const ClaimDetails = () => {
         <tbody>
         <tr>
             <td>Machine Factory Number:</td>
-            <td>{claimData.machine}</td>
+            <td>{claimDetails.machineName}</td>
           </tr>
           <tr>
             <td>Date of Failure:</td>
-            <td>{claimData.date_of_failure}</td>
+            <td>{claimDetails.claimData.date_of_failure}</td>
           </tr>
           <tr>
             <td>Date of Recovery:</td>
-            <td>{claimData.date_of_recovery}</td>
+            <td>{claimDetails.claimData.date_of_recovery}</td>
           </tr>
           <tr>
             <td>Operating Time:</td>
-            <td>{claimData.operating_time} м/час</td>
+            <td>{claimDetails.claimData.operating_time} м/час</td>
           </tr>
           <tr>
             <td>Failure Node:</td>
-            <td>{claimData.failure_node} <i><FailureNode/></i> </td>
+            <td>{claimDetails.failure_node} <i><FailureNode/></i> </td>
           </tr>
           <tr>
             <td>Recovery Method:</td>
-            <td>{claimData.recovery_method} <i><RecoveryMethod/></i> </td>
+            <td>{claimDetails.recovery_method} <i><RecoveryMethod/></i> </td>
           </tr>
         <tr>
             <td>Spare Parts Used:</td>
-            <td>{claimData.spare_parts_used}</td>
+            <td>{claimDetails.claimData.spare_parts_used}</td>
           </tr>
         <tr>
             <td>Technical Downtime:</td>
-            <td>{claimData.technical_downtime}</td>
+            <td>{claimDetails.claimData.technical_downtime} days</td>
           </tr>
           <tr>
             <td>Service Company:</td>
-            <td>{claimData.service_company}</td>
+            <td>{claimDetails.serviceCompanyName}</td>
           </tr>
-          {/* Add more claim details as needed */}
         </tbody>
       </table>
     </div>

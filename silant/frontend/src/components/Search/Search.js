@@ -3,6 +3,11 @@ import axios from 'axios';
 import './Search.css';
 
 const Search = () => {
+  const [technicalModel, setTechnicalModel] = useState(null);
+  const [engineModel, setEngineModel] = useState(null);
+  const [transmissionModel, setTransmissionModel] = useState(null);
+  const [drivingBridgeModel, setDrivingBridgeModel] = useState(null);
+  const [controlledBridgeModel, setControlledBridgeModel] = useState(null);
   const [data, setData] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchAttempted, setSearchAttempted] = useState(false);
@@ -15,7 +20,6 @@ const Search = () => {
 
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
-
     setSearchAttempted(true);
 
     try {
@@ -29,10 +33,27 @@ const Search = () => {
       );
       setData(matchingMachine ? [matchingMachine] : []);
 
+      if (matchingMachine) {
+        Promise.all([
+          axios.get(`http://127.0.0.1:8000/api/technical_models/${matchingMachine.technical_model}/`),
+          axios.get(`http://127.0.0.1:8000/api/engine_models/${matchingMachine.engine_model}/`),
+          axios.get(`http://127.0.0.1:8000/api/transmission_models/${matchingMachine.transmission_model}/`),
+          axios.get(`http://127.0.0.1:8000/api/driving_bridge_models/${matchingMachine.driving_bridge_model}/`),
+          axios.get(`http://127.0.0.1:8000/api/controlled_bridge_models/${matchingMachine.controlled_bridge_model}/`)
+        ]).then(([technical, engine, transmission, drivingBridge, controlledBridge]) => {
+          setTechnicalModel(technical.data);
+          setEngineModel(engine.data);
+          setTransmissionModel(transmission.data);
+          setDrivingBridgeModel(drivingBridge.data);
+          setControlledBridgeModel(controlledBridge.data);
+        });
+      }
+
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
+
    const handleReset = () => {
     setSearchTerm('');
     setData(null);
@@ -74,15 +95,15 @@ const Search = () => {
               </thead>
               <tbody>
                 <tr>
-                  <td>{data[0].technical_model}</td>
-                  <td>{data[0].engine_model}</td>
+                  <td>{technicalModel ? technicalModel.name : 'Loading...'}</td>
+                  <td>{engineModel ? engineModel.name : 'Loading...'}</td>
                   <td>{data[0].engine_factory_number}</td>
                   <td>{data[0].transmission_factory_number}</td>
                   <td>{data[0].driving_bridge_factory_number}</td>
                   <td>{data[0].controlled_bridge_factory_number}</td>
-                  <td>{data[0].transmission_model}</td>
-                  <td>{data[0].driving_bridge_model}</td>
-                  <td>{data[0].controlled_bridge_model}</td>
+                  <td>{transmissionModel ? transmissionModel.name : 'Loading...'}</td>
+                  <td>{drivingBridgeModel ? drivingBridgeModel.name : 'Loading...'}</td>
+                  <td>{controlledBridgeModel ? controlledBridgeModel.name : 'Loading...'}</td>
                 </tr>
               </tbody>
             </table>
