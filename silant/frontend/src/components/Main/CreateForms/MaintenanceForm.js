@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import axiosInstance from "../../axiosConfig";
 import './MachineForm.css'
+import {useAuth} from "../Auth/AuthContext";
 
 const parseValue = (value) => {
     if (value === "") return null;
@@ -17,6 +18,9 @@ const MaintenanceForm = () => {
     type_of_maintenance: '',
     machine: '',
   });
+
+  const { permissions } = useAuth();
+
   const [data, setData] = useState({
         organizations: [],
         type_of_maintenances: [],
@@ -26,9 +30,9 @@ const MaintenanceForm = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const responseOrganizations = await axios.get('http://127.0.0.1:8000/api/organizations/');
-                const responseTypeOgMaintenance = await axios.get('http://127.0.0.1:8000/api/types_of_maintenance/');
-                const responseMachines = await axios.get('http://127.0.0.1:8000/api/machines/');
+                const responseOrganizations = await axiosInstance.get('http://127.0.0.1:8000/api/organizations/');
+                const responseTypeOgMaintenance = await axiosInstance.get('http://127.0.0.1:8000/api/types_of_maintenance/');
+                const responseMachines = await axiosInstance.get('http://127.0.0.1:8000/api/machines/');
 
                 setData({
 
@@ -74,7 +78,12 @@ const MaintenanceForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("User permissions:", permissions);
 
+    if (!permissions.includes("backend.add_maintenance")) {
+        console.error("User does not have permission to add a machine.");
+        return;
+    }
     const additionalFormData = {
             organization: parseValue(e.target.organization.value),
             type_of_maintenance: parseValue(e.target.type_of_maintenance.value),
@@ -88,7 +97,7 @@ const MaintenanceForm = () => {
        };
 
         console.log('postData: ', postData)
-    axios.post('http://127.0.0.1:8000/api/maintenances/', postData, {
+    axiosInstance.post('http://127.0.0.1:8000/api/maintenances/', postData, {
          headers: {
                     'Content-Type': 'application/json'
                 }

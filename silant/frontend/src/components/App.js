@@ -19,17 +19,20 @@ import MaintenanceForm from "./Main/CreateForms/MaintenanceForm";
 import ClaimForm from "./Main/CreateForms/ClaimForm";
 import PrivateRoute from "./Main/Auth/PrivateRoute";
 import MainPagePicture from "./Main/MainPagePicture";
+import PersonalBoard from "./Main/Auth/PersonalBoard";
+import {useAuth} from "./Main/Auth/AuthContext";
 
 
 function App () {
+    const { isAuthenticated } = useAuth();
     return (
     <div className="main-page">
       <Header />
 
       <main className="content">
           <div className="dashboard">
+              {isAuthenticated ? <PersonalBoard /> : <Search />}
               < Dashboard />
-              <Search/>
 
 
         </div>

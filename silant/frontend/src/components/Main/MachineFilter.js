@@ -18,14 +18,14 @@ const MachineFilter = () => {
   const [filteredMachines, setFilteredMachines] = useState([]);
   const [machines, setMachines] = useState([]);
 
+
   const navigate = useNavigate();
 
   useEffect(() => {
    axios.get("http://127.0.0.1:8000/api/machines/").then((response) => {
-      console.log("Fetched machines:", response.data);
       setMachines(response.data);
-   });
-}, []);
+   });}, []);
+
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/technical_models/").then((response) => {
@@ -116,7 +116,6 @@ const MachineFilter = () => {
     return model ? model.name : 'None';
   }
 
-  console.log("Rendering machines:", filteredMachines);
 
   return (
     <div>

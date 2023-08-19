@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from "../axiosConfig";
 import { useNavigate } from 'react-router-dom';
 import {useAuth} from "../Main/Auth/AuthContext";
 import './Login.css'
 import Logout from "./Logout";
 
-const axiosInstance = axios.create({
-    baseURL: 'http://127.0.0.1:8000/',
-});
+
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -15,8 +13,9 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
+
     // Destructure the login function from the AuthContext
-    const { login, isAuthenticated } = useAuth();
+    const { login, isAuthenticated, setUserPermissions, setUser } = useAuth();
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
@@ -26,9 +25,12 @@ const Login = () => {
         setPassword(event.target.value);
     };
 
+     let fetchedPermissions;
+
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log('Sending credentials:', { username, password });
+        let authToken;
 
         axiosInstance
             .post('http://127.0.0.1:8000/api/login', {
@@ -37,22 +39,42 @@ const Login = () => {
             })
             .then((response) => {
                 console.log('Server Response:', response.data);
-                const authToken = response.data.key;
-                login(authToken);
+                authToken = response.data.key;
                 axiosInstance.defaults.headers.common['Authorization'] = 'Token ' + authToken;
                 console.log('Authorization Header Set:', axiosInstance.defaults.headers.common['Authorization']);
 
-                navigate('/');
+                // Fetching user permissions after successful login
+                return axiosInstance.get('http://127.0.0.1:8000/api/permissions/');
             })
+            .then((permResponse) => {
+                const fetchedPermissions = permResponse.data.permissions;
+                setUserPermissions(fetchedPermissions);
+                console.log('Permissions Fetched:', fetchedPermissions);
+
+                return axiosInstance.get('http://127.0.0.1:8000/api/users/');
+            })
+            .then((userResponse) => {
+                const fetchedUser = userResponse.data.find(u => u.username === username);
+
+                if (fetchedUser) {
+                    setUser(fetchedUser);
+                }
+
+                // Updating the login method with both token and permissions
+                login(authToken, fetchedPermissions);
+
+                navigate('/');
+             })
             .catch((error) => {
                 console.error(error);
-                if (error.response && error.response.data) {
-                    setErrorMessage(error.response.data.error);
+                if (error.response && error.response.status === 401) {
+                    setErrorMessage("Invalid username or password");
                 } else {
-                    setErrorMessage('An error occurred. Please try again.');
+                    setErrorMessage("An unexpected error occurred");
                 }
             });
     };
+
 
     if (isAuthenticated) {
         return <Logout />;
@@ -86,7 +108,7 @@ const Login = () => {
                 <button className="login-btn" type="submit">
                     <p className="login_p">Войти в систему</p>
                 </button>
-                {errorMessage && <p className="error-message">{errorMessage}</p>}
+                {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
             </form>
         </div>
     );

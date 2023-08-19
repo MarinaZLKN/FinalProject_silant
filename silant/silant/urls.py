@@ -37,6 +37,7 @@ urlpatterns = [
     path('api/user', user, name='user'),
     path('api/login', issue_token, name='issue_token'),
     path('api/logout', UserLogout.as_view(), name='logout'),
+    path('api/permissions/', views.get_user_permissions, name='get_user_permissions'),
     # path('login/', CustomTokenObtainPairView.as_view(), name='login'),
     # path('login/', login_view, name='login'),
     path('api-auth/', include('rest_framework.urls')),

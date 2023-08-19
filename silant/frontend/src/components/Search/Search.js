@@ -78,7 +78,7 @@ const Search = () => {
 
       {data && data.length > 0 ? (
           <div >
-            <h2 className="search-info_label">Информация о машине с номером {data[0].machine_factory_number}</h2>
+            <h2 className="search-info_label">Информация о комплектации и технических характеристиках машины с номером {data[0].machine_factory_number}</h2>
             <table className="table">
               <thead>
                 <tr>

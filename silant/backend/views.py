@@ -1,6 +1,7 @@
 from functools import wraps
 import django_filters
-from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden, JsonResponse
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.request import Request
 from django_filters.rest_framework import DjangoFilterBackend
@@ -286,22 +287,33 @@ def machine_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def group_required(*group_names):
-    def decorator(view_func):
-        @wraps(view_func)
-        def _wrapped_view(request, *args, **kwargs):
-            print("Пользователь:", request.user)
-            print("Группы пользователя:", request.user.groups.all())
-            print("Требуемые группы:", group_names)
-            if request.user.groups.filter(name__in=group_names).exists():
-                return view_func(request, *args, **kwargs)
-            return HttpResponseForbidden()
-        return _wrapped_view
-    return decorator
+# def group_required(*group_names):
+#     def decorator(view_func):
+#         @wraps(view_func)
+#         def _wrapped_view(request, *args, **kwargs):
+#             print("Пользователь:", request.user)
+#             print("Группы пользователя:", request.user.groups.all())
+#             print("Требуемые группы:", group_names)
+#             if request.user.groups.filter(name__in=group_names).exists():
+#                 return view_func(request, *args, **kwargs)
+#             return HttpResponseForbidden()
+#         return _wrapped_view
+#     return decorator
 
 
-# Machine instance creation
-@group_required('Manager')
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_permissions(request):
+    permissions = [f"{perm.content_type.app_label}.{perm.codename}" for perm in request.user.user_permissions.all()]
+    for group in request.user.groups.all():
+        for perm in group.permissions.all():
+            permissions.append(f"{perm.content_type.app_label}.{perm.codename}")
+
+    permissions = list(set(permissions))
+    return JsonResponse({"permissions": permissions})
+
+
+# Machine&Maintenance&Claim instance creation
 @api_view(['POST'])
 def create_machine(request):
     if request.method == 'POST':

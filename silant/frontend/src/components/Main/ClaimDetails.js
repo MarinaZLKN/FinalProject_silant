@@ -70,11 +70,11 @@ const ClaimDetails = () => {
           </tr>
           <tr>
             <td>Failure Node:</td>
-            <td>{claimDetails.failure_node} <i><FailureNode/></i> </td>
+            <td>{claimDetails.failureNodeName} <i><FailureNode/></i> </td>
           </tr>
           <tr>
             <td>Recovery Method:</td>
-            <td>{claimDetails.recovery_method} <i><RecoveryMethod/></i> </td>
+            <td>{claimDetails.recoveryMethodName} <i><RecoveryMethod/></i> </td>
           </tr>
         <tr>
             <td>Spare Parts Used:</td>

@@ -115,12 +115,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
-    # 'DEFAULT_RENDERER_CLASSES': (
-    #     'rest_framework.renderers.JSONRenderer',
-    # ),
-    # 'DEFAULT_PARSER_CLASSES': (
-    #     'rest_framework.parsers.JSONParser',
-    # ),
 
 }
 
@@ -133,13 +127,6 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-
-# LOGIN_URL = '/accounts/login/'
-# LOGIN_REDIRECT_URL = 'http://localhost:8080/'
-#
-# LOGOUT_URL = '/accounts/logout/'
-# LOGOUT_REDIRECT_URL = 'http://localhost:8080/'
-#
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login/'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'

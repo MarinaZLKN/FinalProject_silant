@@ -1,12 +1,15 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import './MachineForm.css'
+import {useAuth} from "../Auth/AuthContext";
+import axios from "axios";
+import axiosInstance from "../../axiosConfig";
 
 const parseValue = (value) => {
     if (value === "") return null;
     const intValue = parseInt(value);
     return isNaN(intValue) ? value : intValue;
 };
+
 const MachineForm = () => {
     // State Initialization - state holds details related to a machine
     const [machine, setMachine] = useState({
@@ -29,7 +32,7 @@ const MachineForm = () => {
         controlled_bridge_model: '',
     });
 
-
+    const { permissions } = useAuth();
 
     const [data, setData] = useState({
         clients: [],
@@ -44,13 +47,13 @@ const MachineForm = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const responseClients = await axios.get('http://127.0.0.1:8000/api/clients/');
-                const responseServiceCompanies = await axios.get('http://127.0.0.1:8000/api/service_companies/');
-                const responseEngineModels = await axios.get('http://127.0.0.1:8000/api/engine_models/');
-                const responseTechnicalModels = await axios.get('http://127.0.0.1:8000/api/technical_models/');
-                const responseTransmissionModels = await axios.get('http://127.0.0.1:8000/api/transmission_models/');
-                const responseDrivingBridgeModels = await axios.get('http://127.0.0.1:8000/api/driving_bridge_models/');
-                const responseControlledBridgeModels = await axios.get('http://127.0.0.1:8000/api/controlled_bridge_models/');
+                const responseClients = await axiosInstance.get('http://127.0.0.1:8000/api/clients/');
+                const responseServiceCompanies = await axiosInstance.get('http://127.0.0.1:8000/api/service_companies/');
+                const responseEngineModels = await axiosInstance.get('http://127.0.0.1:8000/api/engine_models/');
+                const responseTechnicalModels = await axiosInstance.get('http://127.0.0.1:8000/api/technical_models/');
+                const responseTransmissionModels = await axiosInstance.get('http://127.0.0.1:8000/api/transmission_models/');
+                const responseDrivingBridgeModels = await axiosInstance.get('http://127.0.0.1:8000/api/driving_bridge_models/');
+                const responseControlledBridgeModels = await axiosInstance.get('http://127.0.0.1:8000/api/controlled_bridge_models/');
 
                 setData({
                     clients: responseClients.data,
@@ -61,7 +64,6 @@ const MachineForm = () => {
                     drivingBridgeModels: responseDrivingBridgeModels.data,
                     controlledBridgeModels: responseControlledBridgeModels.data,
                 });
-                console.log('Data to server:', data)
             } catch (error) {
                 console.error(error);
             }
@@ -112,6 +114,12 @@ const MachineForm = () => {
     // logging are done based on the nature of the error.
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("User permissions:", permissions);
+
+        if (!permissions.includes("backend.add_machine")) {
+            console.error("User does not have permission to add a machine.");
+            return;
+        }
 
         const additionalFormData = {
             client: parseValue(e.target.client.value),
@@ -122,17 +130,13 @@ const MachineForm = () => {
             driving_bridge_model: parseValue(e.target.driving_bridge_model.value),
             controlled_bridge_model: parseValue(e.target.controlled_bridge_model.value),
       };
-        console.log('additionalFormData: ', additionalFormData)
 
        const postData = {
           ...machine,
           ...additionalFormData,
        };
 
-
-        console.log('postData: ', postData)
-
-        axios.post('http://127.0.0.1:8000/api/machines/', postData, {
+        axiosInstance.post('http://127.0.0.1:8000/api/machines/', postData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -154,6 +158,7 @@ const MachineForm = () => {
                 }
             });
     };
+
 
 
     return (

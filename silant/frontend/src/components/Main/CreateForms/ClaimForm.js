@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import axiosInstance from "../../axiosConfig";
 import './MachineForm.css'
+import {useAuth} from "../Auth/AuthContext";
 
 const parseValue = (value) => {
     if (value === "") return null;
@@ -20,6 +21,9 @@ const ClaimForm = () => {
     recovery_method: '',
     service_company: '',
   });
+
+  const { permissions } = useAuth();
+
   const [data, setData] = useState({
         machines: [],
         failure_nodes: [],
@@ -30,10 +34,10 @@ const ClaimForm = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const responseMachines = await axios.get('http://127.0.0.1:8000/api/machines/');
-                const responseFailureNodes = await axios.get('http://127.0.0.1:8000/api/failure_nodes/');
-                const responseRecoveryMethods = await axios.get('http://127.0.0.1:8000/api/recovery_methods/');
-                const responseServiceCompanies = await axios.get('http://127.0.0.1:8000/api/service_companies/');
+                const responseMachines = await axiosInstance.get('http://127.0.0.1:8000/api/machines/');
+                const responseFailureNodes = await axiosInstance.get('http://127.0.0.1:8000/api/failure_nodes/');
+                const responseRecoveryMethods = await axiosInstance.get('http://127.0.0.1:8000/api/recovery_methods/');
+                const responseServiceCompanies = await axiosInstance.get('http://127.0.0.1:8000/api/service_companies/');
 
                 setData({
                     machines: responseMachines.data,
@@ -81,6 +85,12 @@ const ClaimForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("User permissions:", permissions);
+
+    if (!permissions.includes("backend.add_claim")) {
+        console.error("User does not have permission to add a machine.");
+        return;
+    }
 
     const additionalFormData = {
         machine: parseValue(e.target.machine.value),
@@ -97,7 +107,7 @@ const ClaimForm = () => {
        };
 
         console.log('postData: ', postData)
-    axios.post('http://127.0.0.1:8000/api/claims/', postData, {
+    axiosInstance.post('http://127.0.0.1:8000/api/claims/', postData, {
          headers: {
                     'Content-Type': 'application/json'
                 }
