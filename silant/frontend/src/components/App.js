@@ -17,8 +17,8 @@ import MaintenanceDetails from "./Main/MaintenanceDetails";
 import MachineForm from "./Main/CreateForms/MachineForm";
 import MaintenanceForm from "./Main/CreateForms/MaintenanceForm";
 import ClaimForm from "./Main/CreateForms/ClaimForm";
-import LogoutButton from "./Header/Logout";
 import PrivateRoute from "./Main/Auth/PrivateRoute";
+import MainPagePicture from "./Main/MainPagePicture";
 
 
 function App () {
@@ -50,6 +50,10 @@ function App () {
               <Route path="/claim" element={<ClaimTable />} />
               <Route path="/maintenance" element={<MaintenanceTable />} />
           </Routes>
+
+           <div className="main_part-2">
+                < MainPagePicture/>
+          </div>
       </main>
 
       <Footer />

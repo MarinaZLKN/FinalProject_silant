@@ -12,11 +12,16 @@
 .content {
   background-color: #EBE6D6;
   flex-grow: 1;
-  padding: 20px;
+  /*padding: 20px;*/
   text-align: center;
 }
 
 .footer {
   padding: 20px;
   text-align: center;
+}
+
+.main_part-2 {
+  background-color: #ffffff;
+  padding: 40px 30px;
 }
