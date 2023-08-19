@@ -48,3 +48,36 @@
     font-weight: bold;
     color: #163E6C;
 }
+
+.main-picture-content {
+
+
+}
+
+.main_picture {
+    width: 630px;
+    height: 500px;
+}
+
+.logo_picture {
+    width: 900px;
+    height: 150px;
+    margin-bottom: 0px;
+    z-index: -1;
+}
+
+.main-page_wrap{
+
+
+}
+
+.part1 {
+    width: 200px;
+    height: 50px;
+
+}
+
+.main-pic_text {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}

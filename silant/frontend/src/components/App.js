@@ -33,7 +33,6 @@ function App () {
 
 
         </div>
-          {/*<MainPicture />*/}
           <Routes>
               <Route path="*" element={<Navigate to="/" replace />} />
               <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
