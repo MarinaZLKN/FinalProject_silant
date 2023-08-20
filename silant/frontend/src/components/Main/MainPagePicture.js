@@ -17,7 +17,7 @@ const MainPagePicture = () => {
           <div className="main-page_upper">
               <div className="upper-title">
                   <p className="title-1">Выносливый. Практичный. Надежный!</p>
-                  <p className="title-2">ПЕРВЫЙ РОССИЙСКИЙ ВИЛОЧНЫЙ ПОГРУЗЧИК</p>
+                  <p className="title-2">ШИРОКАЯ ЛИНЕЙКА НАВЕСНОГО ОБОРУДОВАНИЯ</p>
               </div>
           </div>
           <div className="main-page_down">
