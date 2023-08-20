@@ -52,3 +52,41 @@
 .auth-link {
   text-decoration: none;
 }
+
+
+@media only screen and (min-width: 1921px) {
+  .header-upper {
+    gap: 500px;
+  }
+}
+
+
+@media only screen and (min-width: 1366px) and (max-width: 1535px) {
+  .header-upper {
+    gap: 200px;
+  }
+}
+
+
+@media only screen and (min-width: 1536px) and (max-width: 1919px) {
+  .header-upper {
+    gap: 300px;
+  }
+}
+
+
+@media only screen and (min-width: 1440px) and (max-width: 1535px) {
+  .header-upper {
+    gap: 250px;
+  }
+}
+
+@media only screen and (max-width: 361px) {
+
+
+  .header-info,
+  .logo,
+  .header-down {
+    display: none;
+  }
+}

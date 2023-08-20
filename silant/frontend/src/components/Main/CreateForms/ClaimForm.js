@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axiosInstance from "../../axiosConfig";
 import './MachineForm.css'
 import {useAuth} from "../Auth/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 const parseValue = (value) => {
     if (value === "") return null;
@@ -23,6 +24,9 @@ const ClaimForm = () => {
   });
 
   const { permissions } = useAuth();
+  const navigate = useNavigate();
+
+  const [permissionError, setPermissionError] = useState(false);
 
   const [data, setData] = useState({
         machines: [],
@@ -89,8 +93,10 @@ const ClaimForm = () => {
 
     if (!permissions.includes("backend.add_claim")) {
         console.error("User does not have permission to add a machine.");
+        setPermissionError(true);
         return;
     }
+    setPermissionError(false);
 
     const additionalFormData = {
         machine: parseValue(e.target.machine.value),
@@ -114,6 +120,7 @@ const ClaimForm = () => {
         })
           .then((response) => {
             console.log(response.data);
+            navigate('/claim');
           })
           .catch((error) => {
             console.error(error);
@@ -121,8 +128,10 @@ const ClaimForm = () => {
   };
 
   return (
-      <div className="form-container_main">
-          <h2 className="machine-form_h2">Добавить Рекламацию</h2>
+      <div className="form_1">
+          <div className="form-container_main">
+          <h2 className="machine-form_h2">Добавить новую рекламацию:</h2>
+          {permissionError && <p style={{color: 'red'}}>Вы не можете добавлять рекламации!</p>}
           <form onSubmit={handleSubmit}>
               <div className="form-row">
                     <label className="form-label">Machine:</label>
@@ -244,6 +253,8 @@ const ClaimForm = () => {
               </div>
           </form>
       </div>
+      </div>
+
 
   );
 };

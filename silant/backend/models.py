@@ -116,16 +116,16 @@ class FailureNode(models.Model):
 
 
 class Machine(models.Model):
-    machine_factory_number = models.CharField(max_length=4)  # заводской номер машины
-    engine_factory_number = models.CharField(max_length=100)  # заводской номер двигателя
-    transmission_factory_number = models.CharField(max_length=100)  # заводской номер трансмиссии
-    driving_bridge_factory_number = models.CharField(max_length=100)  # Зав. номер ведущего моста
-    controlled_bridge_factory_number = models.CharField(max_length=100)  # Зав. номер управляемого моста
-    delivery_contract = models.CharField(max_length=100)  # Договор поставки номера, дата
-    shipment_date = models.DateField()  # дата отгрузки с завода
-    consignee = models.CharField(max_length=100)  # грузополучатель
+    machine_factory_number = models.CharField(max_length=4)
+    engine_factory_number = models.CharField(max_length=100)
+    transmission_factory_number = models.CharField(max_length=100)
+    driving_bridge_factory_number = models.CharField(max_length=100)
+    controlled_bridge_factory_number = models.CharField(max_length=100)
+    delivery_contract = models.CharField(max_length=100)
+    shipment_date = models.DateField()
+    consignee = models.CharField(max_length=100)
     delivery_address = models.CharField(max_length=100)
-    equipment = models.CharField(max_length=100)  # комплектация
+    equipment = models.CharField(max_length=100)
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE, blank=True, null=True)  # покупатель
     service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE, blank=True, null=True)
@@ -141,25 +141,25 @@ class Machine(models.Model):
 
 # ТО
 class Maintenance(models.Model):
-    date_of_maintenance = models.DateField()  # дата ТО
-    operating_time = models.IntegerField()  # наработка, м/час
-    order_number = models.CharField(max_length=100)  # номер заказ-наряда
-    data_of_order = models.DateField()  # дата заказ-наряда
+    date_of_maintenance = models.DateField()
+    operating_time = models.IntegerField()
+    order_number = models.CharField(max_length=100)
+    data_of_order = models.DateField()
 
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)  # Организация, проводившая ТО
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     type_of_maintenance = models.ForeignKey(TypeOfMaintenance, on_delete=models.CASCADE)
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
 
 
 class Claim(models.Model):
-    date_of_failure = models.DateField()  # дата отказа
-    operating_time = models.IntegerField()  # наработка, м/час
-    spare_parts_used = models.TextField(null=True, blank=True, default=None)  # используемые запасные части
-    date_of_recovery = models.DateField()  # дата восстановления
-    technical_downtime = models.IntegerField(null=True)  # время простоя техники
-    description_of_failure = models.CharField(max_length=100)  # Описание отказа
+    date_of_failure = models.DateField()
+    operating_time = models.IntegerField()
+    spare_parts_used = models.TextField(null=True, blank=True, default=None)
+    date_of_recovery = models.DateField()
+    technical_downtime = models.IntegerField(null=True)
+    description_of_failure = models.CharField(max_length=100)
 
-    failure_node = models.ForeignKey(FailureNode, on_delete=models.CASCADE)  # узел отказа
+    failure_node = models.ForeignKey(FailureNode, on_delete=models.CASCADE)
     recovery_method = models.ForeignKey(RecoveryMethod, on_delete=models.CASCADE)
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
     service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE, null=True)

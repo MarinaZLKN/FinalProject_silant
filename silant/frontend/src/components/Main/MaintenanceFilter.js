@@ -56,10 +56,11 @@ const MaintenanceFilter = () => {
       });
   };
 
-    const machineFactoryNumberInt = machineFactoryNumber ? parseInt(machineFactoryNumber, 10) : null;
+    // const machineFactoryNumberInt = machineFactoryNumber ? parseInt(machineFactoryNumber, 10) : null;
 
     const filteredMaintenanceData = maintenanceData.filter((maintenance) => {
-    const machineFactoryNumberMatch = !machineFactoryNumber || maintenance.machine === machineFactoryNumberInt;
+    const machine = machines.find(m => m.id === maintenance.machine);
+    const machineFactoryNumberMatch = !machineFactoryNumber || (machine && machine.machine_factory_number === machineFactoryNumber);
     const typeOfMaintenanceMatch = !selectedTypeOfMaintenance || maintenance.type_of_maintenance === parseInt(selectedTypeOfMaintenance);
     const orgCompanyMatch = !selectedOrgCompany || maintenance.organization === parseInt(selectedOrgCompany);
 

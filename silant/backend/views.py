@@ -1,7 +1,5 @@
-from functools import wraps
 import django_filters
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import JsonResponse
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.request import Request
 from django_filters.rest_framework import DjangoFilterBackend
@@ -285,20 +283,6 @@ def machine_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# def group_required(*group_names):
-#     def decorator(view_func):
-#         @wraps(view_func)
-#         def _wrapped_view(request, *args, **kwargs):
-#             print("Пользователь:", request.user)
-#             print("Группы пользователя:", request.user.groups.all())
-#             print("Требуемые группы:", group_names)
-#             if request.user.groups.filter(name__in=group_names).exists():
-#                 return view_func(request, *args, **kwargs)
-#             return HttpResponseForbidden()
-#         return _wrapped_view
-#     return decorator
 
 
 @api_view(['GET'])

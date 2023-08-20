@@ -3,6 +3,7 @@ import './MachineForm.css'
 import {useAuth} from "../Auth/AuthContext";
 import axios from "axios";
 import axiosInstance from "../../axiosConfig";
+import {useNavigate} from "react-router-dom";
 
 const parseValue = (value) => {
     if (value === "") return null;
@@ -33,6 +34,9 @@ const MachineForm = () => {
     });
 
     const { permissions } = useAuth();
+    const navigate = useNavigate();
+
+    const [permissionError, setPermissionError] = useState(false);
 
     const [data, setData] = useState({
         clients: [],
@@ -118,8 +122,11 @@ const MachineForm = () => {
 
         if (!permissions.includes("backend.add_machine")) {
             console.error("User does not have permission to add a machine.");
+            setPermissionError(true);
             return;
         }
+
+        setPermissionError(false);
 
         const additionalFormData = {
             client: parseValue(e.target.client.value),
@@ -142,6 +149,8 @@ const MachineForm = () => {
                 }
             }) .then(response => {
                 console.log('Response:', response.data);
+                navigate('/machines');
+
             })
             .catch(error => {
                 if (error.response) {
@@ -162,8 +171,10 @@ const MachineForm = () => {
 
 
     return (
-        <div className="form-container">
-            <h2 className="machine-form_h2">Добавить новую машину</h2>
+        <div className="form_1">
+            <div className="form-container">
+            <h2 className="machine-form_h2">Добавить новую машину:</h2>
+            {permissionError && <p style={{color: 'red'}}>Вы не можете добавлять новые машины!</p>}
             <form onSubmit={handleSubmit}>
                 <div className="form-row">
                       <label className="form-label">Machine Factory Number:</label>
@@ -349,8 +360,10 @@ const MachineForm = () => {
                 <div className="form-buttons">
                     <button type="submit" className="search-btn">Создать</button>
                 </div>
-        </form>
+            </form>
+             </div>
         </div>
+
 
     );
 };

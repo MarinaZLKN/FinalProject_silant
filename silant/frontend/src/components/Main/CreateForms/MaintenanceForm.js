@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axiosInstance from "../../axiosConfig";
 import './MachineForm.css'
 import {useAuth} from "../Auth/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 const parseValue = (value) => {
     if (value === "") return null;
@@ -20,6 +21,9 @@ const MaintenanceForm = () => {
   });
 
   const { permissions } = useAuth();
+  const navigate = useNavigate();
+
+  const [permissionError, setPermissionError] = useState(false);
 
   const [data, setData] = useState({
         organizations: [],
@@ -82,8 +86,11 @@ const MaintenanceForm = () => {
 
     if (!permissions.includes("backend.add_maintenance")) {
         console.error("User does not have permission to add a machine.");
+        setPermissionError(true);
         return;
     }
+    setPermissionError(false);
+
     const additionalFormData = {
             organization: parseValue(e.target.organization.value),
             type_of_maintenance: parseValue(e.target.type_of_maintenance.value),
@@ -104,6 +111,7 @@ const MaintenanceForm = () => {
         })
           .then((response) => {
             console.log(response.data);
+            navigate('/maintenance');
           })
           .catch((error) => {
             console.error(error);
@@ -111,8 +119,10 @@ const MaintenanceForm = () => {
   };
 
   return (
-      <div className="form-container_main">
-          <h2 className="machine-form_h2">Добавить ТО</h2>
+      <div className="form_1">
+          <div className="form-container_main">
+          <h2 className="machine-form_h2">Добавить техническое обслуживание:</h2>
+          {permissionError && <p style={{color: 'red'}}>Вы не можете добавлять ТО!</p>}
           <form onSubmit={handleSubmit}>
               <div className="form-row">
                   <label className="form-label">
@@ -198,6 +208,8 @@ const MaintenanceForm = () => {
               </div>
           </form>
       </div>
+      </div>
+
 
   );
 };

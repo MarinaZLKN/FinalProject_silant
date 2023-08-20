@@ -68,7 +68,7 @@ const Login = () => {
             .catch((error) => {
                 console.error(error);
                 if (error.response && error.response.status === 401) {
-                    setErrorMessage("Invalid username or password");
+                    setErrorMessage("Неверный логин или пароль");
                 } else {
                     setErrorMessage("An unexpected error occurred");
                 }

@@ -13,7 +13,6 @@ const MainPicture = () => {
               <img className="main_picture" src={main_pic} alt="Logo" />
               <div className="main-pic_text">
                    <img className="part1" src={part1} alt="Logo" />
-                   <img className="part1" src={part1} alt="Logo" />
               </div>
           </div>
 

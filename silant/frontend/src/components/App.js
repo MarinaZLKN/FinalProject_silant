@@ -34,7 +34,6 @@ function App () {
               {isAuthenticated ? <PersonalBoard /> : <Search />}
               < Dashboard />
 
-
         </div>
           <Routes>
               <Route path="*" element={<Navigate to="/" replace />} />
@@ -53,9 +52,12 @@ function App () {
               <Route path="/maintenance" element={<MaintenanceTable />} />
           </Routes>
 
-           <div className="main_part-2">
-                < MainPagePicture/>
-          </div>
+          {!isAuthenticated && (
+              <div className="main_part-2">
+                <MainPagePicture/>
+              </div>
+          )}
+
       </main>
 
       <Footer />
