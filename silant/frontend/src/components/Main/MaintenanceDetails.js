@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Organization from "./Descriptions/Organization";
 import TypeOfMaintenance from "./Descriptions/TypeOfMaintenance";
+import {useAuth} from "./Auth/AuthContext";
 
 const MaintenanceDetails = () => {
   const { id } = useParams();
@@ -13,17 +14,23 @@ const MaintenanceDetails = () => {
     machineName: '',
   });
 
+  const { isAuthenticated } = useAuth();
+
+  const commonHeaders = isAuthenticated ? {
+    'Authorization': `Token ${localStorage.getItem('authToken')}`
+  } : {};
+
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/maintenances/${id}/`)
+      .get(`http://127.0.0.1:8000/api/maintenances/${id}/`, { headers: commonHeaders })
       .then((response) => {
         const data = response.data;
         console.log('API Response:',data);
 
         return Promise.all([
-                    axios.get(`http://127.0.0.1:8000/api/organizations/${data.organization}/`),
-                    axios.get(`http://127.0.0.1:8000/api/types_of_maintenance/${data.type_of_maintenance}/`),
-                    axios.get(`http://127.0.0.1:8000/api/machines/${data.machine}/`),
+                    axios.get(`http://127.0.0.1:8000/api/organizations/${data.organization}/`, { headers: commonHeaders }),
+                    axios.get(`http://127.0.0.1:8000/api/types_of_maintenance/${data.type_of_maintenance}/`, { headers: commonHeaders }),
+                    axios.get(`http://127.0.0.1:8000/api/machines/${data.machine}/`, { headers: commonHeaders }),
                 ]).then(([org, type, machine,]) => {
                     setMaintenanceDetails({
                         maintenanceData: data,

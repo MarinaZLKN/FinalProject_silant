@@ -17,9 +17,9 @@ router.register(r'driving_bridge_models', DrivingBridgeModelViewset)
 router.register(r'controlled_bridge_models', ControlledBridgeModelViewset)
 router.register(r'types_of_maintenance', TypeOfMaintenanceViewset)
 router.register(r'recovery_methods', RecoveryMethodViewset)
-router.register(r'machines', MachineViewset)
-router.register(r'maintenances', MaintenanceViewset)
-router.register(r'claim', ClaimViewset)
+router.register(r'machines', MachineViewset, basename='machine')
+router.register(r'maintenances', MaintenanceViewset, basename='maintenance')
+router.register(r'claim', ClaimViewset, basename='claim')
 router.register(r'clients', ClientViewset)
 router.register(r'organizations', OrganizationViewset)
 router.register(r'failure_nodes', FailureNodeViewset)
@@ -38,10 +38,6 @@ urlpatterns = [
     path('api/login', issue_token, name='issue_token'),
     path('api/logout', UserLogout.as_view(), name='logout'),
     path('api/permissions/', views.get_user_permissions, name='get_user_permissions'),
-    # path('login/', CustomTokenObtainPairView.as_view(), name='login'),
-    # path('login/', login_view, name='login'),
     path('api-auth/', include('rest_framework.urls')),
     path('accounts/', include('allauth.urls')),
-    # path('accounts/register/', register_user, name='register_user'),
-    # path('api/register/', UserRegistrationView.as_view(), name='user_registration_drf'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

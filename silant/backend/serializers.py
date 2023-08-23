@@ -21,7 +21,7 @@ class IssueTokenRequestSerializer(Serializer):
     password = CharField(required=True)
 
 
-class TokenSeriazliser(ModelSerializer):
+class TokenSerializer(ModelSerializer):
 
     class Meta:
         model = Token

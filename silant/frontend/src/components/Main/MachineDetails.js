@@ -7,6 +7,7 @@ import TransmissionModel from "./Descriptions/TransmissionModel";
 import EngineModel from "./Descriptions/EngineModel";
 import ControlledBridgeModel from "./Descriptions/ControlledBridgeModel";
 import DrivingBridgeModel from "./Descriptions/DrivingBridgeModel";
+import {useAuth} from "./Auth/AuthContext";
 
 const MachineDetails = () => {
     const { id } = useParams();
@@ -21,21 +22,26 @@ const MachineDetails = () => {
         serviceCompanyName: '',
         clientName: '',
     });
+    const { isAuthenticated } = useAuth();
+
+    const commonHeaders = isAuthenticated ? {
+        'Authorization': `Token ${localStorage.getItem('authToken')}`
+    } : {};
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/api/machines/${id}/`)
+        axios.get(`http://127.0.0.1:8000/api/machines/${id}/`, { headers: commonHeaders })
             .then(response => {
                 const data = response.data;
                 console.log('data: ', data);
 
                 return Promise.all([
-                    axios.get(`http://127.0.0.1:8000/api/technical_models/${data.technical_model}/`),
-                    axios.get(`http://127.0.0.1:8000/api/engine_models/${data.engine_model}/`),
-                    axios.get(`http://127.0.0.1:8000/api/transmission_models/${data.transmission_model}/`),
-                    axios.get(`http://127.0.0.1:8000/api/driving_bridge_models/${data.driving_bridge_model}/`),
-                    axios.get(`http://127.0.0.1:8000/api/controlled_bridge_models/${data.controlled_bridge_model}/`),
-                    axios.get(`http://127.0.0.1:8000/api/service_companies/${data.service_company}/`),
-                    axios.get(`http://127.0.0.1:8000/api/clients/${data.client}/`),
+                    axios.get(`http://127.0.0.1:8000/api/technical_models/${data.technical_model}/`, { headers: commonHeaders }),
+                    axios.get(`http://127.0.0.1:8000/api/engine_models/${data.engine_model}/`, { headers: commonHeaders }),
+                    axios.get(`http://127.0.0.1:8000/api/transmission_models/${data.transmission_model}/`, { headers: commonHeaders }),
+                    axios.get(`http://127.0.0.1:8000/api/driving_bridge_models/${data.driving_bridge_model}/`, { headers: commonHeaders }),
+                    axios.get(`http://127.0.0.1:8000/api/controlled_bridge_models/${data.controlled_bridge_model}/`, { headers: commonHeaders }),
+                    axios.get(`http://127.0.0.1:8000/api/service_companies/${data.service_company}/`, { headers: commonHeaders }),
+                    axios.get(`http://127.0.0.1:8000/api/clients/${data.client}/`, { headers: commonHeaders }),
                 ]).then(([technical, engine, transmission, drivingBridge, controlledBridge,serviceCompany,client]) => {
                     setMachineDetails({
                         machineData: data,

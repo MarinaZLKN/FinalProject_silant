@@ -3,6 +3,7 @@ import axios from "axios";
 import './MachineTable.css';
 import '../Search/Search.css';
 import {Link, useNavigate} from "react-router-dom";
+import {useAuth} from "./Auth/AuthContext";
 
 const ClaimFilter = () => {
   const [selectedServiceCompany, setSelectedServiceCompany] = useState("");
@@ -16,26 +17,29 @@ const ClaimFilter = () => {
   const [machines, setMachines] = useState([]);
 
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const commonHeaders = isAuthenticated ? {
+    'Authorization': `Token ${localStorage.getItem('authToken')}`
+  } : {};
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/service_companies/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/service_companies/", { headers: commonHeaders }).then((response) => {
       setServiceCompanies(response.data);
     });
 
-    axios.get("http://127.0.0.1:8000/api/recovery_methods/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/recovery_methods/", { headers: commonHeaders }).then((response) => {
       setRecoveryMethods(response.data);
     });
 
-    axios.get("http://127.0.0.1:8000/api/failure_nodes/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/failure_nodes/", { headers: commonHeaders }).then((response) => {
       setFailureNodes(response.data);
     });
 
-    axios.get("http://127.0.0.1:8000/api/claim/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/claim/", { headers: commonHeaders }).then((response) => {
       setClaims(response.data);
     });
   }, []);
-
-  console.log('Service Companies', serviceCompanies)
 
   useEffect(() => {
 
@@ -58,8 +62,9 @@ const ClaimFilter = () => {
     setFilteredClaims(claims);
   };
 
+
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/machines/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/machines/", { headers: commonHeaders }).then((response) => {
       setMachines(response.data);
     });
   }, []);

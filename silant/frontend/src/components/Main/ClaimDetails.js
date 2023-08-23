@@ -4,6 +4,7 @@ import axios from "axios";
 import './MachineTable.css';
 import FailureNode from "./Descriptions/FailureNode";
 import RecoveryMethod from "./Descriptions/RecoveryMethod";
+import {useAuth} from "./Auth/AuthContext";
 
 const ClaimDetails = () => {
   const { id } = useParams();
@@ -15,19 +16,24 @@ const ClaimDetails = () => {
       machineName: '',
 
   });
+  const { isAuthenticated } = useAuth();
+
+  const commonHeaders = isAuthenticated ? {
+    'Authorization': `Token ${localStorage.getItem('authToken')}`
+  } : {};
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/claim/${id}/`)
+      .get(`http://127.0.0.1:8000/api/claim/${id}/`, { headers: commonHeaders })
       .then((response) => {
           const data = response.data;
           console.log('API Response:', data);
 
           return Promise.all([
-                    axios.get(`http://127.0.0.1:8000/api/failure_nodes/${data.failure_node}/`),
-                    axios.get(`http://127.0.0.1:8000/api/recovery_methods/${data.recovery_method}/`),
-                    axios.get(`http://127.0.0.1:8000/api/machines/${data.machine}/`),
-                    axios.get(`http://127.0.0.1:8000/api/service_companies/${data.service_company}/`),
+                    axios.get(`http://127.0.0.1:8000/api/failure_nodes/${data.failure_node}/`, { headers: commonHeaders }),
+                    axios.get(`http://127.0.0.1:8000/api/recovery_methods/${data.recovery_method}/`, { headers: commonHeaders }),
+                    axios.get(`http://127.0.0.1:8000/api/machines/${data.machine}/`, { headers: commonHeaders }),
+                    axios.get(`http://127.0.0.1:8000/api/service_companies/${data.service_company}/`, { headers: commonHeaders }),
                 ]).then(([failure, method, machine, serviceCompany,client]) => {
                     setClaimDetails({
                         claimData: data,

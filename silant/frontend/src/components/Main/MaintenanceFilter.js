@@ -3,6 +3,7 @@ import axios from "axios";
 import './MachineTable.css';
 import '../Search/Search.css';
 import {Link, useNavigate} from "react-router-dom";
+import {useAuth} from "./Auth/AuthContext";
 
 const MaintenanceFilter = () => {
   const [machineFactoryNumber, setMachineFactoryNumber] = useState("");
@@ -15,23 +16,28 @@ const MaintenanceFilter = () => {
   const [machines, setMachines] = useState([]);
 
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const commonHeaders = isAuthenticated ? {
+    'Authorization': `Token ${localStorage.getItem('authToken')}`
+  } : {};
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/types_of_maintenance/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/types_of_maintenance/", { headers: commonHeaders }).then((response) => {
       setTypeOfMaintenanceList(response.data);
     });
 
-    axios.get("http://127.0.0.1:8000/api/organizations/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/organizations/", { headers: commonHeaders }).then((response) => {
       setOrgCompanyList(response.data);
     });
 
-    axios.get("http://127.0.0.1:8000/api/maintenances/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/maintenances/", { headers: commonHeaders }).then((response) => {
       setMaintenanceData(response.data);
     });
   }, []);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/machines/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/machines/", { headers: commonHeaders }).then((response) => {
       setMachines(response.data);
     });
   }, []);
@@ -41,6 +47,7 @@ const MaintenanceFilter = () => {
   const handleFilter = () => {
     axios
       .get("http://127.0.0.1:8000/api/maintenances/", {
+        headers: commonHeaders,
         params: {
           machine__machine_factory_number: machineFactoryNumber,
           type_of_maintenance__name: selectedTypeOfMaintenance,

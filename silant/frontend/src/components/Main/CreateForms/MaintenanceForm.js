@@ -20,8 +20,13 @@ const MaintenanceForm = () => {
     machine: '',
   });
 
-  const { permissions } = useAuth();
+  const { isAuthenticated, permissions } = useAuth();
   const navigate = useNavigate();
+
+  const commonHeaders = isAuthenticated ? {
+    'Authorization': `Token ${localStorage.getItem('authToken')}`
+  } : {};
+
 
   const [permissionError, setPermissionError] = useState(false);
 
@@ -34,9 +39,9 @@ const MaintenanceForm = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const responseOrganizations = await axiosInstance.get('http://127.0.0.1:8000/api/organizations/');
-                const responseTypeOgMaintenance = await axiosInstance.get('http://127.0.0.1:8000/api/types_of_maintenance/');
-                const responseMachines = await axiosInstance.get('http://127.0.0.1:8000/api/machines/');
+                const responseOrganizations = await axiosInstance.get('http://127.0.0.1:8000/api/organizations/', { headers: commonHeaders });
+                const responseTypeOgMaintenance = await axiosInstance.get('http://127.0.0.1:8000/api/types_of_maintenance/', { headers: commonHeaders });
+                const responseMachines = await axiosInstance.get('http://127.0.0.1:8000/api/machines/', { headers: commonHeaders });
 
                 setData({
 

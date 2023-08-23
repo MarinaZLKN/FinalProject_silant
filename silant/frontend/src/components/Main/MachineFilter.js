@@ -3,6 +3,7 @@ import axios from "axios";
 import './MachineTable.css';
 import '../Search/Search.css';
 import {Link, useNavigate} from "react-router-dom";
+import {useAuth} from "./Auth/AuthContext";
 
 const MachineFilter = () => {
   const [selectedTechnicalModel, setSelectedTechnicalModel] = useState("");
@@ -20,35 +21,41 @@ const MachineFilter = () => {
 
 
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const commonHeaders = isAuthenticated ? {
+    'Authorization': `Token ${localStorage.getItem('authToken')}`
+  } : {};
 
   useEffect(() => {
-   axios.get("http://127.0.0.1:8000/api/machines/").then((response) => {
+   axios.get("http://127.0.0.1:8000/api/machines/", { headers: commonHeaders }).then((response) => {
       setMachines(response.data);
    });}, []);
 
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/technical_models/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/technical_models/", { headers: commonHeaders }).then((response) => {
       setTechnicalModels(response.data);
     });
 
-    axios.get("http://127.0.0.1:8000/api/engine_models/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/engine_models/", { headers: commonHeaders }).then((response) => {
       setEngineModels(response.data);
     });
 
-    axios.get("http://127.0.0.1:8000/api/transmission_models/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/transmission_models/", { headers: commonHeaders }).then((response) => {
       setTransmissionModels(response.data);
     });
 
-    axios.get("http://127.0.0.1:8000/api/controlled_bridge_models/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/controlled_bridge_models/", { headers: commonHeaders }).then((response) => {
       setContrBridgeModels(response.data);
     });
 
-    axios.get("http://127.0.0.1:8000/api/driving_bridge_models/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/driving_bridge_models/", { headers: commonHeaders }).then((response) => {
       setDriveBridgeModels(response.data);
     });
 
-    axios.get("http://127.0.0.1:8000/api/machines/").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/machines/", { headers: commonHeaders }).then((response) => {
+      console.log("Machines API response:", response);
       setMachines(response.data);
     });
   }, []);
