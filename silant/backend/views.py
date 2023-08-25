@@ -5,7 +5,7 @@ from rest_framework.request import Request
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .filters import MachineFilter, MaintenanceFilter, ClaimFilter
@@ -218,69 +218,6 @@ class ClaimFilterView(generics.ListAPIView):
 
 
 # Machine/Maintenance/Claim instance ViewSets
-
-# class MachineViewset(viewsets.ModelViewSet):
-#     permission_classes = [permissions.DjangoModelPermissions]
-#     serializer_class = MachineSerializer
-#     ordering_fields = ["-shipment_date"]
-#     ordering = ["-shipment_date"]
-#
-#     def get_queryset(self):
-#         user = self.request.user
-#         if isinstance(user, CustomUser):
-#             if user.role == CustomUser.MANAGER:
-#                 return Machine.objects.all()
-#             elif user.role == CustomUser.SERVICE:
-#                 return Machine.objects.filter(service_company=user.service_company.id)
-#             elif user.role == CustomUser.CLIENT:
-#                 return Machine.objects.filter(client=user.client.id)
-#         else:
-#             return Machine.objects.none()
-#
-#
-# class MaintenanceViewset(viewsets.ModelViewSet):
-#     permission_classes = [permissions.DjangoModelPermissions]
-#     serializer_class = MaintenanceSerializer
-#     ordering_fields = ['-date_of_maintenance']
-#     ordering = ['-date_of_maintenance']
-#
-#     def get_queryset(self):
-#         user = self.request.user
-#         if user.role == CustomUser.MANAGER:
-#             return Maintenance.objects.all()
-#         elif user.role == CustomUser.SERVICE:
-#             return Maintenance.objects.filter(
-#                 organization=user.service_company.id)  # assuming organization is same as service_company
-#         elif user.role == CustomUser.CLIENT:
-#             return Maintenance.objects.filter(machine__client=user.client.id)
-#         else:
-#             return Maintenance.objects.none()
-#
-#
-# class ClaimViewset(viewsets.ModelViewSet):
-#     permission_classes = [permissions.DjangoModelPermissions]
-#     serializer_class = ClaimSerializer
-#     ordering_fields = ['-date_of_failure']
-#     ordering = ['-date_of_failure']
-#
-#     def get_queryset(self):
-#         user = self.request.user
-#         if isinstance(user, CustomUser):
-#             if user.role == CustomUser.ADMIN:
-#                 return Claim.objects.all()
-#             elif user.role == CustomUser.SERVICE:
-#                 return Claim.objects.filter(service_company=user.service_company.id)
-#             elif user.role == CustomUser.CLIENT:
-#                 return Claim.objects.filter(machine__client=user.client.id)
-#         else:
-#             return Claim.objects.none()
-# class MachineViewset(viewsets.ModelViewSet):
-#     permission_classes = [permissions.AllowAny]
-#     queryset = Machine.objects.all()
-#     serializer_class = MachineSerializer
-#     ordering_fields = ["-shipment_date"]
-#     ordering = ["-shipment_date"]
-
 class MachineViewset(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = MachineSerializer
@@ -313,28 +250,22 @@ class MaintenanceViewset(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role == CustomUser.MANAGER:
-            return Maintenance.objects.all()
-        elif user.role == CustomUser.CLIENT:
-            try:
-                client = get_object_or_404(Client, name=user)
-                machine_ids = Machine.objects.filter(client=client).values_list('id', flat=True)
+        if user.is_authenticated:
+            if user.role == CustomUser.MANAGER:
+                return Maintenance.objects.all()
+            elif user.role == CustomUser.CLIENT:
+                try:
+                    client = get_object_or_404(Client, name=user)
+                    machine_ids = Machine.objects.filter(client=client).values_list('id', flat=True)
+                    return Maintenance.objects.filter(machine__id__in=machine_ids)
+                except Client.DoesNotExist:
+                    return Maintenance.objects.none()
+            elif user.role == CustomUser.SERVICE:
+                service_company = get_object_or_404(ServiceCompany, name=user)
+                machine_ids = Machine.objects.filter(service_company=service_company).values_list('id', flat=True)
                 return Maintenance.objects.filter(machine__id__in=machine_ids)
-            except Client.DoesNotExist:
-                return Maintenance.objects.none()
-        elif user.role == CustomUser.SERVICE:
-            service_company = get_object_or_404(ServiceCompany, name=user)
-            machine_ids = Machine.objects.filter(service_company=service_company).values_list('id', flat=True)
-            return Maintenance.objects.filter(machine__id__in=machine_ids)
         else:
             return Maintenance.objects.none()
-
-# class MaintenanceViewset(viewsets.ModelViewSet):
-#     permission_classes = [permissions.AllowAny]
-#     queryset = Maintenance.objects.all()
-#     serializer_class = MaintenanceSerializer
-#     ordering_fields = ['-date_of_maintenance']
-#     ordering = ['-date_of_maintenance']
 
 
 class ClaimViewset(viewsets.ModelViewSet):
@@ -345,26 +276,21 @@ class ClaimViewset(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role == CustomUser.MANAGER:
-            return Claim.objects.all()
-        elif user.role == CustomUser.CLIENT:
-            try:
-                client = get_object_or_404(Client, name=user)
-                machines = Machine.objects.filter(client=client)
-                return Claim.objects.filter(machine__in=machines)
-            except Client.DoesNotExist:
-                return Claim.objects.none()
-        elif user.role == CustomUser.SERVICE:
-            service_company = get_object_or_404(ServiceCompany, name=user)
-            return Claim.objects.filter(service_company=service_company)
+        if user.is_authenticated:
+            if user.role == CustomUser.MANAGER:
+                return Claim.objects.all()
+            elif user.role == CustomUser.CLIENT:
+                try:
+                    client = get_object_or_404(Client, name=user)
+                    machines = Machine.objects.filter(client=client)
+                    return Claim.objects.filter(machine__in=machines)
+                except Client.DoesNotExist:
+                    return Claim.objects.none()
+            elif user.role == CustomUser.SERVICE:
+                service_company = get_object_or_404(ServiceCompany, name=user)
+                return Claim.objects.filter(service_company=service_company)
         else:
             return Claim.objects.none()
-# class ClaimViewset(viewsets.ModelViewSet):
-#     permission_classes = [permissions.AllowAny]
-#     queryset = Claim.objects.all()
-#     serializer_class = ClaimSerializer
-#     ordering_fields = ['-date_of_failure']
-#     ordering = ['-date_of_failure']
 
 
 # Machine instance detail view

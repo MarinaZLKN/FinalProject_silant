@@ -1,0 +1,18 @@
+#Here are creditnails for users:
+
+# Manager:  manager - trudnikov
+
+#Service companies:
+#SilantO - promtech3 (O is a letter, not a digit)
+#OOOPromTech - silantooo (O is a letter, not a digit)
+#FNS - krasnodar
+
+
+#Clients:
+#trudnikov - promtech
+#FPK - novgorod
+#MHC77 - ekaterinburg
+#ranski - mch77331
+#komplekt - postavka
+#RMK - ooormk42
+#zander - tminus46

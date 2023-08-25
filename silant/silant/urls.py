@@ -31,7 +31,7 @@ urlpatterns = [
     path('front/', include('frontend.urls')),
     path('api/', include(router.urls)),
     path('api/machines/<int:machine_id>/', views.machine_detail, name='machine-detail'),
-    path('api/machines/', views.create_machine),
+    path('api/machines/', views.create_machine, name='create_machine'),
     path('api/maintenances/', views.create_maintenance),
     path('api/claims/', views.create_claim),
     path('api/user', user, name='user'),

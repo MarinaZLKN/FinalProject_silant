@@ -157,7 +157,7 @@ const ClaimFilter = () => {
                 <td>{claim.date_of_failure}</td>
                 <td>{claim.date_of_recovery}</td>
                 <td>{claim.operating_time} м/час</td>
-                <td>{claim.technical_downtime} days</td>
+                <td>{claim.technical_downtime} дней </td>
                 <td>{getModelNameById(claim.failure_node, failureNodes)}</td>
                 <td>{getModelNameById(claim.recovery_method, recoveryMethods)}</td>
                 <td>{getModelFirstNameById(claim.service_company, serviceCompanies )}</td>

@@ -16,11 +16,11 @@ const Dashboard = () => {
               <Link to="/machines" className="link-button" activeClassName="active-link">
                 Машины
               </Link>
-              <Link to="/claim" className="link-button" activeClassName="active-link">
-                Рекламации
-              </Link>
               <Link to="/maintenance" className="link-button" activeClassName="active-link">
                 Техническое обслуживание
+              </Link>
+              <Link to="/claim" className="link-button" activeClassName="active-link">
+                Рекламации
               </Link>
           </div>
 
