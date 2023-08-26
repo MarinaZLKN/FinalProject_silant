@@ -20,7 +20,7 @@ const TechnicalModel = () => {
   }, [id]);
 
   if (!technicalModel) {
-    return <p>Вилочные погрузчики</p>;
+    return <p>Loading data ...</p>;
   }
 
   return (

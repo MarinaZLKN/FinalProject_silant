@@ -18,7 +18,7 @@ const ControlledBridgeModel = () => {
   }, [id]);
 
   if (!conBrModel) {
-    return <p>Модель управляемого моста</p>;
+    return <p>Loading data ...</p>;
   }
 
   return (

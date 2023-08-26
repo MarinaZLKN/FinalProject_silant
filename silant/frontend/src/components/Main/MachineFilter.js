@@ -21,7 +21,7 @@ const MachineFilter = () => {
 
 
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const commonHeaders = isAuthenticated ? {
     'Authorization': `Token ${localStorage.getItem('authToken')}`
@@ -187,6 +187,15 @@ const MachineFilter = () => {
         <Link to="/create-machine">
           <button type="button" className="search-btn">Добавить</button>
         </Link>
+           {isAuthenticated && user && user.role === 'Менеджер' && (
+            <Link to="/create-instance">
+              <button type="button" className="search-btn">Справочник</button>
+            </Link>
+          )}
+        {/*<Link to="/create-instance">*/}
+        {/*  <button type="button" className="search-btn">Справочник</button>*/}
+        {/*</Link>*/}
+
 
       </div>
 
@@ -195,6 +204,7 @@ const MachineFilter = () => {
           <tr>
             <th>Machine Factory Number</th>
             <th>Technical Model</th>
+            <th>Shipment Date</th>
             <th>Engine Factory Number</th>
             <th>Engine Model</th>
             <th>Transmission Factory Number</th>
@@ -214,6 +224,7 @@ const MachineFilter = () => {
             >
               <td>{machine.machine_factory_number}</td>
               <td>{getModelNameById(machine.technical_model, technicalModels)}</td>
+              <td>{machine.shipment_date}</td>
               <td>{machine.engine_factory_number}</td>
               <td>{getModelNameById(machine.engine_model, engineModels)}</td>
               <td>{machine.transmission_factory_number}</td>

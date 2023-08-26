@@ -18,7 +18,7 @@ const EngineModel = () => {
   }, [id]);
 
   if (!engineModel) {
-    return <p>Модель двигателя</p>;
+    return <p>Loading data ...</p>;
   }
 
   return (

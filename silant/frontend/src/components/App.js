@@ -21,6 +21,7 @@ import PrivateRoute from "./Main/Auth/PrivateRoute";
 import MainPagePicture from "./Main/MainPagePicture";
 import PersonalBoard from "./Main/Auth/PersonalBoard";
 import {useAuth} from "./Main/Auth/AuthContext";
+import CreateModelInstance from "./Main/CreateForms/CreateModelInstance";
 
 
 function App () {
@@ -44,6 +45,7 @@ function App () {
               <Route path="/maintenances/:id" element={<MaintenanceDetails />} />
               <Route path="/create-machine" element={<MachineForm/>} />
               <Route path="/create-main" element={<MaintenanceForm/>} />
+              <Route path="/create-instance" element={<CreateModelInstance/>} />
               <Route path="/create-claim" element={<ClaimForm/>} />
               {/*<Route path="/" element={<Search />} />*/}
               <Route path="/login" element={<Login />} />

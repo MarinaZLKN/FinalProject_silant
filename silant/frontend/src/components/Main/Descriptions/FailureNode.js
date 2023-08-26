@@ -20,7 +20,7 @@ const FailureNode = () => {
   }, [id]);
 
   if (!failureNode) {
-    return <p>Узел отказа</p>;
+    return <p>Loading data ...</p>;
   }
 
   return (

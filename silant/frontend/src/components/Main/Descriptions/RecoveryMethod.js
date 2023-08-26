@@ -20,7 +20,7 @@ const RecoveryMethod = () => {
   }, [id]);
 
   if (!recoveryMethod) {
-    return <p>Способ восстановления</p>;
+    return <p>Loading data ...</p>;
   }
 
   return (

@@ -26,7 +26,7 @@ const Organization = () => {
   }, [id]);
 
   if (!org) {
-    return <p>Организация, проводившая ТО</p>;
+    return <p>Loading data ...</p>;
   }
 
   return (

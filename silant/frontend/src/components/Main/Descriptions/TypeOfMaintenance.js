@@ -20,7 +20,7 @@ const TypeOfMaintenance = () => {
   }, [id]);
 
   if (!type) {
-    return <p>Вид ТО</p>;
+    return <p>Loading data ...</p>;
   }
 
   return (

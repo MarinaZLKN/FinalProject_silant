@@ -18,7 +18,7 @@ const DrivingBridgeModel = () => {
   }, [id]);
 
   if (!drivingModel) {
-    return <p>Модель ведущего моста</p>;
+    return <p>Loading data ...</p>;
   }
 
   return (

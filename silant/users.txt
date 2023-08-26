@@ -1,4 +1,4 @@
-#Here are creditnails for users:
+#Here are credentials for users:
 
 # Manager:  manager - trudnikov
 
