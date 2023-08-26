@@ -271,8 +271,8 @@ class MaintenanceViewset(viewsets.ModelViewSet):
 class ClaimViewset(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = ClaimSerializer
-    ordering_fields = ['date_of_failure']
-    ordering = ['date_of_failure']
+    ordering_fields = ['-date_of_failure']
+    ordering = ['-date_of_failure']
 
     def get_queryset(self):
         user = self.request.user
