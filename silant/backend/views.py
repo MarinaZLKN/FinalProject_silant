@@ -228,16 +228,16 @@ class MachineViewset(viewsets.ModelViewSet):
         user = self.request.user
         if user.is_authenticated:
             if user.role == CustomUser.MANAGER:
-                return Machine.objects.all()
+                return Machine.objects.all().order_by('-shipment_date')
             elif user.role == CustomUser.CLIENT:
                 try:
                     client = get_object_or_404(Client, name=user)
-                    return Machine.objects.filter(client=client)
+                    return Machine.objects.filter(client=client).order_by('-shipment_date')
                 except Client.DoesNotExist:
                     return Machine.objects.none()
             elif user.role == CustomUser.SERVICE:
                 service_company = get_object_or_404(ServiceCompany, name=user)
-                return Machine.objects.filter(service_company=service_company)
+                return Machine.objects.filter(service_company=service_company).order_by('-shipment_date')
         else:
             return Machine.objects.all()
 
@@ -245,25 +245,25 @@ class MachineViewset(viewsets.ModelViewSet):
 class MaintenanceViewset(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = MaintenanceSerializer
-    ordering_fields = ['-date_of_maintenance']
-    ordering = ['-date_of_maintenance']
+    ordering_fields = ['date_of_maintenance']
+    ordering = ['date_of_maintenance']
 
     def get_queryset(self):
         user = self.request.user
         if user.is_authenticated:
             if user.role == CustomUser.MANAGER:
-                return Maintenance.objects.all()
+                return Maintenance.objects.all().order_by('-date_of_maintenance')
             elif user.role == CustomUser.CLIENT:
                 try:
                     client = get_object_or_404(Client, name=user)
                     machine_ids = Machine.objects.filter(client=client).values_list('id', flat=True)
-                    return Maintenance.objects.filter(machine__id__in=machine_ids)
+                    return Maintenance.objects.filter(machine__id__in=machine_ids).order_by('-date_of_maintenance')
                 except Client.DoesNotExist:
                     return Maintenance.objects.none()
             elif user.role == CustomUser.SERVICE:
                 service_company = get_object_or_404(ServiceCompany, name=user)
                 machine_ids = Machine.objects.filter(service_company=service_company).values_list('id', flat=True)
-                return Maintenance.objects.filter(machine__id__in=machine_ids)
+                return Maintenance.objects.filter(machine__id__in=machine_ids).order_by('-date_of_maintenance')
         else:
             return Maintenance.objects.none()
 
@@ -271,24 +271,24 @@ class MaintenanceViewset(viewsets.ModelViewSet):
 class ClaimViewset(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = ClaimSerializer
-    ordering_fields = ['-date_of_failure']
-    ordering = ['-date_of_failure']
+    ordering_fields = ['date_of_failure']
+    ordering = ['date_of_failure']
 
     def get_queryset(self):
         user = self.request.user
         if user.is_authenticated:
             if user.role == CustomUser.MANAGER:
-                return Claim.objects.all()
+                return Claim.objects.all().order_by('-date_of_failure')
             elif user.role == CustomUser.CLIENT:
                 try:
                     client = get_object_or_404(Client, name=user)
                     machines = Machine.objects.filter(client=client)
-                    return Claim.objects.filter(machine__in=machines)
+                    return Claim.objects.filter(machine__in=machines).order_by('date_of_failure')
                 except Client.DoesNotExist:
                     return Claim.objects.none()
             elif user.role == CustomUser.SERVICE:
                 service_company = get_object_or_404(ServiceCompany, name=user)
-                return Claim.objects.filter(service_company=service_company)
+                return Claim.objects.filter(service_company=service_company).order_by('date_of_failure')
         else:
             return Claim.objects.none()
 
@@ -298,10 +298,72 @@ class ClaimViewset(viewsets.ModelViewSet):
 def machine_detail(request, machine_id):
     try:
         machine = Machine.objects.get(id=machine_id)
-        serializer = MachineSerializer(machine)
-        return Response(serializer.data)
+        technical_model = TechnicalModel.objects.get(id=machine)
+        engine_model = EngineModel.objects.get(id=machine)
+        transmission_model = TransmissionModel.objects.get(id=machine)
+        controlled_bridge_model = ControlledBridgeModel.objects.get(id=machine)
+        driving_bridge_model = DrivingBridgeModel.objects.get(id=machine)
+        service_company = ServiceCompany.objects.get(id=machine)
+        client = Client.objects.get(id=machine)
+
+        machine_serializer = MachineSerializer(machine)
+        technical_model_serializer = TechnicalModelSerializer(technical_model)
+        engine_model_serializer = EngineModelSerializer(engine_model)
+        transmission_model_serializer = TransmissionModelSerializer(transmission_model)
+        controlled_bridge_model_serializer = ControlledBridgeModelSerializer(controlled_bridge_model)
+        driving_bridge_serializer = DrivingBridgeModelSerializer(driving_bridge_model)
+        service_company_serializer = ServiceCompanySerializer(service_company)
+        client_serializer = ClientSerializer(client)
+
+        combined_data = {
+            'machine': machine_serializer.data,
+            'technical_model': {
+                'name': technical_model_serializer.data.get('name', ''),
+                'description': technical_model_serializer.data.get('description', '')
+            },
+            'engine_model': {
+                'name': engine_model_serializer.data.get('name', ''),
+                'description': engine_model_serializer.data.get('description', '')
+            },
+            'transmission_model': {
+                'name': transmission_model_serializer.data.get('name', ''),
+                'description': transmission_model_serializer.data.get('description', '')
+            },
+            'controlled_bridge_model': {
+                'name': controlled_bridge_model_serializer.data.get('name', ''),
+                'description': controlled_bridge_model_serializer.data.get('description', '')
+            },
+            'driving_bridge_model': {
+                'name': driving_bridge_serializer.data.get('name', ''),
+                'description': driving_bridge_serializer.data.get('description', '')
+            },
+            'service_company': {
+                'name': service_company_serializer.data.get('name', {}).get('first_name', ''),
+                'description': service_company_serializer.data.get('description', '')
+            },
+            'client': {
+                'name': client_serializer.data.get('name', {}).get('first_name', ''),
+                'description': client_serializer.data.get('description', '')
+            }
+        }
+        return Response(combined_data, status=status.HTTP_200_OK)
+
     except Machine.DoesNotExist:
-        return Response({'detail': 'Machine not found'}, status=404)
+        return Response({'detail': 'Machine not found'}, status=status.HTTP_404_NOT_FOUND)
+    except TechnicalModel.DoesNotExist:
+        return Response({'detail': 'Technical Model not found'}, status=status.HTTP_404_NOT_FOUND)
+    except EngineModel.DoesNotExist:
+        return Response({'detail': 'Engine Model not found'}, status=status.HTTP_404_NOT_FOUND)
+    except TransmissionModel.DoesNotExist:
+        return Response({'detail': 'Transmission Model not found'}, status=status.HTTP_404_NOT_FOUND)
+    except ControlledBridgeModel.DoesNotExist:
+        return Response({'detail': 'Controlled Bridge Model not found'}, status=status.HTTP_404_NOT_FOUND)
+    except DrivingBridgeModel.DoesNotExist:
+        return Response({'detail': 'Driving Bridge Model not found'}, status=status.HTTP_404_NOT_FOUND)
+    except ServiceCompany.DoesNotExist:
+        return Response({'detail': 'Service Company not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Client.DoesNotExist:
+        return Response({'detail': 'Client not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 # Claim instance detail view
@@ -309,10 +371,48 @@ def machine_detail(request, machine_id):
 def claim_detail(request, claim_id):
     try:
         claim = Claim.objects.get(id=claim_id)
-        serializer = ClaimSerializer(claim)
-        return Response(serializer.data)
+        failure_node = FailureNode.objects.get(id=claim_id)
+        recovery_method = RecoveryMethod.objects.get(id=claim.id)
+        machine = Machine.objects.get(id=claim.machine_id)
+        service_company = ServiceCompany.objects.get(id=claim)
+
+        claim_serializer = ClaimSerializer(claim)
+        failure_node_serializer = FailureNodeSerializer(failure_node)
+        recovery_method_serializer = RecoveryMethodSerializer(recovery_method)
+        machine_serializer = MachineSerializer(machine)
+        service_company_serializer = ServiceCompanySerializer(service_company)
+
+        combined_data = {
+            'claim': claim_serializer.data,
+            'failure_node': {
+                'name': failure_node_serializer.data.get('name', ''),
+                'description': failure_node_serializer.data.get('description', '')
+            },
+            'recovery_method': {
+                'name': recovery_method_serializer.data.get('name', ''),
+                'description': recovery_method_serializer.data.get('description', '')
+            },
+            'machine': {
+                'name': machine_serializer.data.get('name', ''),
+                'description': machine_serializer.data.get('description', '')
+            },
+            'service_company': {
+                'name': service_company_serializer.data.get('name', {}).get('first_name', ''),
+                'description': service_company_serializer.data.get('description', '')
+            }
+        }
+        return Response(combined_data, status=status.HTTP_200_OK)
+
     except Claim.DoesNotExist:
-        return Response({'detail': 'Claim not found'}, status=404)
+        return Response({'detail': 'Claim not found'}, status=status.HTTP_404_NOT_FOUND)
+    except FailureNode.DoesNotExist:
+        return Response({'detail': 'Failure Node not found'}, status=status.HTTP_404_NOT_FOUND)
+    except RecoveryMethod.DoesNotExist:
+        return Response({'detail': 'Recovery Method not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Machine.DoesNotExist:
+        return Response({'detail': 'Machine not found'}, status=status.HTTP_404_NOT_FOUND)
+    except ServiceCompany.DoesNotExist:
+        return Response({'detail': 'Service Company not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 # Maintenance instance detail view
@@ -320,10 +420,44 @@ def claim_detail(request, claim_id):
 def maintenance_detail(request, maintenance_id):
     try:
         maintenance = Maintenance.objects.get(id=maintenance_id)
-        serializer = MaintenanceSerializer(maintenance)
-        return Response(serializer.data)
+        # Get related data
+        organization = Organization.objects.get(id=maintenance.organization_id)
+        type_of_maintenance = TypeOfMaintenance.objects.get(id=maintenance.type_of_maintenance_id)
+        machine = Machine.objects.get(id=maintenance.machine_id)
+
+        # Serialize individual parts
+        maintenance_serializer = MaintenanceSerializer(maintenance)
+        organization_serializer = OrganizationSerializer(organization)
+        type_of_maintenance_serializer = TypeOfMaintenanceSerializer(type_of_maintenance)
+        machine_serializer = MachineSerializer(machine)
+
+        # Combine data
+        combined_data = {
+            'maintenance': maintenance_serializer.data,
+            'organization': {
+                'name': organization_serializer.data.get('name', ''),
+                'description': organization_serializer.data.get('description', '')
+            },
+            'type_of_maintenance': {
+                'name': type_of_maintenance_serializer.data.get('name', ''),
+                'description': type_of_maintenance_serializer.data.get('description', '')
+            },
+            'machine': {
+                'name': machine_serializer.data.get('name', ''),
+                'description': machine_serializer.data.get('description', '')
+            },
+        }
+
+        return Response(combined_data, status=status.HTTP_200_OK)
+
     except Maintenance.DoesNotExist:
-        return Response({'detail': 'Maintenance not found'}, status=404)
+        return Response({'detail': 'Maintenance not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Organization.DoesNotExist:
+        return Response({'detail': 'Organization not found'}, status=status.HTTP_404_NOT_FOUND)
+    except TypeOfMaintenance.DoesNotExist:
+        return Response({'detail': 'Type of Maintenance not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Machine.DoesNotExist:
+        return Response({'detail': 'Machine not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 # Machine instance list

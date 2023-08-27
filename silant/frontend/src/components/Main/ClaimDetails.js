@@ -2,20 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import './MachineTable.css';
-import FailureNode from "./Descriptions/FailureNode";
-import RecoveryMethod from "./Descriptions/RecoveryMethod";
 import {useAuth} from "./Auth/AuthContext";
+
 
 const ClaimDetails = () => {
   const { id } = useParams();
   const [claimDetails, setClaimDetails] = useState({
       claimData: null,
       failureNodeName: '',
+      failureNodeDescription:'',
       recoveryMethodName: '',
+      recoveryMethodDescription:'',
       serviceCompanyName: '',
       machineName: '',
 
   });
+
+  const [isLoading, setIsLoading] = useState(true);
   const { isAuthenticated } = useAuth();
 
   const commonHeaders = isAuthenticated ? {
@@ -23,33 +26,52 @@ const ClaimDetails = () => {
   } : {};
 
   useEffect(() => {
-    axios
-      .get(`http://127.0.0.1:8000/api/claim/${id}/`, { headers: commonHeaders })
-      .then((response) => {
-          const data = response.data;
-          console.log('API Response:', data);
+      axios
+          .get(`http://127.0.0.1:8000/api/claim/${id}/`, {headers: commonHeaders})
+          .then((response) => {
+              const data = response.data;
+              setClaimDetails({
+                  claimData: data,
+                  failureNodeName: '',
+                  failureNodeDescription: '',
+                  recoveryMethodName: '',
+                  recoveryMethodDescription: '',
+                  serviceCompanyName: '',
+                  machineName: '',
 
-          return Promise.all([
-                    axios.get(`http://127.0.0.1:8000/api/failure_nodes/${data.failure_node}/`, { headers: commonHeaders }),
-                    axios.get(`http://127.0.0.1:8000/api/recovery_methods/${data.recovery_method}/`, { headers: commonHeaders }),
-                    axios.get(`http://127.0.0.1:8000/api/machines/${data.machine}/`, { headers: commonHeaders }),
-                    axios.get(`http://127.0.0.1:8000/api/service_companies/${data.service_company}/`, { headers: commonHeaders }),
-                ]).then(([failure, method, machine, serviceCompany,client]) => {
-                    setClaimDetails({
-                        claimData: data,
-                        failureNodeName: failure.data.name,
-                        recoveryMethodName: method.data.name,
-                        machineName: machine.data.machine_factory_number,
-                        serviceCompanyName: serviceCompany.data.name.first_name,
-                    });
-                });
-            })
-            .catch(error => console.log(error));
-    }, [id]);
+              });
+              console.log('API Response:', data);
 
-    if (!claimDetails.claimData) {
-        return <p>Loading claim data...</p>;
-    }
+              return Promise.all([
+                  axios.get(`http://127.0.0.1:8000/api/failure_nodes/${data.failure_node}/`, {headers: commonHeaders}),
+                  axios.get(`http://127.0.0.1:8000/api/recovery_methods/${data.recovery_method}/`, {headers: commonHeaders}),
+                  axios.get(`http://127.0.0.1:8000/api/machines/${data.machine}/`, {headers: commonHeaders}),
+                  axios.get(`http://127.0.0.1:8000/api/service_companies/${data.service_company}/`, {headers: commonHeaders}),
+              ]);
+          })
+        .then((responses) => {
+                  const [failureNodeData, recoveryMethodData, machineData, serviceCompanyData] = responses.map(res => res.data);
+                  setClaimDetails(prevState => ({
+                      ...prevState,
+                      failureNodeName: failureNodeData.name,
+                      failureNodeDescription: failureNodeData.description,
+                      recoveryMethodName: recoveryMethodData.name,
+                      recoveryMethodDescription: recoveryMethodData.description,
+                      machineName: machineData.machine_factory_number,
+                      serviceCompanyName: serviceCompanyData.name.first_name,
+                  }));
+                  setIsLoading(false);
+              })
+                  .catch((error) => {
+                      console.log(error);
+                      setIsLoading(false);
+                  });
+          }, [id]);
+
+
+  if (isLoading) {
+          return <p>Loading claim data...</p>;
+      }
 
   return (
     <div>
@@ -60,7 +82,7 @@ const ClaimDetails = () => {
         <tbody>
         <tr>
             <td>Machine Factory Number:</td>
-            <td>{claimDetails.machineName}</td>
+            <td> <b>{claimDetails.machineName}</b> </td>
           </tr>
           <tr>
             <td>Date of Failure:</td>
@@ -76,11 +98,11 @@ const ClaimDetails = () => {
           </tr>
           <tr>
             <td>Failure Node:</td>
-            <td>{claimDetails.failureNodeName} <i><FailureNode/></i> </td>
+            <td>{claimDetails.failureNodeName} <b>Описание:</b> <i>{claimDetails.failureNodeDescription}</i> </td>
           </tr>
           <tr>
             <td>Recovery Method:</td>
-            <td>{claimDetails.recoveryMethodName} <i><RecoveryMethod/></i> </td>
+            <td>{claimDetails.recoveryMethodName} <b>Описание:</b> <i>{claimDetails.recoveryMethodDescription}</i>  </td>
           </tr>
         <tr>
             <td>Spare Parts Used:</td>
@@ -88,7 +110,7 @@ const ClaimDetails = () => {
           </tr>
         <tr>
             <td>Technical Downtime:</td>
-            <td>{claimDetails.claimData.technical_downtime} days</td>
+            <td>{claimDetails.claimData.technical_downtime} дней</td>
           </tr>
           <tr>
             <td>Service Company:</td>
