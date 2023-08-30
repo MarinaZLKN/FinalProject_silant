@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('permissions', JSON.stringify(userPermissions));
         setIsAuthenticated(true);
 
+
     };
 
     const logout = () => {

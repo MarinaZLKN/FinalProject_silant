@@ -47,21 +47,31 @@ const Login = () => {
                 return axiosInstance.get('http://127.0.0.1:8000/api/permissions/');
             })
             .then((permResponse) => {
-                const fetchedPermissions = permResponse.data.permissions;
+                fetchedPermissions = permResponse.data.permissions;
                 setUserPermissions(fetchedPermissions);
                 console.log('Permissions Fetched:', fetchedPermissions);
 
                 return axiosInstance.get('http://127.0.0.1:8000/api/users/');
             })
             .then((userResponse) => {
+                console.log(userResponse.data);
                 const fetchedUser = userResponse.data.find(u => u.username === username);
 
-                if (fetchedUser) {
+
+                if (fetchedUser && fetchedPermissions) {
                     setUser(fetchedUser);
+                    login(authToken, fetchedPermissions);
+                } else {
+                    console.warn("User or permissions were not fetched properly");
+                    setErrorMessage("Failed to fetch user or permissions");
                 }
 
-                // Updating the login method with both token and permissions
-                login(authToken, fetchedPermissions);
+                // if (fetchedUser) {
+                //     setUser(fetchedUser);
+                // }
+                //
+                // // Updating the login method with both token and permissions
+                // login(authToken, fetchedPermissions);
 
                 navigate('/');
              })
