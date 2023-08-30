@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import {useAuth} from "./Auth/AuthContext";
 
@@ -14,8 +14,8 @@ const MaintenanceDetails = () => {
     machineName: ''
   });
   const [isLoading, setIsLoading] = useState(true);
-
   const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const commonHeaders = isAuthenticated ? {
     'Authorization': `Token ${localStorage.getItem('authToken')}`
@@ -57,6 +57,16 @@ const MaintenanceDetails = () => {
         setIsLoading(false);
       });
   }, [id]);
+
+  const handleDelete = () => {
+        axios.delete(`http://127.0.0.1:8000/api/maintenances/${id}/`, { headers: commonHeaders })
+          .then(() => {
+            navigate("/maintenance");
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      };
 
   if (isLoading) {
     return <p>Loading maintenance data...</p>;
@@ -101,6 +111,11 @@ const MaintenanceDetails = () => {
 
         </tbody>
       </table>
+      <div className="delete_btn">
+            <button className="search-btn" onClick={handleDelete}>
+                Удалить
+            </button>
+        </div>
     </div>
   );
 };

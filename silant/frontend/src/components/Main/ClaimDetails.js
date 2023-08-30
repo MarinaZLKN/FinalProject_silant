@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import './MachineTable.css';
 import {useAuth} from "./Auth/AuthContext";
@@ -20,6 +20,7 @@ const ClaimDetails = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const commonHeaders = isAuthenticated ? {
     'Authorization': `Token ${localStorage.getItem('authToken')}`
@@ -67,7 +68,15 @@ const ClaimDetails = () => {
                       setIsLoading(false);
                   });
           }, [id]);
-
+    const handleDelete = () => {
+        axios.delete(`http://127.0.0.1:8000/api/claim/${id}/`, { headers: commonHeaders })
+          .then(() => {
+            navigate("/claim");
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      };
 
   if (isLoading) {
           return <p>Loading claim data...</p>;
@@ -109,6 +118,10 @@ const ClaimDetails = () => {
             <td>{claimDetails.claimData.spare_parts_used}</td>
           </tr>
         <tr>
+            <td>Description of the failure:</td>
+            <td>{claimDetails.claimData.description_of_failure}</td>
+          </tr>
+        <tr>
             <td>Technical Downtime:</td>
             <td>{claimDetails.claimData.technical_downtime} дней</td>
           </tr>
@@ -118,6 +131,12 @@ const ClaimDetails = () => {
           </tr>
         </tbody>
       </table>
+        <div className="delete_btn">
+            <button className="search-btn" onClick={handleDelete}>
+                Удалить
+            </button>
+        </div>
+
     </div>
   );
 };

@@ -47,7 +47,6 @@ function App () {
               <Route path="/create-main" element={<MaintenanceForm/>} />
               <Route path="/create-instance" element={<CreateModelInstance/>} />
               <Route path="/create-claim" element={<ClaimForm/>} />
-              {/*<Route path="/" element={<Search />} />*/}
               <Route path="/login" element={<Login />} />
               <Route path="/machines" element={<MachineTable />} />
               <Route path="/claim" element={<ClaimTable />} />

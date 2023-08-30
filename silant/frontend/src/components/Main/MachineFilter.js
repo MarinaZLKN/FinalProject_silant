@@ -192,9 +192,6 @@ const MachineFilter = () => {
               <button type="button" className="search-btn">Справочник</button>
             </Link>
           )}
-        {/*<Link to="/create-instance">*/}
-        {/*  <button type="button" className="search-btn">Справочник</button>*/}
-        {/*</Link>*/}
 
 
       </div>

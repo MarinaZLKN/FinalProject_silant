@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import './MachineTable.css';
 import {useAuth} from "./Auth/AuthContext";
@@ -24,6 +24,7 @@ const MachineDetails = () => {
     });
     const { isAuthenticated } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
 
     const commonHeaders = isAuthenticated ? {
         'Authorization': `Token ${localStorage.getItem('authToken')}`
@@ -81,6 +82,16 @@ const MachineDetails = () => {
                     setIsLoading(false);
             });
     }, [id]);
+
+    const handleDelete = () => {
+        axios.delete(`http://127.0.0.1:8000/api/machines/${id}/`, { headers: commonHeaders })
+          .then(() => {
+            navigate("/machines");
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      };
 
     if (isLoading) {
         return <p>Loading machine data...</p>;
@@ -159,6 +170,11 @@ const MachineDetails = () => {
                     </tr>
                 </tbody>
             </table>
+            <div className="delete_btn">
+            <button className="search-btn" onClick={handleDelete}>
+                Удалить
+            </button>
+        </div>
         </div>
     );
 };

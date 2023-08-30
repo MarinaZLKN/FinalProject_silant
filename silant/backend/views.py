@@ -294,7 +294,7 @@ class ClaimViewset(viewsets.ModelViewSet):
 
 
 # Machine instance detail view
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def machine_detail(request, machine_id):
     try:
         machine = Machine.objects.get(id=machine_id)
@@ -306,47 +306,59 @@ def machine_detail(request, machine_id):
         service_company = ServiceCompany.objects.get(id=machine)
         client = Client.objects.get(id=machine)
 
-        machine_serializer = MachineSerializer(machine)
-        technical_model_serializer = TechnicalModelSerializer(technical_model)
-        engine_model_serializer = EngineModelSerializer(engine_model)
-        transmission_model_serializer = TransmissionModelSerializer(transmission_model)
-        controlled_bridge_model_serializer = ControlledBridgeModelSerializer(controlled_bridge_model)
-        driving_bridge_serializer = DrivingBridgeModelSerializer(driving_bridge_model)
-        service_company_serializer = ServiceCompanySerializer(service_company)
-        client_serializer = ClientSerializer(client)
+        if request.method == 'GET':
+            machine_serializer = MachineSerializer(machine)
+            technical_model_serializer = TechnicalModelSerializer(technical_model)
+            engine_model_serializer = EngineModelSerializer(engine_model)
+            transmission_model_serializer = TransmissionModelSerializer(transmission_model)
+            controlled_bridge_model_serializer = ControlledBridgeModelSerializer(controlled_bridge_model)
+            driving_bridge_serializer = DrivingBridgeModelSerializer(driving_bridge_model)
+            service_company_serializer = ServiceCompanySerializer(service_company)
+            client_serializer = ClientSerializer(client)
 
-        combined_data = {
-            'machine': machine_serializer.data,
-            'technical_model': {
-                'name': technical_model_serializer.data.get('name', ''),
-                'description': technical_model_serializer.data.get('description', '')
-            },
-            'engine_model': {
-                'name': engine_model_serializer.data.get('name', ''),
-                'description': engine_model_serializer.data.get('description', '')
-            },
-            'transmission_model': {
-                'name': transmission_model_serializer.data.get('name', ''),
-                'description': transmission_model_serializer.data.get('description', '')
-            },
-            'controlled_bridge_model': {
-                'name': controlled_bridge_model_serializer.data.get('name', ''),
-                'description': controlled_bridge_model_serializer.data.get('description', '')
-            },
-            'driving_bridge_model': {
-                'name': driving_bridge_serializer.data.get('name', ''),
-                'description': driving_bridge_serializer.data.get('description', '')
-            },
-            'service_company': {
-                'name': service_company_serializer.data.get('name', {}).get('first_name', ''),
-                'description': service_company_serializer.data.get('description', '')
-            },
-            'client': {
-                'name': client_serializer.data.get('name', {}).get('first_name', ''),
-                'description': client_serializer.data.get('description', '')
+            combined_data = {
+                'machine': machine_serializer.data,
+                'technical_model': {
+                    'name': technical_model_serializer.data.get('name', ''),
+                    'description': technical_model_serializer.data.get('description', '')
+                },
+                'engine_model': {
+                    'name': engine_model_serializer.data.get('name', ''),
+                    'description': engine_model_serializer.data.get('description', '')
+                },
+                'transmission_model': {
+                    'name': transmission_model_serializer.data.get('name', ''),
+                    'description': transmission_model_serializer.data.get('description', '')
+                },
+                'controlled_bridge_model': {
+                    'name': controlled_bridge_model_serializer.data.get('name', ''),
+                    'description': controlled_bridge_model_serializer.data.get('description', '')
+                },
+                'driving_bridge_model': {
+                    'name': driving_bridge_serializer.data.get('name', ''),
+                    'description': driving_bridge_serializer.data.get('description', '')
+                },
+                'service_company': {
+                    'name': service_company_serializer.data.get('name', {}).get('first_name', ''),
+                    'description': service_company_serializer.data.get('description', '')
+                },
+                'client': {
+                    'name': client_serializer.data.get('name', {}).get('first_name', ''),
+                    'description': client_serializer.data.get('description', '')
+                }
             }
-        }
-        return Response(combined_data, status=status.HTTP_200_OK)
+            return Response(combined_data, status=status.HTTP_200_OK)
+
+        elif request.method == 'PUT':
+            machine_serializer = MachineSerializer(machine, data=request.data)
+            if machine_serializer.is_valid():
+                machine_serializer.save()
+                return Response(machine_serializer.data, status=status.HTTP_200_OK)
+            return Response(machine_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        elif request.method == 'DELETE':
+            machine.delete()
+            return Response({'detail': 'Claim deleted'}, status=status.HTTP_204_NO_CONTENT)
 
     except Machine.DoesNotExist:
         return Response({'detail': 'Machine not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -367,41 +379,53 @@ def machine_detail(request, machine_id):
 
 
 # Claim instance detail view
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def claim_detail(request, claim_id):
     try:
         claim = Claim.objects.get(id=claim_id)
         failure_node = FailureNode.objects.get(id=claim_id)
         recovery_method = RecoveryMethod.objects.get(id=claim.id)
         machine = Machine.objects.get(id=claim.machine_id)
-        service_company = ServiceCompany.objects.get(id=claim)
+        service_company = ServiceCompany.objects.get(id=claim.service_company_id)
 
-        claim_serializer = ClaimSerializer(claim)
-        failure_node_serializer = FailureNodeSerializer(failure_node)
-        recovery_method_serializer = RecoveryMethodSerializer(recovery_method)
-        machine_serializer = MachineSerializer(machine)
-        service_company_serializer = ServiceCompanySerializer(service_company)
+        if request.method == 'GET':
+            claim_serializer = ClaimSerializer(claim)
+            failure_node_serializer = FailureNodeSerializer(failure_node)
+            recovery_method_serializer = RecoveryMethodSerializer(recovery_method)
+            machine_serializer = MachineSerializer(machine)
+            service_company_serializer = ServiceCompanySerializer(service_company)
 
-        combined_data = {
-            'claim': claim_serializer.data,
-            'failure_node': {
-                'name': failure_node_serializer.data.get('name', ''),
-                'description': failure_node_serializer.data.get('description', '')
-            },
-            'recovery_method': {
-                'name': recovery_method_serializer.data.get('name', ''),
-                'description': recovery_method_serializer.data.get('description', '')
-            },
-            'machine': {
-                'name': machine_serializer.data.get('name', ''),
-                'description': machine_serializer.data.get('description', '')
-            },
-            'service_company': {
-                'name': service_company_serializer.data.get('name', {}).get('first_name', ''),
-                'description': service_company_serializer.data.get('description', '')
+            combined_data = {
+                'claim': claim_serializer.data,
+                'failure_node': {
+                    'name': failure_node_serializer.data.get('name', ''),
+                    'description': failure_node_serializer.data.get('description', '')
+                },
+                'recovery_method': {
+                    'name': recovery_method_serializer.data.get('name', ''),
+                    'description': recovery_method_serializer.data.get('description', '')
+                },
+                'machine': {
+                    'name': machine_serializer.data.get('name', ''),
+                    'description': machine_serializer.data.get('description', '')
+                },
+                'service_company': {
+                    'name': service_company_serializer.data.get('name', {}).get('first_name', ''),
+                    'description': service_company_serializer.data.get('description', '')
+                }
             }
-        }
-        return Response(combined_data, status=status.HTTP_200_OK)
+            return Response(combined_data, status=status.HTTP_200_OK)
+
+        elif request.method == 'PUT':
+            claim_serializer = ClaimSerializer(claim, data=request.data)
+            if claim_serializer.is_valid():
+                claim_serializer.save()
+                return Response(claim_serializer.data, status=status.HTTP_200_OK)
+            return Response(claim_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        elif request.method == 'DELETE':
+            claim.delete()
+            return Response({'detail': 'Claim deleted'}, status=status.HTTP_204_NO_CONTENT)
 
     except Claim.DoesNotExist:
         return Response({'detail': 'Claim not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -416,7 +440,7 @@ def claim_detail(request, claim_id):
 
 
 # Maintenance instance detail view
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def maintenance_detail(request, maintenance_id):
     try:
         maintenance = Maintenance.objects.get(id=maintenance_id)
@@ -425,30 +449,42 @@ def maintenance_detail(request, maintenance_id):
         type_of_maintenance = TypeOfMaintenance.objects.get(id=maintenance.type_of_maintenance_id)
         machine = Machine.objects.get(id=maintenance.machine_id)
 
-        # Serialize individual parts
-        maintenance_serializer = MaintenanceSerializer(maintenance)
-        organization_serializer = OrganizationSerializer(organization)
-        type_of_maintenance_serializer = TypeOfMaintenanceSerializer(type_of_maintenance)
-        machine_serializer = MachineSerializer(machine)
+        if request.method == 'GET':
+            # Serialize individual parts
+            maintenance_serializer = MaintenanceSerializer(maintenance)
+            organization_serializer = OrganizationSerializer(organization)
+            type_of_maintenance_serializer = TypeOfMaintenanceSerializer(type_of_maintenance)
+            machine_serializer = MachineSerializer(machine)
 
-        # Combine data
-        combined_data = {
-            'maintenance': maintenance_serializer.data,
-            'organization': {
-                'name': organization_serializer.data.get('name', ''),
-                'description': organization_serializer.data.get('description', '')
-            },
-            'type_of_maintenance': {
-                'name': type_of_maintenance_serializer.data.get('name', ''),
-                'description': type_of_maintenance_serializer.data.get('description', '')
-            },
-            'machine': {
-                'name': machine_serializer.data.get('name', ''),
-                'description': machine_serializer.data.get('description', '')
-            },
-        }
+            # Combine data
+            combined_data = {
+                'maintenance': maintenance_serializer.data,
+                'organization': {
+                    'name': organization_serializer.data.get('name', ''),
+                    'description': organization_serializer.data.get('description', '')
+                },
+                'type_of_maintenance': {
+                    'name': type_of_maintenance_serializer.data.get('name', ''),
+                    'description': type_of_maintenance_serializer.data.get('description', '')
+                },
+                'machine': {
+                    'name': machine_serializer.data.get('name', ''),
+                    'description': machine_serializer.data.get('description', '')
+                },
+            }
 
-        return Response(combined_data, status=status.HTTP_200_OK)
+            return Response(combined_data, status=status.HTTP_200_OK)
+
+        elif request.method == 'PUT':
+            maintenance_serializer = ClaimSerializer(maintenance, data=request.data)
+            if maintenance_serializer.is_valid():
+                maintenance_serializer.save()
+                return Response(maintenance_serializer.data, status=status.HTTP_200_OK)
+            return Response(maintenance_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        elif request.method == 'DELETE':
+            maintenance.delete()
+            return Response({'detail': 'Claim deleted'}, status=status.HTTP_204_NO_CONTENT)
 
     except Maintenance.DoesNotExist:
         return Response({'detail': 'Maintenance not found'}, status=status.HTTP_404_NOT_FOUND)
