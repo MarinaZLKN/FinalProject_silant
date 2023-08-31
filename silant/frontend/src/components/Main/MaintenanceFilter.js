@@ -103,7 +103,7 @@ const MaintenanceFilter = () => {
   return (
     <div>
       <div className="filter-group">
-        <label>Machine Factory Number:</label>
+        <label>Зав. № машины:</label>
         <input
           type="text"
           value={machineFactoryNumber}
@@ -111,9 +111,9 @@ const MaintenanceFilter = () => {
         />
       </div>
       <div className="filter-group">
-        <label>Type of Maintenance:</label>
+        <label>Тип обслуживания:</label>
         <select value={selectedTypeOfMaintenance} onChange={(e) => setSelectedTypeOfMaintenance(e.target.value)}>
-          <option value="">Select Type of Maintenance</option>
+          <option value="">Выберите тип обслуживания</option>
           {typeOfMaintenanceList.map((maintenanceType) => (
             <option key={maintenanceType.id} value={maintenanceType.id}>
               {maintenanceType.name}
@@ -122,9 +122,9 @@ const MaintenanceFilter = () => {
         </select>
       </div>
       <div className="filter-group">
-        <label>Organization:</label>
+        <label>Организация проводившая ТО</label>
         <select value={selectedOrgCompany} onChange={(e) => setSelectedOrgCompany(e.target.value)}>
-          <option value="">Select Organization</option>
+          <option value="">Выберите организацию</option>
           {orgCompanyList.map((company) => (
             <option key={company.id} value={company.id}>
               {company.name}
@@ -142,13 +142,13 @@ const MaintenanceFilter = () => {
       <table className="machine-table">
         <thead>
           <tr>
-            <th>Machine</th>
-            <th>Data of Order</th>
-            <th>Date of Maintenance</th>
-            <th>Operating Time</th>
-            <th>Order Number</th>
-            <th>Organization</th>
-            <th>Type of Maintenance</th>
+            <th>Зав. № машины</th>
+            <th>Дата заказ-наряда</th>
+            <th>Дата проведения ТО</th>
+            <th>Наработка</th>
+            <th>Номер заказа</th>
+            <th>Организация проводившая ТО</th>
+            <th>Тип обслуживания</th>
           </tr>
         </thead>
         <tbody>

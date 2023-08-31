@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axiosInstance from "../../axiosConfig";
 import './MachineForm.css'
 import {useAuth} from "../Auth/AuthContext";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const parseValue = (value) => {
     if (value === "") return null;
@@ -10,15 +10,22 @@ const parseValue = (value) => {
     return isNaN(intValue) ? value : intValue;
 };
 const MaintenanceForm = () => {
-  const [mainData, setMainData] = useState({
-    date_of_maintenance: '',
-    operating_time: '',
-    order_number: '',
-    data_of_order: '',
-    organization: '',
-    type_of_maintenance: '',
-    machine: '',
-  });
+
+    const location = useLocation();
+    const isEditing = location.state?.isEditing || false;
+
+    const initialMainState = location.state?.maintenance ||{
+        date_of_maintenance: '',
+        operating_time: '',
+        order_number: '',
+        data_of_order: '',
+        organization: '',
+        type_of_maintenance: '',
+        machine: '',
+      };
+
+    const [mainData, setMainData] = useState(initialMainState)
+
 
   const { isAuthenticated, permissions } = useAuth();
   const navigate = useNavigate();
@@ -90,10 +97,16 @@ const MaintenanceForm = () => {
     console.log("User permissions:", permissions);
 
     if (!permissions.includes("backend.add_maintenance")) {
-        console.error("User does not have permission to add a machine.");
+        console.error("User does not have permission to add a maintenance.");
         setPermissionError(true);
         return;
     }
+
+    if (!permissions.includes("backend.change_maintenance") && isEditing) {
+            console.error("User does not have permission to edit a maintenance.");
+            setPermissionError(true);
+            return;
+        }
     setPermissionError(false);
 
     const additionalFormData = {
@@ -101,15 +114,18 @@ const MaintenanceForm = () => {
             type_of_maintenance: parseValue(e.target.type_of_maintenance.value),
             machine: parseValue(e.target.machine.value),
       };
-        console.log('additionalFormData: ', additionalFormData)
 
-       const postData = {
+    const postData = {
           ...mainData,
           ...additionalFormData,
        };
 
-        console.log('postData: ', postData)
-    axiosInstance.post('http://127.0.0.1:8000/api/maintenances/', postData, {
+    const method = isEditing ? 'put' : 'post';
+    const url = isEditing
+        ? `http://127.0.0.1:8000/api/maintenances/${mainData.id}/`
+        : 'http://127.0.0.1:8000/api/maintenances/';
+
+    axiosInstance[method](url, postData, {
          headers: {
                     'Content-Type': 'application/json'
                 }
@@ -122,6 +138,7 @@ const MaintenanceForm = () => {
             console.error(error);
           });
   };
+
 
   return (
       <div className="form_1">

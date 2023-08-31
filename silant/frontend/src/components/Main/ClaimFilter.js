@@ -95,9 +95,9 @@ const ClaimFilter = () => {
   return (
     <div>
       <div className="filter-group">
-        <label>Service Company:</label>
+        <label>Сервисная организация:</label>
         <select value={selectedServiceCompany} onChange={(e) => setSelectedServiceCompany(e.target.value)}>
-          <option value="">Select Service Company</option>
+          <option value="">Выберите сервисная организацию</option>
           {serviceCompanies.map((company) => (
             <option key={company.name.id} value={company.id}>
               {company.name.first_name}
@@ -106,9 +106,9 @@ const ClaimFilter = () => {
         </select>
       </div>
       <div className="filter-group">
-        <label>Recovery Method:</label>
+        <label>Способ восстановления:</label>
         <select value={selectedRecoveryMethod}  onChange={(e) => setSelectedRecoveryMethod(e.target.value)}>
-          <option value="">Select Recovery Method</option>
+          <option value="">Выберите способ восстановления</option>
           {recoveryMethods.map((method) => (
             <option key={method.id} value={method.id}>
               {method.name}
@@ -117,9 +117,9 @@ const ClaimFilter = () => {
         </select>
       </div>
       <div className="filter-group">
-        <label>Failure Node:</label>
+        <label>Узел отказа:</label>
         <select value={selectedFailureNode} onChange={(e) => setSelectedFailureNode(e.target.value)}>
-          <option value="">Select Failure Node</option>
+          <option value="">Выберите узел отказа</option>
           {failureNodes.map((node) => (
             <option key={node.id} value={node.id}>
               {node.name}
@@ -135,14 +135,14 @@ const ClaimFilter = () => {
       <table className="machine-table">
         <thead>
           <tr>
-            <th>Machine Factory Number</th>
-            <th>Date of Failure</th>
-            <th>Date of Recovery</th>
-            <th>Operating Time</th>
-            <th>Technical Downtime</th>
-            <th>Failure Node</th>
-            <th>Recovery Method</th>
-            <th>Service Company</th>
+            <th>Зав. № машины</th>
+            <th>Дата отказа</th>
+            <th>Дата восстановления</th>
+            <th>Наработка</th>
+            <th>Время простоя</th>
+            <th>Узел отказа</th>
+            <th>Способ восстановления</th>
+            <th>Сервисная организация</th>
           </tr>
         </thead>
         <tbody>

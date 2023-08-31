@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axiosInstance from "../../axiosConfig";
 import './MachineForm.css'
 import {useAuth} from "../Auth/AuthContext";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const parseValue = (value) => {
     if (value === "") return null;
@@ -10,7 +10,11 @@ const parseValue = (value) => {
     return isNaN(intValue) ? value : intValue;
 };
 const ClaimForm = () => {
-  const [claimData, setClaimData] = useState({
+
+
+  const location = useLocation();
+  const isEditing = location.state?.isEditing || false;
+  const initialClaimState = location.state?.claim ||{
     machine: '',
     date_of_failure: '',
     date_of_recovery: '',
@@ -21,8 +25,9 @@ const ClaimForm = () => {
     failure_node: '',
     recovery_method: '',
     service_company: '',
-  });
+  };
 
+  const [claimData, setClaimData] = useState(initialClaimState)
   const { permissions } = useAuth();
   const navigate = useNavigate();
 
@@ -96,6 +101,12 @@ const ClaimForm = () => {
         setPermissionError(true);
         return;
     }
+
+    if (!permissions.includes("backend.change_claim") && isEditing) {
+            console.error("User does not have permission to edit a claim.");
+            setPermissionError(true);
+            return;
+        }
     setPermissionError(false);
 
     const additionalFormData = {
@@ -112,8 +123,13 @@ const ClaimForm = () => {
           ...additionalFormData,
        };
 
-        console.log('postData: ', postData)
-    axiosInstance.post('http://127.0.0.1:8000/api/claims/', postData, {
+       const method = isEditing ? 'put' : 'post';
+       const url = isEditing
+            ? `http://127.0.0.1:8000/api/claim/${claimData.id}/`
+            : 'http://127.0.0.1:8000/api/claim/';
+
+
+    axiosInstance[method](url, postData, {
          headers: {
                     'Content-Type': 'application/json'
                 }

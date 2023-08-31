@@ -114,67 +114,67 @@ const MachineDetails = () => {
             <table className="machine-table">
                 <tbody>
                     <tr>
-                        <td>Technical Model:</td>
+                        <td><b>Техническая модель:</b> </td>
                         <td>{machineDetails.technicalModelName}  <b>Описание:</b> <i>{machineDetails.technicalDescription}</i> </td>
                     </tr>
                     <tr>
-                        <td>Engine Factory Number:</td>
+                        <td> <b>Зав. № двигателя:</b> </td>
                         <td>{machineDetails.machineData.engine_factory_number}</td>
                     </tr>
                     <tr>
-                        <td>Engine Model:</td>
+                        <td><b>Модель двигателя:</b></td>
                         <td>{machineDetails.engineModelName}  <b>Описание:</b> <i>{machineDetails.engineDescription}</i></td>
                     </tr>
                     <tr>
-                        <td>Transmission Factory Number:</td>
+                        <td><b>Зав. № трансмиссии:</b></td>
                         <td>{machineDetails.machineData.transmission_factory_number} </td>
                     </tr>
                     <tr>
-                        <td>Transmission Model:</td>
+                        <td><b>Модель трансмиссии:</b></td>
                         <td>{machineDetails.transmissionModelName} <b>Описание:</b> <i>{machineDetails.transmissionDescription}</i></td>
                     </tr>
                     <tr>
-                        <td>Driving Bridge Factory Number:</td>
+                        <td><b>Зав. № ведущего моста:</b></td>
                         <td>{machineDetails.machineData.driving_bridge_factory_number}</td>
                     </tr>
                     <tr>
-                        <td>Driving Bridge Model:</td>
+                        <td><b>Модель ведущего моста:</b></td>
                         <td>{machineDetails.drivingBridgeModelName}  <b>Описание:</b> <i>{machineDetails.drivingDescription}</i></td>
                     </tr>
                     <tr>
-                        <td>Controlled Bridge Factory Number:</td>
+                        <td><b>Зав. № управляемого моста:</b></td>
                         <td>{machineDetails.machineData.controlled_bridge_factory_number}</td>
                     </tr>
                     <tr>
-                        <td>Controlled Bridge Model:</td>
+                        <td><b>Модель управляемого моста:</b></td>
                         <td>{machineDetails.controlledBridgeModelName}  <b>Описание:</b> <i>{machineDetails.controlledDescription}</i></td>
                     </tr>
                       <tr>
-                        <td>Delivery Contract:</td>
+                        <td><b>Договор поставки:</b></td>
                         <td>{machineDetails.machineData.delivery_contract}</td>
                       </tr>
                       <tr>
-                        <td>Shipment Date:</td>
+                        <td><b>Дата отгрузки с завода:</b></td>
                         <td>{machineDetails.machineData.shipment_date}</td>
                       </tr>
                       <tr>
-                        <td>Consignee:</td>
+                        <td><b>Грузополучатель:</b></td>
                         <td>{machineDetails.machineData.consignee}</td>
                       </tr>
                       <tr>
-                        <td>Delivery Address:</td>
+                        <td><b>Адрес поставки:</b></td>
                         <td>{machineDetails.machineData.delivery_address}</td>
                       </tr>
                       <tr>
-                        <td>Equipment:</td>
+                        <td><b>Комплектация:</b></td>
                         <td>{machineDetails.machineData.equipment}</td>
                       </tr>
                     <tr>
-                        <td>Client:</td>
+                        <td><b>Покупатель:</b></td>
                         <td>{machineDetails.clientName} </td>
                     </tr>
                     <tr>
-                        <td>Service Company:</td>
+                        <td><b>Сервисная компания:</b></td>
                         <td>{machineDetails.serviceCompanyName} </td>
                     </tr>
                 </tbody>
@@ -184,7 +184,7 @@ const MachineDetails = () => {
                 Удалить
             </button>
             <button className="search-btn" onClick={handleEdit}>
-              Изменить
+                Изменить
             </button>
         </div>
         </div>

@@ -78,6 +78,15 @@ const ClaimDetails = () => {
           });
       };
 
+    const handleEdit = () => {
+        navigate("/claims/edit/:id", {
+          state: {
+            claim: claimDetails.claimData,
+            isEditing: true
+          }
+        });
+      }
+
   if (isLoading) {
           return <p>Loading claim data...</p>;
       }
@@ -90,43 +99,43 @@ const ClaimDetails = () => {
       <table className="machine-table">
         <tbody>
         <tr>
-            <td>Machine Factory Number:</td>
+            <td> <b>Зав. № машины:</b> </td>
             <td> <b>{claimDetails.machineName}</b> </td>
           </tr>
           <tr>
-            <td>Date of Failure:</td>
+            <td><b>Дата отказа:</b></td>
             <td>{claimDetails.claimData.date_of_failure}</td>
           </tr>
           <tr>
-            <td>Date of Recovery:</td>
+            <td><b>Дата восстановления:</b></td>
             <td>{claimDetails.claimData.date_of_recovery}</td>
           </tr>
           <tr>
-            <td>Operating Time:</td>
+            <td><b>Наработка:</b></td>
             <td>{claimDetails.claimData.operating_time} м/час</td>
           </tr>
           <tr>
-            <td>Failure Node:</td>
+            <td><b>Узел отказа:</b></td>
             <td>{claimDetails.failureNodeName} <b>Описание:</b> <i>{claimDetails.failureNodeDescription}</i> </td>
           </tr>
           <tr>
-            <td>Recovery Method:</td>
+            <td><b>Способ восстановления:</b></td>
             <td>{claimDetails.recoveryMethodName} <b>Описание:</b> <i>{claimDetails.recoveryMethodDescription}</i>  </td>
           </tr>
         <tr>
-            <td>Spare Parts Used:</td>
+            <td><b>Используемые запчасти:</b></td>
             <td>{claimDetails.claimData.spare_parts_used}</td>
           </tr>
         <tr>
-            <td>Description of the failure:</td>
+            <td><b>Описание отказа:</b></td>
             <td>{claimDetails.claimData.description_of_failure}</td>
           </tr>
         <tr>
-            <td>Technical Downtime:</td>
+            <td><b>Время простоя:</b></td>
             <td>{claimDetails.claimData.technical_downtime} дней</td>
           </tr>
           <tr>
-            <td>Service Company:</td>
+            <td><b>Сервисная организация:</b></td>
             <td>{claimDetails.serviceCompanyName}</td>
           </tr>
         </tbody>
@@ -134,6 +143,9 @@ const ClaimDetails = () => {
         <div className="delete_btn">
             <button className="search-btn" onClick={handleDelete}>
                 Удалить
+            </button>
+            <button className="search-btn" onClick={handleEdit}>
+                Изменить
             </button>
         </div>
 

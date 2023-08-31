@@ -68,6 +68,15 @@ const MaintenanceDetails = () => {
           });
       };
 
+  const handleEdit = () => {
+        navigate("/main/edit/:id", {
+          state: {
+            maintenance: maintenanceDetails.maintenanceData,
+            isEditing: true
+          }
+        });
+      }
+
   if (isLoading) {
     return <p>Loading maintenance data...</p>;
   }
@@ -80,32 +89,32 @@ const MaintenanceDetails = () => {
       <table className="machine-table">
         <tbody>
           <tr>
-            <td>Machine Factory Number:</td>
+            <td><b>Зав. № машины:</b></td>
             <td> <b>{maintenanceDetails.machineName}</b> </td>
           </tr>
           <tr>
-            <td>Data of Order:</td>
+            <td><b>Дата заказ-наряда:</b></td>
             <td>{maintenanceDetails.maintenanceData.data_of_order}</td>
           </tr>
           <tr>
-            <td>Date of Maintenance:</td>
+            <td> <b>Дата проведения ТО:</b></td>
             <td>{maintenanceDetails.maintenanceData.date_of_maintenance}</td>
           </tr>
           <tr>
-            <td>Operating Time:</td>
-            <td>{maintenanceDetails.maintenanceData.operating_time} м/час</td>
+            <td><b>Наработка:</b></td>
+            <td>{maintenanceDetails.maintenanceData.operating_time} м/час </td>
           </tr>
           <tr>
-            <td>Order Number:</td>
+            <td><b>Номер заказа:</b></td>
             <td>{maintenanceDetails.maintenanceData.order_number}</td>
           </tr>
           <tr>
-            <td>Organization:</td>
+            <td><b>Организация проводившая ТО:</b></td>
             <td>{maintenanceDetails.organizationName}
                 <b> Описание:</b> <i>{maintenanceDetails.organizationDescription}</i> </td>
           </tr>
           <tr>
-            <td>Type of Maintenance:</td>
+            <td><b>Тип обслуживания:</b></td>
             <td>{maintenanceDetails.typeOfMaintenanceName} <b> Описание:</b>  <i>{maintenanceDetails.typeOfMaintenanceDescription}</i> </td>
           </tr>
 
@@ -114,6 +123,9 @@ const MaintenanceDetails = () => {
       <div className="delete_btn">
             <button className="search-btn" onClick={handleDelete}>
                 Удалить
+            </button>
+          <button className="search-btn" onClick={handleEdit}>
+                Изменить
             </button>
         </div>
     </div>

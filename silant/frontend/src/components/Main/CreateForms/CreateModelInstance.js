@@ -8,15 +8,15 @@ const CreateModelInstance = () => {
   const [modelType, setModelType] = useState('');
 
   const apiEndpoints = {
-    'Technical Model': 'http://127.0.0.1:8000/api/technical_models/',
-    'Transmission Model': 'http://127.0.0.1:8000/api/transmission_models/',
-    'Engine Model': 'http://127.0.0.1:8000/api/engine_models/',
-    'Driving Bridge Model': 'http://127.0.0.1:8000/api/driving_bridge_models/',
-    'Controlled Bridge Model': 'http://127.0.0.1:8000/api/controlled_bridge_models/',
-    'Type of Maintenance': 'http://127.0.0.1:8000/api/types_of_maintenance/',
-    'Recovery Method': 'http://127.0.0.1:8000/api/recovery_methods/',
-    'Organization': 'http://127.0.0.1:8000/api/organizations/',
-    'Failure Node': 'http://127.0.0.1:8000/api/failure_nodes/',
+    'Техническая модель': 'http://127.0.0.1:8000/api/technical_models/',
+    'Модель трансмиссии': 'http://127.0.0.1:8000/api/transmission_models/',
+    'Модель двигателя': 'http://127.0.0.1:8000/api/engine_models/',
+    'Модель ведущего моста': 'http://127.0.0.1:8000/api/driving_bridge_models/',
+    'Модель управляемого моста': 'http://127.0.0.1:8000/api/controlled_bridge_models/',
+    'Тип обслуживания': 'http://127.0.0.1:8000/api/types_of_maintenance/',
+    'Способ восстановления': 'http://127.0.0.1:8000/api/recovery_methods/',
+    'Организация': 'http://127.0.0.1:8000/api/organizations/',
+    'Узел отказа': 'http://127.0.0.1:8000/api/failure_nodes/',
   };
 
   const handleSubmit = async (e) => {
