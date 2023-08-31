@@ -93,6 +93,15 @@ const MachineDetails = () => {
           });
       };
 
+    const handleEdit = () => {
+        navigate("/machines/edit/:id", {
+          state: {
+            machine: machineDetails.machineData,
+            isEditing: true
+          }
+        });
+      }
+
     if (isLoading) {
         return <p>Loading machine data...</p>;
     }
@@ -173,6 +182,9 @@ const MachineDetails = () => {
             <div className="delete_btn">
             <button className="search-btn" onClick={handleDelete}>
                 Удалить
+            </button>
+            <button className="search-btn" onClick={handleEdit}>
+              Изменить
             </button>
         </div>
         </div>

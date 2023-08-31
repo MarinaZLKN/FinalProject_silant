@@ -65,14 +65,6 @@ const Login = () => {
                     console.warn("User or permissions were not fetched properly");
                     setErrorMessage("Failed to fetch user or permissions");
                 }
-
-                // if (fetchedUser) {
-                //     setUser(fetchedUser);
-                // }
-                //
-                // // Updating the login method with both token and permissions
-                // login(authToken, fetchedPermissions);
-
                 navigate('/');
              })
             .catch((error) => {

@@ -41,6 +41,7 @@ function App () {
               <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
               <Route path="/" element={<MainPicture />} />
               <Route path="/machines/:id" element={<MachineDetails />} />
+              <Route path="/machines/edit/:id" element={<MachineForm />} />
               <Route path="/claims/:id" element={<ClaimDetails />} />
               <Route path="/maintenances/:id" element={<MaintenanceDetails />} />
               <Route path="/create-machine" element={<MachineForm/>} />

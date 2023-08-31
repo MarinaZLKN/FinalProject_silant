@@ -3,7 +3,7 @@ import './MachineForm.css'
 import {useAuth} from "../Auth/AuthContext";
 import axios from "axios";
 import axiosInstance from "../../axiosConfig";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const parseValue = (value) => {
     if (value === "") return null;
@@ -12,8 +12,10 @@ const parseValue = (value) => {
 };
 
 const MachineForm = () => {
+    const location = useLocation();
+    const isEditing = location.state?.isEditing || false;
     // State Initialization - state holds details related to a machine
-    const [machine, setMachine] = useState({
+    const initialMachineState = location.state?.machine ||{
         machine_factory_number: '',
         engine_factory_number: '',
         transmission_factory_number: '',
@@ -31,7 +33,9 @@ const MachineForm = () => {
         transmission_model: '',
         driving_bridge_model: '',
         controlled_bridge_model: '',
-    });
+    };
+
+    const [machine, setMachine] = useState(initialMachineState);
 
     const { permissions } = useAuth();
     const navigate = useNavigate();
@@ -116,12 +120,19 @@ const MachineForm = () => {
     // A POST request is then sent to the server with postData as the request body. If the request is successful,
     // the response is logged to the console. If there's an error, appropriate error handling and
     // logging are done based on the nature of the error.
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("User permissions:", permissions);
 
-        if (!permissions.includes("backend.add_machine")) {
+        if (!permissions.includes("backend.add_machine") && !isEditing) {
             console.error("User does not have permission to add a machine.");
+            setPermissionError(true);
+            return;
+        }
+
+        if (!permissions.includes("backend.change_machine") && isEditing) {
+            console.error("User does not have permission to edit a machine.");
             setPermissionError(true);
             return;
         }
@@ -136,21 +147,26 @@ const MachineForm = () => {
             transmission_model: parseValue(e.target.transmission_model.value),
             driving_bridge_model: parseValue(e.target.driving_bridge_model.value),
             controlled_bridge_model: parseValue(e.target.controlled_bridge_model.value),
-      };
+        };
 
-       const postData = {
-          ...machine,
-          ...additionalFormData,
-       };
+        const postData = {
+            ...machine,
+            ...additionalFormData,
+        };
 
-        axiosInstance.post('http://127.0.0.1:8000/api/machines/', postData, {
+        const method = isEditing ? 'put' : 'post';
+        const url = isEditing
+            ? `http://127.0.0.1:8000/api/machines/${machine.id}/`
+            : 'http://127.0.0.1:8000/api/machines/';
+
+        axiosInstance[method](url, postData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            }) .then(response => {
+            })
+            .then(response => {
                 console.log('Response:', response.data);
                 navigate('/machines');
-
             })
             .catch(error => {
                 if (error.response) {
@@ -167,8 +183,6 @@ const MachineForm = () => {
                 }
             });
     };
-
-
 
     return (
         <div className="form_1">
