@@ -63,6 +63,7 @@ const CreateModelInstance = () => {
           <div className="form-row">
             <label className="form-label">Описание:</label>
             <textarea
+              className="text_area"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>

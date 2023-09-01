@@ -148,7 +148,7 @@ const MaintenanceForm = () => {
           <form onSubmit={handleSubmit}>
               <div className="form-row">
                   <label className="form-label">
-                    Data of Order:
+                    Дата заказа:
                     <input
                       type="date"
                       name="data_of_order"
@@ -160,7 +160,7 @@ const MaintenanceForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Date of Maintenance:
+                    Дата проведения ТО:
                     <input
                       type="date"
                       name="date_of_maintenance"
@@ -172,7 +172,7 @@ const MaintenanceForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Operating Time (hours):
+                    Наработка (часы):
                     <input
                       type="number"
                       name="operating_time"
@@ -184,7 +184,7 @@ const MaintenanceForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Order Number:
+                    Номер заказа:
                     <input
                       type="text"
                       name="order_number"
@@ -195,7 +195,7 @@ const MaintenanceForm = () => {
                   </label>
               </div>
               <div className="form-row">
-                    <label className="form-label">Organization:</label>
+                    <label className="form-label">Организация, проводившая ТО:</label>
                      <label className="form-label">
                         <select className="option"  name="organization" onChange={handleChange}>
                             {data.organizations.map(organization => (
@@ -205,7 +205,7 @@ const MaintenanceForm = () => {
                      </label>
                 </div>
               <div className="form-row">
-                    <label className="form-label">Type of Maintenance:</label>
+                    <label className="form-label">Тип обслуживания:</label>
                      <label className="form-label">
                         <select className="option"  name="type_of_maintenance" onChange={handleChange}>
                             {data.type_of_maintenances.map(type_of_maintenance => (
@@ -215,7 +215,7 @@ const MaintenanceForm = () => {
                      </label>
                 </div>
               <div className="form-row">
-                    <label className="form-label">Machine:</label>
+                    <label className="form-label">Зав.№ машины:</label>
                      <label className="form-label">
                         <select className="option"  name="machine" onChange={handleChange}>
                             {data.machines.map(machine => (

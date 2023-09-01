@@ -145,12 +145,12 @@ const ClaimForm = () => {
 
   return (
       <div className="form_1">
-          <div className="form-container_main">
+          <div className="form-container_claim">
           <h2 className="machine-form_h2">Добавить новую рекламацию:</h2>
           {permissionError && <p style={{color: 'red'}}>Вы не можете добавлять рекламации!</p>}
           <form onSubmit={handleSubmit}>
               <div className="form-row">
-                    <label className="form-label">Machine:</label>
+                    <label className="form-label">Зав. № машины:</label>
                      <label className="form-label">
                         <select className="option"  name="machine" onChange={handleChange}>
                             {data.machines.map(machine => (
@@ -161,7 +161,7 @@ const ClaimForm = () => {
                 </div>
               <div className="form-row">
                   <label className="form-label">
-                    Data of Failure:
+                    Дата отказа:
                     <input
                       type="date"
                       name="date_of_failure"
@@ -173,7 +173,7 @@ const ClaimForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Date of Recovery:
+                    Дата восстановления:
                     <input
                       type="date"
                       name="date_of_recovery"
@@ -185,7 +185,7 @@ const ClaimForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Technical Downtime:
+                    Время простоя:
                     <input
                       type="number"
                       name="technical_downtime"
@@ -197,7 +197,7 @@ const ClaimForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Operating Time:
+                    Наработка:
                     <input
                       type="text"
                       name="operating_time"
@@ -209,7 +209,7 @@ const ClaimForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Description of the Failure:
+                    Описание отказа:
                     <input
                       type="text"
                       name="description_of_failure"
@@ -221,7 +221,7 @@ const ClaimForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Spare parts used:
+                    Используемые запчасти:
                     <input
                       type="text"
                       name="spare_parts_used"
@@ -233,7 +233,7 @@ const ClaimForm = () => {
               </div>
 
               <div className="form-row">
-                    <label className="form-label">Failure Node:</label>
+                    <label className="form-label">Узел отказа:</label>
                      <label className="form-label">
                         <select className="option"  name="failure_node" onChange={handleChange}>
                             {data.failure_nodes.map(failure_node => (
@@ -243,7 +243,7 @@ const ClaimForm = () => {
                      </label>
                 </div>
               <div className="form-row">
-                    <label className="form-label">Recovery Method:</label>
+                    <label className="form-label">Способ восстановления:</label>
                      <label className="form-label">
                         <select className="option"  name="recovery_method" onChange={handleChange}>
                             {data.recovery_methods.map(recovery_method => (
@@ -254,7 +254,7 @@ const ClaimForm = () => {
                 </div>
               <div className="form-row">
                      <label className="form-label">
-                        Service Company:
+                        Сервисная компания:
                             <select name="service_company" onChange={handleChange}>
                                 {data.service_companies.map(company => (
                                     <option key={company.id} value={company.id}>{company.name.first_name}</option>

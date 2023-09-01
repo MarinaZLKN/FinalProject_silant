@@ -63,7 +63,6 @@ const MaintenanceFilter = () => {
       });
   };
 
-    // const machineFactoryNumberInt = machineFactoryNumber ? parseInt(machineFactoryNumber, 10) : null;
 
     const filteredMaintenanceData = maintenanceData.filter((maintenance) => {
     const machine = machines.find(m => m.id === maintenance.machine);

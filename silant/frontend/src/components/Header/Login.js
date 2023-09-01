@@ -88,7 +88,7 @@ const Login = () => {
             {/*<h2 className="login-title">Авторизация</h2>*/}
             <form className="login_form" onSubmit={handleSubmit}>
                 <label className="login_label">
-                    Username:
+                    Логин:
                     <input
                         className="login_input"
                         type="text"
@@ -98,7 +98,7 @@ const Login = () => {
                     />
                 </label>
                 <label className="login_label">
-                    Password:
+                    Пароль:
                     <input
                         className="login_input"
                         type="password"
