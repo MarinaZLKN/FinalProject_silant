@@ -14,7 +14,7 @@ const MaintenanceDetails = () => {
     machineName: ''
   });
   const [isLoading, setIsLoading] = useState(true);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
 
   const commonHeaders = isAuthenticated ? {
@@ -124,6 +124,7 @@ const MaintenanceDetails = () => {
             <button className="search-btn" onClick={handleDelete}>
                 Удалить
             </button>
+
           <button className="search-btn" onClick={handleEdit}>
                 Изменить
             </button>

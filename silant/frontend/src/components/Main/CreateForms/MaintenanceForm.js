@@ -144,7 +144,6 @@ const MaintenanceForm = () => {
       <div className="form_1">
           <div className="form-container_main">
           <h2 className="machine-form_h2">Добавить техническое обслуживание:</h2>
-          {permissionError && <p style={{color: 'red'}}>Вы не можете добавлять ТО!</p>}
           <form onSubmit={handleSubmit}>
               <div className="form-row">
                   <label className="form-label">
@@ -228,6 +227,7 @@ const MaintenanceForm = () => {
               <div className="form-buttons">
                   <button type="submit" className="search-btn">Создать</button>
               </div>
+              {permissionError && <p style={{color: 'red'}}>Вы не можете добавлять или изменять ТО!</p>}
           </form>
       </div>
       </div>

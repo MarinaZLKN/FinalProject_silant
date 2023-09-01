@@ -22,7 +22,7 @@ const MachineDetails = () => {
         serviceCompanyName: '',
         clientName: '',
     });
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
@@ -180,9 +180,12 @@ const MachineDetails = () => {
                 </tbody>
             </table>
             <div className="delete_btn">
-            <button className="search-btn" onClick={handleDelete}>
-                Удалить
-            </button>
+                {isAuthenticated && user && user.role === 'Менеджер' && (
+                    <button className="search-btn" onClick={handleDelete}>
+                        Удалить
+                    </button>
+                )}
+
             <button className="search-btn" onClick={handleEdit}>
                 Изменить
             </button>
