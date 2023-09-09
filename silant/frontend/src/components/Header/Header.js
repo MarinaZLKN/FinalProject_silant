@@ -18,11 +18,11 @@ const Header = () => {
                              <Logo />
                          </Link>
                     </div>
-                    <div className="header-info"> +7-8352-20-12-09, telegram</div>
+                    <div className="header-info"> </div>
                     {isAuthenticated ? <LogoutButton /> : <Login />}
                 </div>
                 <div className="header-down">
-                    <p>Электронная сервисная книжка "Мой Силант"</p>
+                    <p></p>
                 </div>
             </div>
         </header>

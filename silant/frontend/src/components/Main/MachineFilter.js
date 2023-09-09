@@ -183,13 +183,13 @@ const MachineFilter = () => {
       </div>
       <div className="filter-btn">
         {/*<button type="button" className="search-btn" onClick={handleFilter}>Показать</button>*/}
-        <button type="button" className="search-btn" onClick={handleReset}>Сбросить</button>
+        <button type="button" className="search-btn" onClick={handleReset}>Reset</button>
         <Link to="/create-machine">
-          <button type="button" className="search-btn">Добавить</button>
+          <button type="button" className="search-btn">Add</button>
         </Link>
            {isAuthenticated && user && user.role === 'Менеджер' && (
             <Link to="/create-instance">
-              <button type="button" className="search-btn">Справочник</button>
+              <button type="button" className="search-btn">Catalog</button>
             </Link>
           )}
 

@@ -62,35 +62,35 @@ const Search = () => {
 
   return (
     <div className="search">
-      <p className="search-label">Проверьте комплектацию и технические характеристики техники Силант</p>
+      <p className="search-label">Check the equipment and technical characteristics of Silant equipment</p>
       <form className="search-form" onSubmit={handleSearchSubmit}>
         <div className="search-container">
           <input className="search-input"
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="Введите заводской номер машины"
+            placeholder="Enter the serial number of the machine"
           />
-          <button className="search-btn" type="submit">Поиск</button>
-          <button className="search-btn" type="button" onClick={handleReset}>Сброс</button>
+          <button className="search-btn" type="submit">Search</button>
+          <button className="search-btn" type="button" onClick={handleReset}>Reset</button>
         </div>
       </form>
 
       {data && data.length > 0 ? (
           <div >
-            <h2 className="search-info_label">Информация о комплектации и технических характеристиках машины с номером {data[0].machine_factory_number}</h2>
+            <h2 className="search-info_label">Information about the configuration and technical characteristics of the machine with the number {data[0].machine_factory_number}</h2>
             <table className="table">
               <thead>
                 <tr>
-                  <th>Техническая модель</th>
-                  <th>Модель двигателя</th>
-                  <th>Зав. № двигателя</th>
-                  <th>Зав. № трансмиссии</th>
-                  <th>Зав. № ведущего моста</th>
-                  <th>Зав. № управляемого моста</th>
-                  <th>Модель трансмиссии</th>
-                  <th>Модель ведущего моста</th>
-                  <th>Модель управляемого моста</th>
+                  <th>Technical model</th>
+                   <th>Engine model</th>
+                   <th>Engine serial number</th>
+                   <th>Transmission serial number</th>
+                   <th>Driving axle serial number</th>
+                   <th>Serial number of the steered axle</th>
+                   <th>Transmission model</th>
+                   <th>Drive axle model</th>
+                   <th>Steerable bridge model</th>
                 </tr>
               </thead>
               <tbody>
@@ -109,7 +109,7 @@ const Search = () => {
             </table>
           </div>
       ) : searchAttempted && (
-        <p>Данных о машине с таким заводским номером нет в системе</p>
+        <p>There is no data about a car with this serial number in the system.</p>
       )}
     </div>
 );

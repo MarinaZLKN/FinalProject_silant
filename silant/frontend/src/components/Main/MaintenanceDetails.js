@@ -122,11 +122,11 @@ const MaintenanceDetails = () => {
       </table>
       <div className="delete_btn">
             <button className="search-btn" onClick={handleDelete}>
-                Удалить
+                Delete
             </button>
 
           <button className="search-btn" onClick={handleEdit}>
-                Изменить
+                Update
             </button>
         </div>
     </div>

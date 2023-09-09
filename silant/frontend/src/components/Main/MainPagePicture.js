@@ -16,23 +16,23 @@ const MainPagePicture = () => {
       <div className="main-page_content">
           <div className="main-page_upper">
               <div className="upper-title">
-                  <p className="title-1">Выносливый. Практичный. Надежный!</p>
-                  <p className="title-2">ШИРОКАЯ ЛИНЕЙКА НАВЕСНОГО ОБОРУДОВАНИЯ</p>
+                  <p className="title-1">Hardy. Practical. Reliable!</p>
+                  <p className="title-2">WIDE RANGE OF ATTACHMENTS</p>
               </div>
           </div>
           <div className="main-page_down">
               <div className="down-1">
                   <div className="down_box">
                       <img className="icon" src={icon1} alt="icon1"/>
-                      <p className="box-text">Надежный. Высокая надежность основных узлов и агрегатов</p>
+                      <p className="box-text">Reliable. High reliability of main components and assemblies</p>
                   </div>
                   <div className="down_box">
                       <img className="icon" src={icon2} alt="icon2"/>
-                      <p className="box-text">Прочный. Высокий запас прочности, заложенный нашими конструкторами</p>
+                      <p className="box-text">Lasting. High safety margin laid down by our designers</p>
                   </div>
                   <div className="down_box">
                       <img className="icon" src={icon3} alt="icon3"/>
-                      <p className="box-text">Понятный. Простые механизмы, пригодные для самостоятельного ремонта</p>
+                      <p className="box-text">Understandable. Simple mechanisms suitable for self-repair</p>
                   </div>
               </div>
               <div className="down-2">
@@ -41,15 +41,15 @@ const MainPagePicture = () => {
               <div className="down-3">
                   <div className="down_box">
                       <img className="icon" src={icon4} alt="icon4"/>
-                      <p className="box-text">Выносливый. Адаптирован к работе в условиях сибирских морозов и краснодарской жары</p>
+                      <p className="box-text">Hardy. Adapted to work in conditions of Siberian frosts and Krasnodar heat</p>
                   </div>
                   <div className="down_box">
                       <img className="icon" src={icon5} alt="icon5"/>
-                      <p className="box-text">Компактный. Разворачивается на пятачке, легко маневрирует в тесных складах</p>
+                      <p className="box-text">Compact. Turns around on a small space and easily maneuvers in tight warehouses</p>
                   </div>
                   <div className="down_box">
                       <img className="icon" src={icon6} alt="icon6"/>
-                      <p className="box-text">Практичный. Механизмы и системы контроля, минимизирующие человеческий фактор</p>
+                      <p className="box-text">Practical. Mechanisms and control systems that minimize the human factor</p>
                   </div>
               </div>
           </div>

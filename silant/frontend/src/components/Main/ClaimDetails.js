@@ -143,11 +143,11 @@ const ClaimDetails = () => {
         <div className="delete_btn">
             {isAuthenticated && user && (user.role === 'Менеджер' || user.role === 'Сервис') && (
                 <button className="search-btn" onClick={handleDelete}>
-                    Удалить
+                    Delete
                 </button>
                 )}
             <button className="search-btn" onClick={handleEdit}>
-                Изменить
+                Update
             </button>
         </div>
 

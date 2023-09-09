@@ -11,7 +11,7 @@ const MainPicture = () => {
           <img className="logo_picture" src={pic} alt="Logo Silant" />
           <div className="main-page_wrap">
               <div className="main-pic_text">
-                  <p className="main_p">Надежная техника от российского производителя, в бесперебойной работе и обслуживании которой можно не сомневаться</p>
+                  <p className="main_p">Reliable equipment the smooth operation and maintenance of which you can be sure of</p>
                    <img className="part1" src={part1} alt="Logo" />
               </div>
               <img className="main_picture" src={main_pic} alt="Picture Machine" />

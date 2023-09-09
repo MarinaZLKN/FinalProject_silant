@@ -182,12 +182,12 @@ const MachineDetails = () => {
             <div className="delete_btn">
                 {isAuthenticated && user && user.role === 'Менеджер' && (
                     <button className="search-btn" onClick={handleDelete}>
-                        Удалить
+                        Delete
                     </button>
                 )}
 
             <button className="search-btn" onClick={handleEdit}>
-                Изменить
+                Update
             </button>
         </div>
         </div>

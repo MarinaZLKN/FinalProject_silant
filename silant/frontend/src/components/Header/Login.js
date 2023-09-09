@@ -70,7 +70,7 @@ const Login = () => {
             .catch((error) => {
                 console.error(error);
                 if (error.response && error.response.status === 401) {
-                    setErrorMessage("Неверный логин или пароль");
+                    setErrorMessage("Wrong username or password");
                 } else {
                     setErrorMessage("An unexpected error occurred");
                 }
@@ -88,7 +88,7 @@ const Login = () => {
             {/*<h2 className="login-title">Авторизация</h2>*/}
             <form className="login_form" onSubmit={handleSubmit}>
                 <label className="login_label">
-                    Логин :
+                    Username:
                     <input
                         className="login_input"
                         type="text"
@@ -98,7 +98,7 @@ const Login = () => {
                     />
                 </label>
                 <label className="login_label">
-                    Пароль:
+                    Password:
                     <input
                         className="login_input"
                         type="password"
@@ -108,7 +108,7 @@ const Login = () => {
                     />
                 </label>
                 <button className="login-btn" type="submit">
-                    <p className="login_p">Войти в систему</p>
+                    <p className="login_p">Enter the system</p>
                 </button>
                 {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
             </form>

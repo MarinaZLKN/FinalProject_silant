@@ -14,13 +14,13 @@ const Dashboard = () => {
       <div className="main-page_content">
           <div className="main-page_selection">
               <Link to="/machines" className="link-button" activeClassName="active-link">
-                Машины
+                Machines
               </Link>
               <Link to="/maintenance" className="link-button" activeClassName="active-link">
-                Техническое обслуживание
+                Maintenances
               </Link>
               <Link to="/claim" className="link-button" activeClassName="active-link">
-                Рекламации
+                Claims
               </Link>
           </div>
 

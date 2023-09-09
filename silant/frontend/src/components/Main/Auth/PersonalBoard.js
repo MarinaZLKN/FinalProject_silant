@@ -11,10 +11,10 @@ const PersonalBoard = () => {
 
   return (
     <div className="personal_board">
-        <h2>Приветствуем, {user.username}!</h2>
-        <p> Ваш статус: {user.role}</p>
+        <h2>Welcome, {user.username}!</h2>
+        <p> Your status: {user.role}</p>
         <p> {user.first_name || " "}</p>
-        <p>Информация о комплектации и технических характеристиках Вашей техники.</p>
+        <p>Information about the configuration and technical characteristics of your equipment.</p>
 
 
     </div>

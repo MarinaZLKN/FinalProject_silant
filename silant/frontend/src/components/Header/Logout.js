@@ -22,7 +22,7 @@ const LogoutButton = () => {
 
     return (
         <button className="search-btn" onClick={handleLogout}>
-            Выйти
+            Logout
         </button>
     );
 };
