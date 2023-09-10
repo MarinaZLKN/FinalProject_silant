@@ -143,11 +143,11 @@ const MaintenanceForm = () => {
   return (
       <div className="form_1">
           <div className="form-container_main">
-          <h2 className="machine-form_h2">Добавить техническое обслуживание:</h2>
+          <h2 className="machine-form_h2">Add new maintenance:</h2>
           <form onSubmit={handleSubmit}>
               <div className="form-row">
                   <label className="form-label">
-                    Дата заказа:
+                    Date of order:
                     <input
                       type="date"
                       name="data_of_order"
@@ -159,7 +159,7 @@ const MaintenanceForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Дата проведения ТО:
+                    Date of maintenance:
                     <input
                       type="date"
                       name="date_of_maintenance"
@@ -171,7 +171,7 @@ const MaintenanceForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Наработка (часы):
+                    Operating time:
                     <input
                       type="number"
                       name="operating_time"
@@ -183,7 +183,7 @@ const MaintenanceForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Номер заказа:
+                    Order number:
                     <input
                       type="text"
                       name="order_number"
@@ -194,7 +194,7 @@ const MaintenanceForm = () => {
                   </label>
               </div>
               <div className="form-row">
-                    <label className="form-label">Организация, проводившая ТО:</label>
+                    <label className="form-label">Organization:</label>
                      <label className="form-label">
                         <select className="option"  name="organization" onChange={handleChange}>
                             {data.organizations.map(organization => (
@@ -204,7 +204,7 @@ const MaintenanceForm = () => {
                      </label>
                 </div>
               <div className="form-row">
-                    <label className="form-label">Тип обслуживания:</label>
+                    <label className="form-label">Type of maintenance:</label>
                      <label className="form-label">
                         <select className="option"  name="type_of_maintenance" onChange={handleChange}>
                             {data.type_of_maintenances.map(type_of_maintenance => (
@@ -214,7 +214,7 @@ const MaintenanceForm = () => {
                      </label>
                 </div>
               <div className="form-row">
-                    <label className="form-label">Зав.№ машины:</label>
+                    <label className="form-label">Machine serial number:</label>
                      <label className="form-label">
                         <select className="option"  name="machine" onChange={handleChange}>
                             {data.machines.map(machine => (
@@ -225,9 +225,9 @@ const MaintenanceForm = () => {
                 </div>
 
               <div className="form-buttons">
-                  <button type="submit" className="search-btn">Создать</button>
+                  <button type="submit" className="search-btn">Create</button>
               </div>
-              {permissionError && <p style={{color: 'red'}}>Вы не можете добавлять или изменять ТО!</p>}
+              {permissionError && <p style={{color: 'red'}}>You have no permission to create new maintenances!</p>}
           </form>
       </div>
       </div>

@@ -146,11 +146,11 @@ const ClaimForm = () => {
   return (
       <div className="form_1">
           <div className="form-container_claim">
-          <h2 className="machine-form_h2">Добавить новую рекламацию:</h2>
-          {permissionError && <p style={{color: 'red'}}>Вы не можете добавлять рекламации!</p>}
+          <h2 className="machine-form_h2">Add new claim:</h2>
+          {permissionError && <p style={{color: 'red'}}>You have no permission to add complaints!</p>}
           <form onSubmit={handleSubmit}>
               <div className="form-row">
-                    <label className="form-label">Зав. № машины:</label>
+                    <label className="form-label">Machine serial number:</label>
                      <label className="form-label">
                         <select className="option"  name="machine" onChange={handleChange}>
                             {data.machines.map(machine => (
@@ -161,7 +161,7 @@ const ClaimForm = () => {
                 </div>
               <div className="form-row">
                   <label className="form-label">
-                    Дата отказа:
+                    Date of failure:
                     <input
                       type="date"
                       name="date_of_failure"
@@ -173,7 +173,7 @@ const ClaimForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Дата восстановления:
+                    Date of recovery:
                     <input
                       type="date"
                       name="date_of_recovery"
@@ -185,7 +185,7 @@ const ClaimForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Время простоя:
+                    Technical downtime:
                     <input
                       type="number"
                       name="technical_downtime"
@@ -197,7 +197,7 @@ const ClaimForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Наработка:
+                    Operating time:
                     <input
                       type="text"
                       name="operating_time"
@@ -209,7 +209,7 @@ const ClaimForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Описание отказа:
+                    Description of failure:
                     <input
                       type="text"
                       name="description_of_failure"
@@ -221,7 +221,7 @@ const ClaimForm = () => {
               </div>
               <div className="form-row">
                   <label className="form-label">
-                    Используемые запчасти:
+                    Spare parts used:
                     <input
                       type="text"
                       name="spare_parts_used"
@@ -233,7 +233,7 @@ const ClaimForm = () => {
               </div>
 
               <div className="form-row">
-                    <label className="form-label">Узел отказа:</label>
+                    <label className="form-label">Failure node:</label>
                      <label className="form-label">
                         <select className="option"  name="failure_node" onChange={handleChange}>
                             {data.failure_nodes.map(failure_node => (
@@ -243,7 +243,7 @@ const ClaimForm = () => {
                      </label>
                 </div>
               <div className="form-row">
-                    <label className="form-label">Способ восстановления:</label>
+                    <label className="form-label">Recovery method:</label>
                      <label className="form-label">
                         <select className="option"  name="recovery_method" onChange={handleChange}>
                             {data.recovery_methods.map(recovery_method => (
@@ -254,7 +254,7 @@ const ClaimForm = () => {
                 </div>
               <div className="form-row">
                      <label className="form-label">
-                        Сервисная компания:
+                        Service company:
                             <select name="service_company" onChange={handleChange}>
                                 {data.service_companies.map(company => (
                                     <option key={company.id} value={company.id}>{company.name.first_name}</option>
@@ -265,7 +265,7 @@ const ClaimForm = () => {
 
 
               <div className="form-buttons">
-                  <button type="submit" className="search-btn">Создать</button>
+                  <button type="submit" className="search-btn">Create</button>
               </div>
           </form>
       </div>

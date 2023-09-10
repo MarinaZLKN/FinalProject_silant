@@ -102,7 +102,7 @@ const MaintenanceFilter = () => {
   return (
     <div>
       <div className="filter-group">
-        <label>Зав. № машины:</label>
+        <label>Machine serial number:</label>
         <input
           type="text"
           value={machineFactoryNumber}
@@ -110,9 +110,9 @@ const MaintenanceFilter = () => {
         />
       </div>
       <div className="filter-group">
-        <label>Тип обслуживания:</label>
+        <label>Type of maintenance:</label>
         <select value={selectedTypeOfMaintenance} onChange={(e) => setSelectedTypeOfMaintenance(e.target.value)}>
-          <option value="">Выберите тип обслуживания</option>
+          <option value="">Choose type of maintenance</option>
           {typeOfMaintenanceList.map((maintenanceType) => (
             <option key={maintenanceType.id} value={maintenanceType.id}>
               {maintenanceType.name}
@@ -121,9 +121,9 @@ const MaintenanceFilter = () => {
         </select>
       </div>
       <div className="filter-group">
-        <label>Организация проводившая ТО</label>
+        <label>Organization</label>
         <select value={selectedOrgCompany} onChange={(e) => setSelectedOrgCompany(e.target.value)}>
-          <option value="">Выберите организацию</option>
+          <option value="">Choose organization</option>
           {orgCompanyList.map((company) => (
             <option key={company.id} value={company.id}>
               {company.name}
@@ -132,22 +132,22 @@ const MaintenanceFilter = () => {
         </select>
       </div>
       {/*<button type="button" className="search-btn" onClick={handleFilter}>Показать</button>*/}
-      <button type="button" className="search-btn" onClick={handleReset}>Сбросить</button>
+      <button type="button" className="search-btn" onClick={handleReset}>Reset</button>
       <Link to="/create-main">
-          <button type="button" className="search-btn">Добавить</button>
+          <button type="button" className="search-btn">Add</button>
         </Link>
 
 
       <table className="machine-table">
         <thead>
           <tr>
-            <th>Зав. № машины</th>
-            <th>Дата заказ-наряда</th>
-            <th>Дата проведения ТО</th>
-            <th>Наработка</th>
-            <th>Номер заказа</th>
-            <th>Организация проводившая ТО</th>
-            <th>Тип обслуживания</th>
+            <th>Machine serial number</th>
+            <th>Date of order</th>
+            <th>Date of maintenance</th>
+            <th>Operating time</th>
+            <th>Order number</th>
+            <th>Organization</th>
+            <th>Type of maintenance</th>
           </tr>
         </thead>
         <tbody>

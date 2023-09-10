@@ -109,72 +109,72 @@ const MachineDetails = () => {
     return (
         <div>
             <div className="detail-view_h2">
-                <h2>Подробная информация о машине {machineDetails.machineData.machine_factory_number}</h2>
+                <h2>Detailed information about the car with serial number {machineDetails.machineData.machine_factory_number}</h2>
             </div>
             <table className="machine-table">
                 <tbody>
                     <tr>
-                        <td><b>Техническая модель:</b> </td>
-                        <td>{machineDetails.technicalModelName}  <b>Описание:</b> <i>{machineDetails.technicalDescription}</i> </td>
+                        <td><b>Technical model:</b> </td>
+                        <td>{machineDetails.technicalModelName}  <b>Description:</b> <i>{machineDetails.technicalDescription}</i> </td>
                     </tr>
                     <tr>
-                        <td> <b>Зав. № двигателя:</b> </td>
+                        <td> <b>Engine serial number:</b> </td>
                         <td>{machineDetails.machineData.engine_factory_number}</td>
                     </tr>
                     <tr>
-                        <td><b>Модель двигателя:</b></td>
-                        <td>{machineDetails.engineModelName}  <b>Описание:</b> <i>{machineDetails.engineDescription}</i></td>
+                        <td><b>Engine model:</b></td>
+                        <td>{machineDetails.engineModelName}  <b>Description:</b> <i>{machineDetails.engineDescription}</i></td>
                     </tr>
                     <tr>
-                        <td><b>Зав. № трансмиссии:</b></td>
+                        <td><b>Transmission serial number:</b></td>
                         <td>{machineDetails.machineData.transmission_factory_number} </td>
                     </tr>
                     <tr>
-                        <td><b>Модель трансмиссии:</b></td>
-                        <td>{machineDetails.transmissionModelName} <b>Описание:</b> <i>{machineDetails.transmissionDescription}</i></td>
+                        <td><b>Transmission model:</b></td>
+                        <td>{machineDetails.transmissionModelName} <b>Description:</b> <i>{machineDetails.transmissionDescription}</i></td>
                     </tr>
                     <tr>
-                        <td><b>Зав. № ведущего моста:</b></td>
+                        <td><b>Driving axle serial number:</b></td>
                         <td>{machineDetails.machineData.driving_bridge_factory_number}</td>
                     </tr>
                     <tr>
-                        <td><b>Модель ведущего моста:</b></td>
-                        <td>{machineDetails.drivingBridgeModelName}  <b>Описание:</b> <i>{machineDetails.drivingDescription}</i></td>
+                        <td><b>Driving axle model:</b></td>
+                        <td>{machineDetails.drivingBridgeModelName}  <b>Description:</b> <i>{machineDetails.drivingDescription}</i></td>
                     </tr>
                     <tr>
-                        <td><b>Зав. № управляемого моста:</b></td>
+                        <td><b>Serial number of the steered axle:</b></td>
                         <td>{machineDetails.machineData.controlled_bridge_factory_number}</td>
                     </tr>
                     <tr>
-                        <td><b>Модель управляемого моста:</b></td>
-                        <td>{machineDetails.controlledBridgeModelName}  <b>Описание:</b> <i>{machineDetails.controlledDescription}</i></td>
+                        <td><b>Steerable bridge model:</b></td>
+                        <td>{machineDetails.controlledBridgeModelName}  <b>Description:</b> <i>{machineDetails.controlledDescription}</i></td>
                     </tr>
                       <tr>
-                        <td><b>Договор поставки:</b></td>
+                        <td><b>Supply contract:</b></td>
                         <td>{machineDetails.machineData.delivery_contract}</td>
                       </tr>
                       <tr>
-                        <td><b>Дата отгрузки с завода:</b></td>
+                        <td><b>Date shipped from factory:</b></td>
                         <td>{machineDetails.machineData.shipment_date}</td>
                       </tr>
                       <tr>
-                        <td><b>Грузополучатель:</b></td>
+                        <td><b>Consignee:</b></td>
                         <td>{machineDetails.machineData.consignee}</td>
                       </tr>
                       <tr>
-                        <td><b>Адрес поставки:</b></td>
+                        <td><b>Delivery address:</b></td>
                         <td>{machineDetails.machineData.delivery_address}</td>
                       </tr>
                       <tr>
-                        <td><b>Комплектация:</b></td>
+                        <td><b>Equipment:</b></td>
                         <td>{machineDetails.machineData.equipment}</td>
                       </tr>
                     <tr>
-                        <td><b>Покупатель:</b></td>
+                        <td><b>Client:</b></td>
                         <td>{machineDetails.clientName} </td>
                     </tr>
                     <tr>
-                        <td><b>Сервисная компания:</b></td>
+                        <td><b>Service Company:</b></td>
                         <td>{machineDetails.serviceCompanyName} </td>
                     </tr>
                 </tbody>

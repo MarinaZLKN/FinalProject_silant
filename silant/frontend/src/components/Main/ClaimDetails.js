@@ -94,48 +94,48 @@ const ClaimDetails = () => {
   return (
     <div>
       <div className="detail-view_h2">
-        <h2>Подробная информация о рекламации</h2>
+        <h2>Detailed information about the complaint</h2>
       </div>
       <table className="machine-table">
         <tbody>
         <tr>
-            <td> <b>Зав. № машины:</b> </td>
+            <td> <b>Machine serial number:</b> </td>
             <td> <b>{claimDetails.machineName}</b> </td>
           </tr>
           <tr>
-            <td><b>Дата отказа:</b></td>
+            <td><b>Date of breakdown:</b></td>
             <td>{claimDetails.claimData.date_of_failure}</td>
           </tr>
           <tr>
-            <td><b>Дата восстановления:</b></td>
+            <td><b>Date of recovery:</b></td>
             <td>{claimDetails.claimData.date_of_recovery}</td>
           </tr>
           <tr>
-            <td><b>Наработка:</b></td>
-            <td>{claimDetails.claimData.operating_time} м/час</td>
+            <td><b>Operating time:</b></td>
+            <td>{claimDetails.claimData.operating_time} min/h</td>
           </tr>
           <tr>
-            <td><b>Узел отказа:</b></td>
-            <td>{claimDetails.failureNodeName} <b>Описание:</b> <i>{claimDetails.failureNodeDescription}</i> </td>
+            <td><b>Failure node:</b></td>
+            <td>{claimDetails.failureNodeName} <b>Description:</b> <i>{claimDetails.failureNodeDescription}</i> </td>
           </tr>
           <tr>
-            <td><b>Способ восстановления:</b></td>
-            <td>{claimDetails.recoveryMethodName} <b>Описание:</b> <i>{claimDetails.recoveryMethodDescription}</i>  </td>
+            <td><b>Recovery method:</b></td>
+            <td>{claimDetails.recoveryMethodName} <b>Description:</b> <i>{claimDetails.recoveryMethodDescription}</i>  </td>
           </tr>
         <tr>
-            <td><b>Используемые запчасти:</b></td>
+            <td><b>Spare parts used:</b></td>
             <td>{claimDetails.claimData.spare_parts_used}</td>
           </tr>
         <tr>
-            <td><b>Описание отказа:</b></td>
+            <td><b>Description of failure:</b></td>
             <td>{claimDetails.claimData.description_of_failure}</td>
           </tr>
         <tr>
-            <td><b>Время простоя:</b></td>
-            <td>{claimDetails.claimData.technical_downtime} дней</td>
+            <td><b>Technical downtime:</b></td>
+            <td>{claimDetails.claimData.technical_downtime} days</td>
           </tr>
           <tr>
-            <td><b>Сервисная организация:</b></td>
+            <td><b>Service company:</b></td>
             <td>{claimDetails.serviceCompanyName}</td>
           </tr>
         </tbody>

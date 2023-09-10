@@ -84,38 +84,38 @@ const MaintenanceDetails = () => {
   return (
     <div>
       <div className="detail-view_h2">
-        <h2>Техническое обслуживание</h2>
+        <h2>Maintenance</h2>
       </div>
       <table className="machine-table">
         <tbody>
           <tr>
-            <td><b>Зав. № машины:</b></td>
+            <td><b>Machine serial number:</b></td>
             <td> <b>{maintenanceDetails.machineName}</b> </td>
           </tr>
           <tr>
-            <td><b>Дата заказ-наряда:</b></td>
+            <td><b>Date of order:</b></td>
             <td>{maintenanceDetails.maintenanceData.data_of_order}</td>
           </tr>
           <tr>
-            <td> <b>Дата проведения ТО:</b></td>
+            <td> <b>Date of maintenance</b></td>
             <td>{maintenanceDetails.maintenanceData.date_of_maintenance}</td>
           </tr>
           <tr>
-            <td><b>Наработка:</b></td>
-            <td>{maintenanceDetails.maintenanceData.operating_time} м/час </td>
+            <td><b>Operating time:</b></td>
+            <td>{maintenanceDetails.maintenanceData.operating_time} min/h </td>
           </tr>
           <tr>
-            <td><b>Номер заказа:</b></td>
+            <td><b>Order number:</b></td>
             <td>{maintenanceDetails.maintenanceData.order_number}</td>
           </tr>
           <tr>
-            <td><b>Организация проводившая ТО:</b></td>
+            <td><b>Organization:</b></td>
             <td>{maintenanceDetails.organizationName}
-                <b> Описание:</b> <i>{maintenanceDetails.organizationDescription}</i> </td>
+                <b> Description:</b> <i>{maintenanceDetails.organizationDescription}</i> </td>
           </tr>
           <tr>
-            <td><b>Тип обслуживания:</b></td>
-            <td>{maintenanceDetails.typeOfMaintenanceName} <b> Описание:</b>  <i>{maintenanceDetails.typeOfMaintenanceDescription}</i> </td>
+            <td><b>Type of maintenance:</b></td>
+            <td>{maintenanceDetails.typeOfMaintenanceName} <b> Description:</b>  <i>{maintenanceDetails.typeOfMaintenanceDescription}</i> </td>
           </tr>
 
         </tbody>

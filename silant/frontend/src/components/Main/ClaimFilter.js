@@ -95,9 +95,9 @@ const ClaimFilter = () => {
   return (
     <div>
       <div className="filter-group">
-        <label>Сервисная организация:</label>
+        <label>Service company:</label>
         <select value={selectedServiceCompany} onChange={(e) => setSelectedServiceCompany(e.target.value)}>
-          <option value="">Выберите сервисная организацию</option>
+          <option value="">Choose service company</option>
           {serviceCompanies.map((company) => (
             <option key={company.name.id} value={company.id}>
               {company.name.first_name}
@@ -106,9 +106,9 @@ const ClaimFilter = () => {
         </select>
       </div>
       <div className="filter-group">
-        <label>Способ восстановления:</label>
+        <label>Recovery method:</label>
         <select value={selectedRecoveryMethod}  onChange={(e) => setSelectedRecoveryMethod(e.target.value)}>
-          <option value="">Выберите способ восстановления</option>
+          <option value="">Choose recovery method</option>
           {recoveryMethods.map((method) => (
             <option key={method.id} value={method.id}>
               {method.name}
@@ -117,9 +117,9 @@ const ClaimFilter = () => {
         </select>
       </div>
       <div className="filter-group">
-        <label>Узел отказа:</label>
+        <label>Failure node:</label>
         <select value={selectedFailureNode} onChange={(e) => setSelectedFailureNode(e.target.value)}>
-          <option value="">Выберите узел отказа</option>
+          <option value="">Choose failure node</option>
           {failureNodes.map((node) => (
             <option key={node.id} value={node.id}>
               {node.name}
@@ -127,22 +127,22 @@ const ClaimFilter = () => {
           ))}
         </select>
       </div>
-      <button type="button" className="search-btn" onClick={handleReset}>Сбросить</button>
+      <button type="button" className="search-btn" onClick={handleReset}>Reset</button>
       <Link to="/create-claim">
-          <button type="button" className="search-btn">Добавить</button>
+          <button type="button" className="search-btn">Add</button>
         </Link>
 
       <table className="machine-table">
         <thead>
           <tr>
-            <th>Зав. № машины</th>
-            <th>Дата отказа</th>
-            <th>Дата восстановления</th>
-            <th>Наработка</th>
-            <th>Время простоя</th>
-            <th>Узел отказа</th>
-            <th>Способ восстановления</th>
-            <th>Сервисная организация</th>
+            <th>Machine serial number</th>
+            <th>Date of breakdown</th>
+            <th>Date of recovery</th>
+            <th>Operating time</th>
+            <th>Technical downtime</th>
+            <th>Failure node</th>
+            <th>Recovery method</th>
+            <th>Service company</th>
           </tr>
         </thead>
         <tbody>

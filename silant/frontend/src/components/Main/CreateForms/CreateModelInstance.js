@@ -8,15 +8,15 @@ const CreateModelInstance = () => {
   const [modelType, setModelType] = useState('');
 
   const apiEndpoints = {
-    'Техническая модель': 'http://127.0.0.1:8000/api/technical_models/',
-    'Модель трансмиссии': 'http://127.0.0.1:8000/api/transmission_models/',
-    'Модель двигателя': 'http://127.0.0.1:8000/api/engine_models/',
-    'Модель ведущего моста': 'http://127.0.0.1:8000/api/driving_bridge_models/',
-    'Модель управляемого моста': 'http://127.0.0.1:8000/api/controlled_bridge_models/',
-    'Тип обслуживания': 'http://127.0.0.1:8000/api/types_of_maintenance/',
-    'Способ восстановления': 'http://127.0.0.1:8000/api/recovery_methods/',
-    'Организация': 'http://127.0.0.1:8000/api/organizations/',
-    'Узел отказа': 'http://127.0.0.1:8000/api/failure_nodes/',
+    'Technical model': 'http://127.0.0.1:8000/api/technical_models/',
+    'Transmission model': 'http://127.0.0.1:8000/api/transmission_models/',
+    'Engine model': 'http://127.0.0.1:8000/api/engine_models/',
+    'Driving axle model': 'http://127.0.0.1:8000/api/driving_bridge_models/',
+    'Steerable axle model': 'http://127.0.0.1:8000/api/controlled_bridge_models/',
+    'Type of maintenance': 'http://127.0.0.1:8000/api/types_of_maintenance/',
+    'Recovery method': 'http://127.0.0.1:8000/api/recovery_methods/',
+    'Organization': 'http://127.0.0.1:8000/api/organizations/',
+    'Failure node': 'http://127.0.0.1:8000/api/failure_nodes/',
   };
 
   const handleSubmit = async (e) => {
@@ -41,19 +41,19 @@ const CreateModelInstance = () => {
   return (
       <div className="form_1">
         <div className="form-container_inst">
-        <h2 className="machine-form_h2">Создать новый справочник:</h2>
+        <h2 className="machine-form_h2">Create new catalogue:</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-row">
-            <label className="form-label">Справочник:</label>
+            <label className="form-label">Catalogue:</label>
             <select value={modelType} onChange={(e) => setModelType(e.target.value)}>
-              <option value="" disabled>Выберите справочник</option>
+              <option value="" disabled>Choose catalogue</option>
               {Object.keys(apiEndpoints).map((type, index) => (
                 <option key={index} value={type}>{type}</option>
               ))}
             </select>
           </div>
           <div className="form-row">
-            <label className="form-label">Название:</label>
+            <label className="form-label">Name:</label>
             <input
               type="text"
               value={name}
@@ -61,14 +61,14 @@ const CreateModelInstance = () => {
             />
           </div>
           <div className="form-row">
-            <label className="form-label">Описание:</label>
+            <label className="form-label">Description:</label>
             <textarea
               className="text_area"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
-          <button type="submit" className="search-btn">Создать</button>
+          <button type="submit" className="search-btn">Create</button>
         </form>
         </div>
       </div>

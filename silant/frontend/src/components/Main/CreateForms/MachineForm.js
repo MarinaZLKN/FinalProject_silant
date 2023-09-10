@@ -187,11 +187,11 @@ const MachineForm = () => {
     return (
         <div className="form_1">
             <div className="form-container">
-            <h2 className="machine-form_h2">Добавить новую машину:</h2>
+            <h2 className="machine-form_h2">Add new machine:</h2>
             {/*{permissionError && <p style={{color: 'red'}}>Вы не можете добавлять новые машины!</p>}*/}
             <form onSubmit={handleSubmit}>
                 <div className="form-row">
-                      <label className="form-label">Зав. № машины:</label>
+                      <label className="form-label">Machine serial number:</label>
                       <input
                         type="text"
                         name="machine_factory_number"
@@ -202,7 +202,7 @@ const MachineForm = () => {
                       />
                 </div>
                 <div className="form-row">
-                      <label className="form-label">Зав. № двигателя:</label>
+                      <label className="form-label">Engine serial number:</label>
                       <input
                         type="text"
                         name="engine_factory_number"
@@ -213,7 +213,7 @@ const MachineForm = () => {
                       />
                 </div>
                 <div className="form-row">
-                      <label className="form-label">Зав. № трансмиссии: </label>
+                      <label className="form-label">Transmission serial number: </label>
                       <input
                         type="text"
                         name="transmission_factory_number"
@@ -224,7 +224,7 @@ const MachineForm = () => {
                       />
                 </div>
                 <div className="form-row">
-                      <label className="form-label">Зав. № ведущего моста:</label>
+                      <label className="form-label">Driving axle serial number:</label>
                       <input
                         type="text"
                         name="driving_bridge_factory_number"
@@ -235,7 +235,7 @@ const MachineForm = () => {
                       />
                 </div>
                 <div className="form-row">
-                      <label className="form-label">Зав. № управляемого моста:</label>
+                      <label className="form-label">Serial number of the steered axle:</label>
                       <input
                         type="text"
                         name="controlled_bridge_factory_number"
@@ -246,7 +246,7 @@ const MachineForm = () => {
                       />
                 </div>
                 <div className="form-row">
-                      <label className="form-label">Договор поставки:</label>
+                      <label className="form-label">Supply contractи:</label>
                       <input
                         type="text"
                         name="delivery_contract"
@@ -257,7 +257,7 @@ const MachineForm = () => {
                       />
                 </div>
                 <div className="form-row">
-                      <label className="form-label">Дата отгрузки с завода:</label>
+                      <label className="form-label">Date shipped from factory:</label>
                       <input
                         type="date"
                         name="shipment_date"
@@ -268,7 +268,7 @@ const MachineForm = () => {
                       />
                 </div>
                 <div className="form-row">
-                      <label className="form-label">Грузополучатель:</label>
+                      <label className="form-label">Consignee:</label>
                       <input
                         type="text"
                         name="consignee"
@@ -279,7 +279,7 @@ const MachineForm = () => {
                       />
                 </div>
                 <div className="form-row">
-                      <label className="form-label">Адрес поставки:</label>
+                      <label className="form-label">Delivery address:</label>
                       <input
                         type="text"
                         name="delivery_address"
@@ -290,7 +290,7 @@ const MachineForm = () => {
                       />
                 </div>
                 <div className="form-row">
-                      <label className="form-label">Комплектация:</label>
+                      <label className="form-label">Equipment:</label>
                       <input
                         type="text"
                         name="equipment"
@@ -301,7 +301,7 @@ const MachineForm = () => {
                       />
                     </div>
                 <div className="form-row">
-                    <label className="form-label">Покупатель:</label>
+                    <label className="form-label">Client:</label>
                      <label className="form-label">
                         <select className="select_form" className="option"  name="client" onChange={handleChange}>
                             {data.clients.map(client => (
@@ -312,7 +312,7 @@ const MachineForm = () => {
                 </div>
                 <div className="form-row">
                      <label className="form-label">
-                        Сервисная компания:
+                        Service Company:
                             <select className="select_form" name="service_company" onChange={handleChange}>
                                 {data.serviceCompanies.map(company => (
                                     <option key={company.id} value={company.id}>{company.name.first_name}</option>
@@ -322,7 +322,7 @@ const MachineForm = () => {
                 </div>
                 <div className="form-row">
                      <label className="form-label">
-                        Модель двигателя:
+                        Engine model:
                         <select className="select_form" name="engine_model" onChange={handleChange}>
                             {data.engineModels.map(model => (
                                 <option value={model.id}>{model.name}</option>
@@ -332,7 +332,7 @@ const MachineForm = () => {
                 </div>
                 <div className="form-row">
                      <label className="form-label">
-                        Техническая модель:
+                        Technical model:
                         <select className="select_form" name="technical_model" onChange={handleChange}>
                             {data.technicalModels.map(model => (
                                 <option value={model.id}>{model.name}</option>
@@ -342,7 +342,7 @@ const MachineForm = () => {
                 </div>
                 <div className="form-row">
                      <label className="form-label">
-                        Модель трансмиссии:
+                        Transmission model:
                          <select className="select_form" name="transmission_model" onChange={handleChange}>
                              {data.transmissionModels.map(model => (
                                     <option value={model.id}>{model.name}</option>
@@ -352,7 +352,7 @@ const MachineForm = () => {
                 </div>
                 <div className="form-row">
                      <label className="form-label">
-                        Модель ведущего моста:
+                        Driving axle model:
                         <select className="select_form" name="driving_bridge_model" onChange={handleChange}>
                             {data.drivingBridgeModels.map(model => (
                                 <option value={model.id}>{model.name}</option>
@@ -362,7 +362,7 @@ const MachineForm = () => {
                 </div>
                  <div className="form-row">
                      <label className="form-label">
-                        Модель управляемого моста:
+                        Steerable bridge model:
                         <select className="select_form" name="controlled_bridge_model" onChange={handleChange}>
                             {data.controlledBridgeModels.map(model => (
                                 <option value={model.id}>{model.name}</option>
@@ -372,9 +372,9 @@ const MachineForm = () => {
                 </div>
 
                 <div className="form-buttons">
-                    <button type="submit" className="search-btn">Создать</button>
+                    <button type="submit" className="search-btn">Create</button>
                 </div>
-                {permissionError && <p style={{color: 'red'}}>Вы не можете добавлять или изменять машины!</p>}
+                {permissionError && <p style={{color: 'red'}}>You have no permission to add or change the machines!</p>}
             </form>
              </div>
         </div>

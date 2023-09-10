@@ -127,9 +127,9 @@ const MachineFilter = () => {
   return (
     <div>
       <div className="filter-group">
-        <label>Техническая модель:</label>
+        <label>Transmission model:</label>
         <select value={selectedTechnicalModel} onChange={(e) => setSelectedTechnicalModel(e.target.value)}>
-          <option value="">Выберите техническую модель</option>
+          <option value="">Choose transmission model</option>
           {technicalModels.map((model) => (
             <option key={model.id} value={model.id}>
               {model.name}
@@ -138,9 +138,9 @@ const MachineFilter = () => {
         </select>
       </div>
       <div className="filter-group">
-        <label>Модель двигателя:</label>
+        <label>Engine model:</label>
         <select value={selectedEngineModel} onChange={(e) => setSelectedEngineModel(e.target.value)}>
-          <option value="">Выберите модель двигателя</option>
+          <option value="">Choose engine model</option>
           {engineModels.map((model) => (
             <option key={model.id} value={model.id}>
               {model.name}
@@ -149,9 +149,9 @@ const MachineFilter = () => {
         </select>
       </div>
       <div className="filter-group">
-        <label>Модель трансмиссии:</label>
+        <label>Transmission model:</label>
         <select value={selectedTransmissionModel} onChange={(e) => setSelectedTransmissionModel(e.target.value)}>
-          <option value="">Выберите модель трансмиссии </option>
+          <option value="">Choose transmission model</option>
           {transmissionModels.map((model) => (
             <option key={model.id} value={model.id}>
               {model.name}
@@ -160,9 +160,9 @@ const MachineFilter = () => {
         </select>
       </div>
       <div className="filter-group">
-        <label>Управляемый мост:</label>
+        <label>Steerable bridge model:</label>
         <select value={selectedContrBridgeModel} onChange={(e) => setSelectedContrBridgeModel(e.target.value)}>
-          <option value="">Выберите мост</option>
+          <option value="">Choose steerable axle model</option>
           {contrBridgeModels.map((model) => (
             <option key={model.id} value={model.id}>
               {model.name}
@@ -171,9 +171,9 @@ const MachineFilter = () => {
         </select>
       </div>
       <div className="filter-group">
-        <label>Ведущий мост:</label>
+        <label>Driving axle model:</label>
         <select value={selectedDriveBridgeModel} onChange={(e) => setSelectedDriveBridgeModel(e.target.value)}>
-          <option value="">Выберите мост</option>
+          <option value="">Choose driving axle model</option>
           {driveBridgeModels.map((model) => (
             <option key={model.id} value={model.id}>
               {model.name}
@@ -199,17 +199,17 @@ const MachineFilter = () => {
       <table className="machine-table">
         <thead>
           <tr>
-            <th>Зав. № машины</th>
-            <th>Техническая модель</th>
-            <th>Дата отгрузки</th>
-            <th>Зав. № двигателя</th>
-            <th>Модель двигателя</th>
-            <th>Зав. № трансмиссии</th>
-            <th>Модель трансмиссии</th>
-            <th>Зав. № ведущего моста</th>
-            <th>Модель ведущего моста</th>
-            <th>Зав. № управляемого моста</th>
-            <th>Модель управляемого моста</th>
+            <th>Machine serial number</th>
+            <th>Technical model</th>
+            <th>Date shipped from factory</th>
+            <th>Engine serial number</th>
+            <th>Engine model</th>
+            <th>Transmission serial number</th>
+            <th>Transmission model</th>
+            <th>Driving axle serial number</th>
+            <th>Driving axle model</th>
+            <th>Serial number of the steered axle</th>
+            <th>Steerable bridge model</th>
           </tr>
         </thead>
         <tbody>

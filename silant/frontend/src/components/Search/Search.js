@@ -89,7 +89,7 @@ const Search = () => {
                    <th>Driving axle serial number</th>
                    <th>Serial number of the steered axle</th>
                    <th>Transmission model</th>
-                   <th>Drive axle model</th>
+                   <th>Driving axle model</th>
                    <th>Steerable bridge model</th>
                 </tr>
               </thead>
